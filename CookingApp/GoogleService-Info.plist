@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  ┌─────────────────────────────────────────────────────────────┐
+  │  REPLACE THIS FILE with your real GoogleService-Info.plist  │
+  └─────────────────────────────────────────────────────────────┘
+
+  How to get your own GoogleService-Info.plist:
+
+  1. Go to https://console.firebase.google.com
+  2. Create a new project (or select an existing one)
+  3. Click "Add app" → select iOS
+  4. Enter bundle ID: com.example.CookingApp
+     (or change PRODUCT_BUNDLE_IDENTIFIER in the Xcode project to match yours)
+  5. Download the generated GoogleService-Info.plist
+  6. Replace this entire file with the downloaded one
+
+  Required Firestore setup:
+
+  1. In Firebase Console → Build → Firestore Database → Create database
+  2. Choose "Start in test mode" for development
+  3. Create a "recipes" collection with documents matching this schema:
+     {
+       title: String,
+       description: String,
+       ingredients: [{ name: String, amount: String, unit: String }],
+       steps: [String],
+       dietaryTags: [String],       // e.g. ["vegetarian", "glutenFree"]
+       allergenFree: [String],      // e.g. ["nuts", "dairy"]
+       prepTime: Int,               // minutes
+       cookTime: Int,               // minutes
+       imageURL: String (optional),
+       servings: Int
+     }
+  4. The app will automatically create the "dietaryProfiles" collection
+     when the first user completes onboarding.
+
+  ⚠️  The app will crash on launch if this placeholder is not replaced.
+-->
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>YOUR_API_KEY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>YOUR_GCM_SENDER_ID</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.CookingApp</string>
+	<key>PROJECT_ID</key>
+	<string>YOUR_PROJECT_ID</string>
+	<key>STORAGE_BUCKET</key>
+	<string>YOUR_PROJECT_ID.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>YOUR_GOOGLE_APP_ID</string>
+</dict>
+</plist>
