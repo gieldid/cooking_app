@@ -22,6 +22,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    .buttonStyle(.borderless)
                     .padding(.vertical, 4)
                 }
 
@@ -36,6 +37,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    .buttonStyle(.borderless)
                     .padding(.vertical, 4)
                 }
 
