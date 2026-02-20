@@ -29,6 +29,7 @@
 		A10019 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019 /* FirestoreService.swift */; };
 		A10020 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020 /* NotificationService.swift */; };
 		A10021 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10021 /* Assets.xcassets */; };
+		A10022 /* MeasurementConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023 /* MeasurementConverter.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		B10020 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		B10021 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B10022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B10023 /* MeasurementConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementConverter.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,9 +91,18 @@
 				G10004 /* Views */,
 				G10007 /* ViewModels */,
 				G10008 /* Services */,
+				G10009 /* Utils */,
 				536155A42F48616C0039E32F /* GoogleService-Info.plist */,
 			);
 			path = CookingApp;
+			sourceTree = "<group>";
+		};
+		G10009 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B10023 /* MeasurementConverter.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		G10003 /* Models */ = {
@@ -261,6 +272,7 @@
 				A10018 /* UserPreferencesManager.swift in Sources */,
 				A10019 /* FirestoreService.swift in Sources */,
 				A10020 /* NotificationService.swift in Sources */,
+				A10022 /* MeasurementConverter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
