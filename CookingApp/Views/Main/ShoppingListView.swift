@@ -37,7 +37,7 @@ struct ShoppingListView: View {
                     }
 
                     Section("Ingredients") {
-                        ForEach(recipe.ingredients) { ingredient in
+                        ForEach(recipe.localizedIngredients) { ingredient in
                             let disp = displayIngredient(ingredient, recipe: recipe)
                             ShoppingListRow(
                                 ingredient: ingredient,
@@ -53,6 +53,20 @@ struct ShoppingListView: View {
                             }
                         }
                     }
+                }
+            } else if let error = homeViewModel.errorMessage {
+                VStack(spacing: 16) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 48))
+                        .foregroundStyle(.secondary)
+                    Text(error)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                    Button("Try Again") {
+                        Task { await homeViewModel.loadTodayRecipe() }
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
             } else {
                 VStack(spacing: 16) {

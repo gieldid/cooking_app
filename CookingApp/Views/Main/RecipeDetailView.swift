@@ -35,7 +35,7 @@ struct RecipeDetailView: View {
                             .font(.largeTitle)
                             .fontWeight(.bold)
 
-                        Text(recipe.description)
+                        Text(recipe.localizedDescription)
                             .font(.body)
                             .foregroundStyle(.secondary)
 
@@ -65,7 +65,7 @@ struct RecipeDetailView: View {
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        ForEach(recipe.ingredients) { ingredient in
+                        ForEach(recipe.localizedIngredients) { ingredient in
                             let disp = displayIngredient(ingredient)
                             HStack(spacing: 12) {
                                 Circle()
@@ -90,7 +90,7 @@ struct RecipeDetailView: View {
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        ForEach(Array(recipe.steps.enumerated()), id: \.offset) { index, step in
+                        ForEach(Array(recipe.localizedSteps.enumerated()), id: \.offset) { index, step in
                             StepRow(
                                 stepNumber: index + 1,
                                 text: step,

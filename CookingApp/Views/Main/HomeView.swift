@@ -52,6 +52,11 @@ struct HomeView: View {
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
+                    Button("Try Again") {
+                        Task { await viewModel.loadTodayRecipe() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.top, 8)
                 }
             }
         }
@@ -96,7 +101,7 @@ private struct RecipeCard: View {
                     .font(.title2)
                     .fontWeight(.bold)
 
-                Text(recipe.description)
+                Text(recipe.localizedDescription)
                     .font(.body)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
@@ -131,6 +136,7 @@ private struct RecipeCard: View {
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .shadow(color: .black.opacity(0.1), radius: 10, y: 4)
+        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(.separator), lineWidth: 0.5))
     }
 
     private var recipePlaceholder: some View {
