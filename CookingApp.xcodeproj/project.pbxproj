@@ -61,7 +61,7 @@
 		B10022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10023 /* MeasurementConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementConverter.swift; sourceTree = "<group>"; };
 		B10024 /* RecipePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePreferencesView.swift; sourceTree = "<group>"; };
-		B10025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Localizable.xcstrings"; sourceTree = "<group>"; };
+		B10025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = "Localizable.xcstrings"; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
