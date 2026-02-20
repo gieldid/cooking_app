@@ -20,6 +20,7 @@ struct Recipe: Codable, Identifiable {
     let cookTime: Int
     let imageURL: String?
     let servings: Int
+    let difficulty: String?
 
     var totalTime: Int { prepTime + cookTime }
 }

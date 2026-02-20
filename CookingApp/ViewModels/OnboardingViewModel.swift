@@ -5,10 +5,12 @@ final class OnboardingViewModel: ObservableObject {
     @Published var currentPage = 0
     @Published var selectedAllergies: Set<Allergy> = []
     @Published var selectedDiets: Set<Diet> = []
+    @Published var selectedDifficulties: Set<Difficulty> = []
+    @Published var maxDuration: MaxDuration = .any
     @Published var notificationPreferences: NotificationPreferences = .default
     @Published var isCompleting = false
 
-    let totalPages = 4
+    let totalPages = 5
 
     var canAdvance: Bool {
         currentPage < totalPages - 1
@@ -40,6 +42,14 @@ final class OnboardingViewModel: ObservableObject {
         }
     }
 
+    func toggleDifficulty(_ difficulty: Difficulty) {
+        if selectedDifficulties.contains(difficulty) {
+            selectedDifficulties.remove(difficulty)
+        } else {
+            selectedDifficulties.insert(difficulty)
+        }
+    }
+
     func completeOnboarding() async {
         isCompleting = true
         defer { isCompleting = false }
@@ -47,7 +57,9 @@ final class OnboardingViewModel: ObservableObject {
         let prefs = UserPreferencesManager.shared
         let profile = DietaryProfile(
             selectedAllergies: selectedAllergies,
-            selectedDiets: selectedDiets
+            selectedDiets: selectedDiets,
+            preferredDifficulties: selectedDifficulties,
+            maxDuration: maxDuration
         )
 
         prefs.dietaryProfile = profile

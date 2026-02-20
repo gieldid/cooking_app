@@ -5,6 +5,8 @@ import Combine
 final class SettingsViewModel: ObservableObject {
     @Published var selectedAllergies: Set<Allergy>
     @Published var selectedDiets: Set<Diet>
+    @Published var preferredDifficulties: Set<Difficulty>
+    @Published var maxDuration: MaxDuration
     @Published var notificationPreferences: NotificationPreferences
 
     private let prefs = UserPreferencesManager.shared
@@ -13,16 +15,21 @@ final class SettingsViewModel: ObservableObject {
     init() {
         self.selectedAllergies = prefs.dietaryProfile.selectedAllergies
         self.selectedDiets = prefs.dietaryProfile.selectedDiets
+        self.preferredDifficulties = prefs.dietaryProfile.preferredDifficulties
+        self.maxDuration = prefs.dietaryProfile.maxDuration
         self.notificationPreferences = prefs.notificationPreferences
 
-        Publishers.CombineLatest3($selectedAllergies, $selectedDiets, $notificationPreferences)
-            .dropFirst()
-            .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                Task { @MainActor [weak self] in await self?.save() }
-            }
-            .store(in: &cancellables)
+        Publishers.CombineLatest(
+            Publishers.CombineLatest3($selectedAllergies, $selectedDiets, $notificationPreferences),
+            Publishers.CombineLatest($preferredDifficulties, $maxDuration)
+        )
+        .dropFirst()
+        .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+        .sink { [weak self] _ in
+            guard let self else { return }
+            Task { @MainActor [weak self] in await self?.save() }
+        }
+        .store(in: &cancellables)
     }
 
     func toggleAllergy(_ allergy: Allergy) {
@@ -41,22 +48,30 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
+    func toggleDifficulty(_ difficulty: Difficulty) {
+        if preferredDifficulties.contains(difficulty) {
+            preferredDifficulties.remove(difficulty)
+        } else {
+            preferredDifficulties.insert(difficulty)
+        }
+    }
+
     func save() async {
         let profile = DietaryProfile(
             selectedAllergies: selectedAllergies,
-            selectedDiets: selectedDiets
+            selectedDiets: selectedDiets,
+            preferredDifficulties: preferredDifficulties,
+            maxDuration: maxDuration
         )
 
         prefs.dietaryProfile = profile
         prefs.notificationPreferences = notificationPreferences
 
-        // Update notifications
         NotificationService.shared.scheduleAllNotifications(
             preferences: notificationPreferences,
             recipeName: nil
         )
 
-        // Push updated profile to Firestore
         try? await FirestoreService.shared.pushDietaryProfile(profile, deviceId: prefs.deviceId)
     }
 

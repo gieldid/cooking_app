@@ -66,9 +66,81 @@ enum Diet: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+enum Difficulty: String, Codable, CaseIterable, Identifiable {
+    case easy, medium, hard
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .easy: return "Easy"
+        case .medium: return "Medium"
+        case .hard: return "Hard"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .easy: return "🟢"
+        case .medium: return "🟡"
+        case .hard: return "🔴"
+        }
+    }
+}
+
+enum MaxDuration: String, Codable, CaseIterable {
+    case any, thirty, sixty, ninety
+
+    var displayName: String {
+        switch self {
+        case .any:    return "Any"
+        case .thirty: return "≤ 30 min"
+        case .sixty:  return "≤ 60 min"
+        case .ninety: return "≤ 90 min"
+        }
+    }
+
+    var minutes: Int? {
+        switch self {
+        case .any:    return nil
+        case .thirty: return 30
+        case .sixty:  return 60
+        case .ninety: return 90
+        }
+    }
+}
+
 struct DietaryProfile: Codable, Equatable {
     var selectedAllergies: Set<Allergy>
     var selectedDiets: Set<Diet>
+    var preferredDifficulties: Set<Difficulty>
+    var maxDuration: MaxDuration
 
-    static let empty = DietaryProfile(selectedAllergies: [], selectedDiets: [])
+    static let empty = DietaryProfile(
+        selectedAllergies: [],
+        selectedDiets: [],
+        preferredDifficulties: [],
+        maxDuration: .any
+    )
+
+    init(
+        selectedAllergies: Set<Allergy>,
+        selectedDiets: Set<Diet>,
+        preferredDifficulties: Set<Difficulty> = [],
+        maxDuration: MaxDuration = .any
+    ) {
+        self.selectedAllergies = selectedAllergies
+        self.selectedDiets = selectedDiets
+        self.preferredDifficulties = preferredDifficulties
+        self.maxDuration = maxDuration
+    }
+
+    // Custom decoder so existing stored data (without the new keys) still loads cleanly.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        selectedAllergies = try container.decode(Set<Allergy>.self, forKey: .selectedAllergies)
+        selectedDiets = try container.decode(Set<Diet>.self, forKey: .selectedDiets)
+        preferredDifficulties = try container.decodeIfPresent(Set<Difficulty>.self, forKey: .preferredDifficulties) ?? []
+        maxDuration = try container.decodeIfPresent(MaxDuration.self, forKey: .maxDuration) ?? .any
+    }
 }

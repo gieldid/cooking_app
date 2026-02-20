@@ -7,6 +7,7 @@ struct SettingsView: View {
 
     let allergyColumns = [GridItem(.flexible()), GridItem(.flexible())]
     let dietColumns = [GridItem(.flexible()), GridItem(.flexible())]
+    let difficultyColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         Form {
@@ -38,6 +39,27 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.borderless)
                 .padding(.vertical, 4)
+            }
+
+            Section("Recipe Preferences") {
+                LazyVGrid(columns: difficultyColumns, spacing: 8) {
+                    ForEach(Difficulty.allCases) { difficulty in
+                        SettingsChip(
+                            text: "\(difficulty.icon) \(difficulty.displayName)",
+                            isSelected: viewModel.preferredDifficulties.contains(difficulty)
+                        ) {
+                            viewModel.toggleDifficulty(difficulty)
+                        }
+                    }
+                }
+                .buttonStyle(.borderless)
+                .padding(.vertical, 4)
+
+                Picker("Max Cook Time", selection: $viewModel.maxDuration) {
+                    ForEach(MaxDuration.allCases, id: \.self) { d in
+                        Text(d.displayName).tag(d)
+                    }
+                }
             }
 
             Section("Units") {

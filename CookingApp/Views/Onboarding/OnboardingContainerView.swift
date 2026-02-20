@@ -23,8 +23,10 @@ struct OnboardingContainerView: View {
                     .tag(1)
                 DietaryPreferencesView(viewModel: viewModel)
                     .tag(2)
-                NotificationSetupView(viewModel: viewModel)
+                RecipePreferencesView(viewModel: viewModel)
                     .tag(3)
+                NotificationSetupView(viewModel: viewModel)
+                    .tag(4)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut, value: viewModel.currentPage)

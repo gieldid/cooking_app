@@ -27,20 +27,33 @@ final class FirestoreService {
     }
 
     private func matchesProfile(recipe: Recipe, profile: DietaryProfile) -> Bool {
-        // Check allergens: recipe.allergenFree should contain all user's allergies
+        // Allergens: recipe must be free of all user allergies
         for allergy in profile.selectedAllergies {
             if !recipe.allergenFree.contains(allergy.rawValue) {
                 return false
             }
         }
 
-        // Check dietary tags: recipe should match at least one of user's diets (if any selected)
+        // Dietary tags: recipe must match at least one selected diet
         if !profile.selectedDiets.isEmpty {
             let recipeTags = Set(recipe.dietaryTags)
             let userDiets = Set(profile.selectedDiets.map { $0.rawValue })
             if recipeTags.isDisjoint(with: userDiets) {
                 return false
             }
+        }
+
+        // Difficulty: recipe must match one of the preferred difficulties (if any selected)
+        if !profile.preferredDifficulties.isEmpty {
+            guard let diff = recipe.difficulty,
+                  profile.preferredDifficulties.map({ $0.rawValue }).contains(diff) else {
+                return false
+            }
+        }
+
+        // Duration: recipe total time must be within the limit
+        if let maxMinutes = profile.maxDuration.minutes, recipe.totalTime > maxMinutes {
+            return false
         }
 
         return true
