@@ -69,6 +69,7 @@ struct ShoppingListView: View {
         }
         .navigationTitle("Shopping List")
         .task {
+            guard homeViewModel.todayRecipe == nil && !homeViewModel.isLoading else { return }
             await homeViewModel.loadTodayRecipe()
         }
     }

@@ -31,6 +31,7 @@ final class UserPreferencesManager: ObservableObject {
         static let notificationPreferences = "notificationPreferences"
         static let deviceId = "deviceId"
         static let measurementPreference = "measurementPreference"
+        static let defaultServings = "defaultServings"
     }
 
     @Published var hasCompletedOnboarding: Bool {
@@ -49,6 +50,11 @@ final class UserPreferencesManager: ObservableObject {
         didSet { saveCodable(measurementPreference, forKey: Keys.measurementPreference) }
     }
 
+    /// 0 means "use each recipe's own serving count".
+    @Published var defaultServings: Int {
+        didSet { defaults.set(defaultServings, forKey: Keys.defaultServings) }
+    }
+
     var deviceId: String {
         if let existing = defaults.string(forKey: Keys.deviceId) {
             return existing
@@ -63,6 +69,7 @@ final class UserPreferencesManager: ObservableObject {
         self.dietaryProfile = Self.loadCodable(forKey: Keys.dietaryProfile) ?? .empty
         self.notificationPreferences = Self.loadCodable(forKey: Keys.notificationPreferences) ?? .default
         self.measurementPreference = Self.loadCodable(forKey: Keys.measurementPreference) ?? .system
+        self.defaultServings = defaults.integer(forKey: Keys.defaultServings) // 0 if never set
     }
 
     private func saveCodable<T: Codable>(_ value: T, forKey key: String) {

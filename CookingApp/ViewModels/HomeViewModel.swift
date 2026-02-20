@@ -27,8 +27,11 @@ final class HomeViewModel: ObservableObject {
             } else {
                 // Pick a recipe based on the day — deterministic per day
                 let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
-                todayRecipe = recipes[dayIndex % recipes.count]
-                servingsMultiplier = todayRecipe?.servings ?? 1
+                let picked = recipes[dayIndex % recipes.count]
+                if picked.id != todayRecipe?.id {
+                    todayRecipe = picked
+                    servingsMultiplier = initialServings(for: picked)
+                }
 
                 // Update notifications with recipe name
                 NotificationService.shared.scheduleAllNotifications(
@@ -43,12 +46,17 @@ final class HomeViewModel: ObservableObject {
         isLoading = false
     }
 
+    private func initialServings(for recipe: Recipe) -> Int {
+        let def = prefs.defaultServings
+        return def > 0 ? def : recipe.servings
+    }
+
     func skipRecipe() {
         guard allFilteredRecipes.count > 1, let current = todayRecipe else { return }
         var filtered = allFilteredRecipes.filter { $0.id != current.id }
         if filtered.isEmpty { filtered = allFilteredRecipes }
         todayRecipe = filtered.randomElement()
-        servingsMultiplier = todayRecipe?.servings ?? 1
+        if let recipe = todayRecipe { servingsMultiplier = initialServings(for: recipe) }
 
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,
