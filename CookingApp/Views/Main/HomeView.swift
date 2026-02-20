@@ -15,7 +15,7 @@ struct HomeView: View {
                 }
             } else if let recipe = viewModel.todayRecipe {
                 VStack(spacing: 20) {
-                    RecipeCard(recipe: recipe)
+                    RecipeCard(recipe: recipe, servings: viewModel.servingsMultiplier)
 
                     HStack(spacing: 16) {
                         Button {
@@ -67,6 +67,7 @@ struct HomeView: View {
 
 private struct RecipeCard: View {
     let recipe: Recipe
+    let servings: Int
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -102,7 +103,7 @@ private struct RecipeCard: View {
 
                 HStack(spacing: 16) {
                     Label("\(recipe.prepTime + recipe.cookTime) min", systemImage: "clock")
-                    Label("\(recipe.servings) servings", systemImage: "person.2")
+                    Label("\(servings) servings", systemImage: "person.2")
                 }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)

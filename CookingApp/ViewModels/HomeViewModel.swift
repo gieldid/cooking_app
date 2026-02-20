@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 @MainActor
 final class HomeViewModel: ObservableObject {
@@ -10,6 +11,18 @@ final class HomeViewModel: ObservableObject {
 
     private let firestoreService = FirestoreService.shared
     private let prefs = UserPreferencesManager.shared
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        prefs.$defaultServings
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newDefault in
+                guard let self else { return }
+                self.servingsMultiplier = newDefault > 0 ? newDefault : (self.todayRecipe?.servings ?? 1)
+            }
+            .store(in: &cancellables)
+    }
 
     func loadTodayRecipe() async {
         isLoading = true

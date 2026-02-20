@@ -42,7 +42,7 @@ struct RecipeDetailView: View {
                         HStack(spacing: 20) {
                             InfoBadge(icon: "clock", text: "\(recipe.prepTime)m prep")
                             InfoBadge(icon: "flame", text: "\(recipe.cookTime)m cook")
-                            InfoBadge(icon: "person.2", text: "\(recipe.servings) servings")
+                            InfoBadge(icon: "person.2", text: "\(servingsMultiplier) servings")
                         }
                         .padding(.top, 4)
                     }
