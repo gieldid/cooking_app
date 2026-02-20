@@ -7,14 +7,14 @@ enum Allergy: String, Codable, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .nuts: return "Nuts"
-        case .dairy: return "Dairy"
-        case .gluten: return "Gluten"
-        case .shellfish: return "Shellfish"
-        case .eggs: return "Eggs"
-        case .soy: return "Soy"
-        case .fish: return "Fish"
-        case .sesame: return "Sesame"
+        case .nuts: return String(localized: "allergy.nuts")
+        case .dairy: return String(localized: "allergy.dairy")
+        case .gluten: return String(localized: "allergy.gluten")
+        case .shellfish: return String(localized: "allergy.shellfish")
+        case .eggs: return String(localized: "allergy.eggs")
+        case .soy: return String(localized: "allergy.soy")
+        case .fish: return String(localized: "allergy.fish")
+        case .sesame: return String(localized: "allergy.sesame")
         }
     }
 
@@ -39,15 +39,15 @@ enum Diet: String, Codable, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .vegetarian: return "Vegetarian"
-        case .vegan: return "Vegan"
-        case .pescatarian: return "Pescatarian"
-        case .keto: return "Keto"
-        case .glutenFree: return "Gluten Free"
-        case .halal: return "Halal"
-        case .kosher: return "Kosher"
-        case .dairyFree: return "Dairy Free"
-        case .lowCarb: return "Low Carb"
+        case .vegetarian: return String(localized: "diet.vegetarian")
+        case .vegan: return String(localized: "diet.vegan")
+        case .pescatarian: return String(localized: "diet.pescatarian")
+        case .keto: return String(localized: "diet.keto")
+        case .glutenFree: return String(localized: "diet.glutenFree")
+        case .halal: return String(localized: "diet.halal")
+        case .kosher: return String(localized: "diet.kosher")
+        case .dairyFree: return String(localized: "diet.dairyFree")
+        case .lowCarb: return String(localized: "diet.lowCarb")
         }
     }
 
@@ -73,9 +73,9 @@ enum Difficulty: String, Codable, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .easy: return "Easy"
-        case .medium: return "Medium"
-        case .hard: return "Hard"
+        case .easy: return String(localized: "difficulty.easy")
+        case .medium: return String(localized: "difficulty.medium")
+        case .hard: return String(localized: "difficulty.hard")
         }
     }
 
@@ -93,10 +93,10 @@ enum MaxDuration: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .any:    return "Any"
-        case .thirty: return "≤ 30 min"
-        case .sixty:  return "≤ 60 min"
-        case .ninety: return "≤ 90 min"
+        case .any:    return String(localized: "duration.any")
+        case .thirty: return String(localized: "duration.thirty")
+        case .sixty:  return String(localized: "duration.sixty")
+        case .ninety: return String(localized: "duration.ninety")
         }
     }
 

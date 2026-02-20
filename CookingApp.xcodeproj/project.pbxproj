@@ -31,6 +31,7 @@
 		A10021 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10021 /* Assets.xcassets */; };
 		A10022 /* MeasurementConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023 /* MeasurementConverter.swift */; };
 		A10023 /* RecipePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024 /* RecipePreferencesView.swift */; };
+		A10024 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B10025 /* Localizable.xcstrings */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		B10022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10023 /* MeasurementConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementConverter.swift; sourceTree = "<group>"; };
 		B10024 /* RecipePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePreferencesView.swift; sourceTree = "<group>"; };
+		B10025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Localizable.xcstrings"; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,6 +91,7 @@
 				B10001 /* CookingApp.swift */,
 				B10022 /* Info.plist */,
 				B10021 /* Assets.xcassets */,
+				B10025 /* Localizable.xcstrings */,
 				G10003 /* Models */,
 				G10004 /* Views */,
 				G10007 /* ViewModels */,
@@ -224,6 +227,10 @@
 			knownRegions = (
 				en,
 				Base,
+				nl,
+				fr,
+				de,
+				it,
 			);
 			mainGroup = G10001;
 			packageReferences = (
@@ -245,6 +252,7 @@
 			files = (
 				A10021 /* Assets.xcassets in Resources */,
 				536155A52F48616C0039E32F /* GoogleService-Info.plist in Resources */,
+				A10024 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

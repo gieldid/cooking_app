@@ -36,7 +36,7 @@ final class HomeViewModel: ObservableObject {
 
             if recipes.isEmpty {
                 todayRecipe = nil
-                errorMessage = "No recipes match your dietary profile. Try adjusting your preferences in Settings."
+                errorMessage = String(localized: "error.no_recipes")
             } else {
                 // Pick a recipe based on the day — deterministic per day
                 let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
@@ -53,7 +53,7 @@ final class HomeViewModel: ObservableObject {
                 )
             }
         } catch {
-            errorMessage = "Failed to load recipes. Check your internet connection."
+            errorMessage = String(localized: "error.load_failed")
         }
 
         isLoading = false

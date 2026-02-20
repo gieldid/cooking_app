@@ -28,26 +28,26 @@ final class NotificationService {
             return
         }
 
-        let name = recipeName ?? "a delicious meal"
+        let name = recipeName ?? String(localized: "notification.default_meal")
 
         scheduleNotification(
             id: .morningRecipe,
-            title: "Today's Recipe!",
-            body: "Today's recipe: \(name)! Tap to see if you'd like it.",
+            title: String(localized: "notification.morning.title"),
+            body: String(format: String(localized: "notification.morning.body"), name),
             time: preferences.morningRecipeTime
         )
 
         scheduleNotification(
             id: .shoppingList,
-            title: "Shopping List Ready",
-            body: "Don't forget to grab ingredients for \(name)! Tap for your shopping list.",
+            title: String(localized: "notification.shopping.title"),
+            body: String(format: String(localized: "notification.shopping.body"), name),
             time: preferences.shoppingListTime
         )
 
         scheduleNotification(
             id: .cookingReminder,
-            title: "Time to Cook!",
-            body: "Time to start cooking \(name)! Let's go!",
+            title: String(localized: "notification.cooking.title"),
+            body: String(format: String(localized: "notification.cooking.body"), name),
             time: preferences.cookingReminderTime
         )
     }

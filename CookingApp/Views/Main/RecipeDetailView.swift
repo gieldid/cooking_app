@@ -133,7 +133,7 @@ struct RecipeDetailView: View {
 
 private struct InfoBadge: View {
     let icon: String
-    let text: String
+    let text: LocalizedStringKey
 
     var body: some View {
         HStack(spacing: 4) {

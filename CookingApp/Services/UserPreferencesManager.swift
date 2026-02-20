@@ -5,9 +5,9 @@ enum MeasurementPreference: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .system: return "System Default"
-        case .metric: return "Metric"
-        case .imperial: return "Imperial"
+        case .system: return String(localized: "measurement.system")
+        case .metric: return String(localized: "measurement.metric")
+        case .imperial: return String(localized: "measurement.imperial")
         }
     }
 
