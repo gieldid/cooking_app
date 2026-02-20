@@ -43,10 +43,10 @@ final class FirestoreService {
             }
         }
 
-        // Difficulty: recipe must match one of the preferred difficulties (if any selected)
-        if !profile.preferredDifficulties.isEmpty {
-            guard let diff = recipe.difficulty,
-                  profile.preferredDifficulties.map({ $0.rawValue }).contains(diff) else {
+        // Difficulty: recipe must match one of the preferred difficulties (if any selected).
+        // Recipes without a difficulty field (older documents) are always included.
+        if !profile.preferredDifficulties.isEmpty, let diff = recipe.difficulty {
+            if !profile.preferredDifficulties.map({ $0.rawValue }).contains(diff) {
                 return false
             }
         }

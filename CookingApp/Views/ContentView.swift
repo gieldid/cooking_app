@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject private var prefs = UserPreferencesManager.shared
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     var body: some View {
         Group {
-            if prefs.hasCompletedOnboarding {
+            if hasCompletedOnboarding {
                 MainTabView()
                     .transition(.opacity)
             } else {
@@ -13,7 +13,7 @@ struct ContentView: View {
                     .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.4), value: prefs.hasCompletedOnboarding)
+        .animation(.easeInOut(duration: 0.4), value: hasCompletedOnboarding)
     }
 }
 
