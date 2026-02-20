@@ -2,112 +2,92 @@ import SwiftUI
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
+    @ObservedObject private var prefs = UserPreferencesManager.shared
     @State private var showResetAlert = false
-    @State private var showSavedToast = false
 
     let allergyColumns = [GridItem(.flexible()), GridItem(.flexible())]
     let dietColumns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("Allergies") {
-                    LazyVGrid(columns: allergyColumns, spacing: 8) {
-                        ForEach(Allergy.allCases) { allergy in
-                            SettingsChip(
-                                text: "\(allergy.icon) \(allergy.displayName)",
-                                isSelected: viewModel.selectedAllergies.contains(allergy)
-                            ) {
-                                viewModel.toggleAllergy(allergy)
-                            }
+        Form {
+            Section("Allergies") {
+                LazyVGrid(columns: allergyColumns, spacing: 8) {
+                    ForEach(Allergy.allCases) { allergy in
+                        SettingsChip(
+                            text: "\(allergy.icon) \(allergy.displayName)",
+                            isSelected: viewModel.selectedAllergies.contains(allergy)
+                        ) {
+                            viewModel.toggleAllergy(allergy)
                         }
                     }
-                    .buttonStyle(.borderless)
-                    .padding(.vertical, 4)
                 }
+                .buttonStyle(.borderless)
+                .padding(.vertical, 4)
+            }
 
-                Section("Dietary Preferences") {
-                    LazyVGrid(columns: dietColumns, spacing: 8) {
-                        ForEach(Diet.allCases) { diet in
-                            SettingsChip(
-                                text: "\(diet.icon) \(diet.displayName)",
-                                isSelected: viewModel.selectedDiets.contains(diet)
-                            ) {
-                                viewModel.toggleDiet(diet)
-                            }
+            Section("Dietary Preferences") {
+                LazyVGrid(columns: dietColumns, spacing: 8) {
+                    ForEach(Diet.allCases) { diet in
+                        SettingsChip(
+                            text: "\(diet.icon) \(diet.displayName)",
+                            isSelected: viewModel.selectedDiets.contains(diet)
+                        ) {
+                            viewModel.toggleDiet(diet)
                         }
                     }
-                    .buttonStyle(.borderless)
-                    .padding(.vertical, 4)
                 }
+                .buttonStyle(.borderless)
+                .padding(.vertical, 4)
+            }
 
-                Section("Notifications") {
-                    Toggle("Enable Notifications", isOn: $viewModel.notificationPreferences.isEnabled)
-
-                    if viewModel.notificationPreferences.isEnabled {
-                        DatePicker(
-                            "Morning Recipe",
-                            selection: $viewModel.notificationPreferences.morningRecipeTime,
-                            displayedComponents: .hourAndMinute
-                        )
-
-                        DatePicker(
-                            "Shopping Reminder",
-                            selection: $viewModel.notificationPreferences.shoppingListTime,
-                            displayedComponents: .hourAndMinute
-                        )
-
-                        DatePicker(
-                            "Cooking Reminder",
-                            selection: $viewModel.notificationPreferences.cookingReminderTime,
-                            displayedComponents: .hourAndMinute
-                        )
+            Section("Units") {
+                Picker("Measurement System", selection: $prefs.measurementPreference) {
+                    ForEach(MeasurementPreference.allCases, id: \.self) { pref in
+                        Text(pref.displayName).tag(pref)
                     }
                 }
+                .pickerStyle(.segmented)
+            }
 
-                Section {
-                    Button("Save Changes") {
-                        Task {
-                            await viewModel.save()
-                            showSavedToast = true
-                            try? await Task.sleep(for: .seconds(2))
-                            showSavedToast = false
-                        }
-                    }
-                    .fontWeight(.semibold)
-                }
+            Section("Notifications") {
+                Toggle("Enable Notifications", isOn: $viewModel.notificationPreferences.isEnabled)
 
-                Section {
-                    Button("Reset & Show Onboarding") {
-                        showResetAlert = true
-                    }
-                    .foregroundStyle(.red)
+                if viewModel.notificationPreferences.isEnabled {
+                    DatePicker(
+                        "Morning Recipe",
+                        selection: $viewModel.notificationPreferences.morningRecipeTime,
+                        displayedComponents: .hourAndMinute
+                    )
+
+                    DatePicker(
+                        "Shopping Reminder",
+                        selection: $viewModel.notificationPreferences.shoppingListTime,
+                        displayedComponents: .hourAndMinute
+                    )
+
+                    DatePicker(
+                        "Cooking Reminder",
+                        selection: $viewModel.notificationPreferences.cookingReminderTime,
+                        displayedComponents: .hourAndMinute
+                    )
                 }
             }
-            .navigationTitle("Settings")
-            .alert("Reset App?", isPresented: $showResetAlert) {
-                Button("Cancel", role: .cancel) {}
-                Button("Reset", role: .destructive) {
-                    viewModel.resetOnboarding()
+
+            Section {
+                Button("Reset & Show Onboarding") {
+                    showResetAlert = true
                 }
-            } message: {
-                Text("This will clear all your preferences and show the onboarding flow again.")
+                .foregroundStyle(.red)
             }
-            .overlay(alignment: .bottom) {
-                if showSavedToast {
-                    Text("Settings saved!")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(.green)
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .padding(.bottom, 20)
-                }
+        }
+        .navigationTitle("Settings")
+        .alert("Reset App?", isPresented: $showResetAlert) {
+            Button("Cancel", role: .cancel) {}
+            Button("Reset", role: .destructive) {
+                viewModel.resetOnboarding()
             }
-            .animation(.easeInOut, value: showSavedToast)
+        } message: {
+            Text("This will clear all your preferences and show the onboarding flow again.")
         }
     }
 }

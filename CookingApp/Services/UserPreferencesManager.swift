@@ -1,5 +1,25 @@
 import Foundation
 
+enum MeasurementPreference: String, Codable, CaseIterable {
+    case system, metric, imperial
+
+    var displayName: String {
+        switch self {
+        case .system: return "System Default"
+        case .metric: return "Metric"
+        case .imperial: return "Imperial"
+        }
+    }
+
+    var usesMetric: Bool {
+        switch self {
+        case .metric: return true
+        case .imperial: return false
+        case .system: return Locale.current.measurementSystem != .us
+        }
+    }
+}
+
 final class UserPreferencesManager: ObservableObject {
     static let shared = UserPreferencesManager()
 
@@ -10,6 +30,7 @@ final class UserPreferencesManager: ObservableObject {
         static let dietaryProfile = "dietaryProfile"
         static let notificationPreferences = "notificationPreferences"
         static let deviceId = "deviceId"
+        static let measurementPreference = "measurementPreference"
     }
 
     @Published var hasCompletedOnboarding: Bool {
@@ -22,6 +43,10 @@ final class UserPreferencesManager: ObservableObject {
 
     @Published var notificationPreferences: NotificationPreferences {
         didSet { saveCodable(notificationPreferences, forKey: Keys.notificationPreferences) }
+    }
+
+    @Published var measurementPreference: MeasurementPreference {
+        didSet { saveCodable(measurementPreference, forKey: Keys.measurementPreference) }
     }
 
     var deviceId: String {
@@ -37,6 +62,7 @@ final class UserPreferencesManager: ObservableObject {
         self.hasCompletedOnboarding = defaults.bool(forKey: Keys.hasCompletedOnboarding)
         self.dietaryProfile = Self.loadCodable(forKey: Keys.dietaryProfile) ?? .empty
         self.notificationPreferences = Self.loadCodable(forKey: Keys.notificationPreferences) ?? .default
+        self.measurementPreference = Self.loadCodable(forKey: Keys.measurementPreference) ?? .system
     }
 
     private func saveCodable<T: Codable>(_ value: T, forKey key: String) {

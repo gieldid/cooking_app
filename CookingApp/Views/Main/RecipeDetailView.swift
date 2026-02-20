@@ -2,13 +2,9 @@ import SwiftUI
 
 struct RecipeDetailView: View {
     let recipe: Recipe
-    @State private var servingsMultiplier: Int
+    @Binding var servingsMultiplier: Int
     @State private var completedSteps: Set<Int> = []
-
-    init(recipe: Recipe) {
-        self.recipe = recipe
-        self._servingsMultiplier = State(initialValue: recipe.servings)
-    }
+    @ObservedObject private var prefs = UserPreferencesManager.shared
 
     var body: some View {
         ScrollView {
@@ -70,16 +66,17 @@ struct RecipeDetailView: View {
                             .fontWeight(.bold)
 
                         ForEach(recipe.ingredients) { ingredient in
+                            let disp = displayIngredient(ingredient)
                             HStack(spacing: 12) {
                                 Circle()
                                     .fill(Color.accentColor)
                                     .frame(width: 6, height: 6)
 
-                                Text(scaledAmount(ingredient.amount))
+                                Text(disp.amount)
                                     .fontWeight(.semibold)
                                     .frame(width: 60, alignment: .leading)
 
-                                Text("\(ingredient.unit) \(ingredient.name)")
+                                Text("\(disp.unit) \(ingredient.name)")
                             }
                             .font(.body)
                         }
@@ -114,13 +111,14 @@ struct RecipeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func scaledAmount(_ amount: String) -> String {
-        guard let value = Double(amount), recipe.servings > 0 else { return amount }
-        let scaled = value * Double(servingsMultiplier) / Double(recipe.servings)
-        if scaled == scaled.rounded() {
-            return String(format: "%.0f", scaled)
-        }
-        return String(format: "%.1f", scaled)
+    private func displayIngredient(_ ingredient: Ingredient) -> (amount: String, unit: String) {
+        let factor = recipe.servings > 0 ? Double(servingsMultiplier) / Double(recipe.servings) : 1.0
+        return MeasurementConverter.display(
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+            scaleFactor: factor,
+            preference: prefs.measurementPreference
+        )
     }
 
     private var imagePlaceholder: some View {

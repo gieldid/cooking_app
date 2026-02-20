@@ -6,6 +6,7 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var allFilteredRecipes: [Recipe] = []
+    @Published var servingsMultiplier: Int = 1
 
     private let firestoreService = FirestoreService.shared
     private let prefs = UserPreferencesManager.shared
@@ -27,6 +28,7 @@ final class HomeViewModel: ObservableObject {
                 // Pick a recipe based on the day — deterministic per day
                 let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
                 todayRecipe = recipes[dayIndex % recipes.count]
+                servingsMultiplier = todayRecipe?.servings ?? 1
 
                 // Update notifications with recipe name
                 NotificationService.shared.scheduleAllNotifications(
@@ -46,6 +48,7 @@ final class HomeViewModel: ObservableObject {
         var filtered = allFilteredRecipes.filter { $0.id != current.id }
         if filtered.isEmpty { filtered = allFilteredRecipes }
         todayRecipe = filtered.randomElement()
+        servingsMultiplier = todayRecipe?.servings ?? 1
 
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,

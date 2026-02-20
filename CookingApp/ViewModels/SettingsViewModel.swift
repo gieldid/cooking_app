@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 @MainActor
 final class SettingsViewModel: ObservableObject {
@@ -7,11 +8,21 @@ final class SettingsViewModel: ObservableObject {
     @Published var notificationPreferences: NotificationPreferences
 
     private let prefs = UserPreferencesManager.shared
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
         self.selectedAllergies = prefs.dietaryProfile.selectedAllergies
         self.selectedDiets = prefs.dietaryProfile.selectedDiets
         self.notificationPreferences = prefs.notificationPreferences
+
+        Publishers.CombineLatest3($selectedAllergies, $selectedDiets, $notificationPreferences)
+            .dropFirst()
+            .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                Task { @MainActor [weak self] in await self?.save() }
+            }
+            .store(in: &cancellables)
     }
 
     func toggleAllergy(_ allergy: Allergy) {

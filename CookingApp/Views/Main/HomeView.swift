@@ -1,68 +1,66 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                if viewModel.isLoading {
-                    VStack(spacing: 16) {
-                        Spacer(minLength: 100)
-                        ProgressView()
-                            .scaleEffect(1.5)
-                        Text("Finding your perfect recipe...")
-                            .foregroundStyle(.secondary)
-                    }
-                } else if let recipe = viewModel.todayRecipe {
-                    VStack(spacing: 20) {
-                        RecipeCard(recipe: recipe)
+        ScrollView {
+            if viewModel.isLoading {
+                VStack(spacing: 16) {
+                    Spacer(minLength: 100)
+                    ProgressView()
+                        .scaleEffect(1.5)
+                    Text("Finding your perfect recipe...")
+                        .foregroundStyle(.secondary)
+                }
+            } else if let recipe = viewModel.todayRecipe {
+                VStack(spacing: 20) {
+                    RecipeCard(recipe: recipe)
 
-                        HStack(spacing: 16) {
-                            Button {
-                                viewModel.skipRecipe()
-                            } label: {
-                                Label("Skip", systemImage: "forward.fill")
-                                    .font(.headline)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color(.systemGray6))
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                            }
-                            .tint(.primary)
+                    HStack(spacing: 16) {
+                        Button {
+                            viewModel.skipRecipe()
+                        } label: {
+                            Label("Skip", systemImage: "forward.fill")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        .tint(.primary)
 
-                            NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
-                                Label("Let's Cook!", systemImage: "flame.fill")
-                                    .font(.headline)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color.accentColor)
-                                    .foregroundColor(.white)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                            }
+                        NavigationLink(destination: RecipeDetailView(recipe: recipe, servingsMultiplier: $viewModel.servingsMultiplier)) {
+                            Label("Let's Cook!", systemImage: "flame.fill")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.accentColor)
+                                .foregroundColor(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                     }
-                    .padding(.horizontal)
-                } else if let error = viewModel.errorMessage {
-                    VStack(spacing: 16) {
-                        Spacer(minLength: 100)
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.secondary)
-                        Text(error)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 32)
-                    }
+                }
+                .padding(.horizontal)
+            } else if let error = viewModel.errorMessage {
+                VStack(spacing: 16) {
+                    Spacer(minLength: 100)
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 48))
+                        .foregroundStyle(.secondary)
+                    Text(error)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
                 }
             }
-            .navigationTitle("Today's Recipe")
-            .refreshable {
-                await viewModel.loadTodayRecipe()
-            }
-            .task {
-                await viewModel.loadTodayRecipe()
-            }
+        }
+        .navigationTitle("Today's Recipe")
+        .refreshable {
+            await viewModel.loadTodayRecipe()
+        }
+        .task {
+            await viewModel.loadTodayRecipe()
         }
     }
 }

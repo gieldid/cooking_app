@@ -1,83 +1,93 @@
 import SwiftUI
 
 struct ShoppingListView: View {
-    @StateObject private var homeViewModel = HomeViewModel()
+    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject private var prefs = UserPreferencesManager.shared
     @State private var checkedItems: Set<String> = []
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if homeViewModel.isLoading {
-                    VStack(spacing: 16) {
-                        ProgressView()
-                        Text("Loading shopping list...")
-                            .foregroundStyle(.secondary)
-                    }
-                } else if let recipe = homeViewModel.todayRecipe {
-                    List {
-                        Section {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(recipe.title)
-                                        .font(.headline)
-                                    Text("\(recipe.ingredients.count) ingredients")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                                Spacer()
-                                Text("\(checkedItems.count)/\(recipe.ingredients.count)")
-                                    .font(.subheadline)
+        Group {
+            if homeViewModel.isLoading {
+                VStack(spacing: 16) {
+                    ProgressView()
+                    Text("Loading shopping list...")
+                        .foregroundStyle(.secondary)
+                }
+            } else if let recipe = homeViewModel.todayRecipe {
+                List {
+                    Section {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(recipe.title)
+                                    .font(.headline)
+                                Text("\(recipe.ingredients.count) ingredients")
+                                    .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
+                            Spacer()
+                            Text("\(checkedItems.count)/\(recipe.ingredients.count)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
                         }
-
-                        Section("Ingredients") {
-                            ForEach(recipe.ingredients) { ingredient in
-                                ShoppingListRow(
-                                    ingredient: ingredient,
-                                    isChecked: checkedItems.contains(ingredient.id)
-                                ) {
-                                    if checkedItems.contains(ingredient.id) {
-                                        checkedItems.remove(ingredient.id)
-                                    } else {
-                                        checkedItems.insert(ingredient.id)
-                                    }
-                                }
-                            }
-                        }
-
-                        if !checkedItems.isEmpty {
-                            Section {
-                                Button("Uncheck All") {
-                                    checkedItems.removeAll()
-                                }
-                                .foregroundStyle(.red)
-                            }
+                        HStack {
+                            Text("Servings")
+                            Spacer()
+                            Stepper("\(homeViewModel.servingsMultiplier)", value: $homeViewModel.servingsMultiplier, in: 1...20)
                         }
                     }
-                } else {
-                    VStack(spacing: 16) {
-                        Image(systemName: "cart")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.secondary)
-                        Text("No recipe selected yet.")
-                            .foregroundStyle(.secondary)
-                        Text("Check the Today tab for today's recipe.")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
+
+                    Section("Ingredients") {
+                        ForEach(recipe.ingredients) { ingredient in
+                            let disp = displayIngredient(ingredient, recipe: recipe)
+                            ShoppingListRow(
+                                ingredient: ingredient,
+                                amount: disp.amount,
+                                unit: disp.unit,
+                                isChecked: checkedItems.contains(ingredient.id)
+                            ) {
+                                if checkedItems.contains(ingredient.id) {
+                                    checkedItems.remove(ingredient.id)
+                                } else {
+                                    checkedItems.insert(ingredient.id)
+                                }
+                            }
+                        }
                     }
                 }
-            }
-            .navigationTitle("Shopping List")
-            .task {
-                await homeViewModel.loadTodayRecipe()
+            } else {
+                VStack(spacing: 16) {
+                    Image(systemName: "cart")
+                        .font(.system(size: 48))
+                        .foregroundStyle(.secondary)
+                    Text("No recipe selected yet.")
+                        .foregroundStyle(.secondary)
+                    Text("Check the Today tab for today's recipe.")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
             }
         }
+        .navigationTitle("Shopping List")
+        .task {
+            await homeViewModel.loadTodayRecipe()
+        }
+    }
+
+    private func displayIngredient(_ ingredient: Ingredient, recipe: Recipe) -> (amount: String, unit: String) {
+        let factor = recipe.servings > 0 ? Double(homeViewModel.servingsMultiplier) / Double(recipe.servings) : 1.0
+        return MeasurementConverter.display(
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+            scaleFactor: factor,
+            preference: prefs.measurementPreference
+        )
     }
 }
 
 private struct ShoppingListRow: View {
     let ingredient: Ingredient
+    let amount: String
+    let unit: String
     let isChecked: Bool
     let onToggle: () -> Void
 
@@ -94,7 +104,7 @@ private struct ShoppingListRow: View {
                         .strikethrough(isChecked)
                         .foregroundStyle(isChecked ? .secondary : .primary)
 
-                    Text("\(ingredient.amount) \(ingredient.unit)")
+                    Text("\(amount) \(unit)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
