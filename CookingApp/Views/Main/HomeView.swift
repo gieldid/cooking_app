@@ -159,6 +159,6 @@ private struct RecipeCard: View {
     private var recipePlaceholder: some View {
         Image("EmptyImage")
             .resizable()
-            .scaledToFill()
+            .scaledToFit()
     }
 }
