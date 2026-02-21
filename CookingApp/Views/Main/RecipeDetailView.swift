@@ -22,10 +22,11 @@ struct RecipeDetailView: View {
                         }
                     }
                     .frame(height: 250)
-                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 } else {
                     imagePlaceholder
                         .frame(height: 250)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
 
                 VStack(alignment: .leading, spacing: 20) {
