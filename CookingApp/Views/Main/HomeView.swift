@@ -157,12 +157,8 @@ private struct RecipeCard: View {
     }
 
     private var recipePlaceholder: some View {
-        ZStack {
-            Color(.systemGray5)
-            Image("EmptyImage")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 120, height: 120)
-        }
+        Image("EmptyImage")
+            .resizable()
+            .scaledToFill()
     }
 }
