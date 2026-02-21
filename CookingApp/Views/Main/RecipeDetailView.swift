@@ -124,9 +124,10 @@ struct RecipeDetailView: View {
     private var imagePlaceholder: some View {
         ZStack {
             Color(.systemGray5)
-            Image(systemName: "fork.knife")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
+            Image("LoadingImage")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 140, height: 140)
         }
     }
 }

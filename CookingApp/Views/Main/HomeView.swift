@@ -159,9 +159,10 @@ private struct RecipeCard: View {
     private var recipePlaceholder: some View {
         ZStack {
             Color(.systemGray5)
-            Image(systemName: "fork.knife")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
+            Image("EmptyImage")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
         }
     }
 }
