@@ -6,13 +6,7 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             if viewModel.isLoading {
-                VStack(spacing: 16) {
-                    Spacer(minLength: 100)
-                    ProgressView()
-                        .scaleEffect(1.5)
-                    Text("Finding your perfect recipe...")
-                        .foregroundStyle(.secondary)
-                }
+                LoadingView()
             } else if let recipe = viewModel.todayRecipe {
                 VStack(spacing: 20) {
                     RecipeCard(recipe: recipe, servings: viewModel.servingsMultiplier)
@@ -45,9 +39,10 @@ struct HomeView: View {
             } else if let error = viewModel.errorMessage {
                 VStack(spacing: 16) {
                     Spacer(minLength: 100)
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.secondary)
+                    Image("ErrorImage")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 160, height: 160)
                     Text(error)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -66,6 +61,28 @@ struct HomeView: View {
         }
         .task {
             await viewModel.loadTodayRecipe()
+        }
+    }
+}
+
+private struct LoadingView: View {
+    @State private var isAnimating = false
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Spacer(minLength: 80)
+            Image("LoadingImage")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 180, height: 180)
+                .scaleEffect(isAnimating ? 1.08 : 1.0)
+                .animation(
+                    .easeInOut(duration: 0.9).repeatForever(autoreverses: true),
+                    value: isAnimating
+                )
+                .onAppear { isAnimating = true }
+            Text("Finding your perfect recipe...")
+                .foregroundStyle(.secondary)
         }
     }
 }

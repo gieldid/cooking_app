@@ -56,9 +56,10 @@ struct ShoppingListView: View {
                 }
             } else if let error = homeViewModel.errorMessage {
                 VStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.secondary)
+                    Image("ErrorImage")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 160, height: 160)
                     Text(error)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -70,9 +71,10 @@ struct ShoppingListView: View {
                 }
             } else {
                 VStack(spacing: 16) {
-                    Image(systemName: "cart")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.secondary)
+                    Image("EmptyImage")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 160, height: 160)
                     Text("No recipe selected yet.")
                         .foregroundStyle(.secondary)
                     Text("Check the Today tab for today's recipe.")
