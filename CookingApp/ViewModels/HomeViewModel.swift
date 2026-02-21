@@ -14,6 +14,16 @@ final class HomeViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init() {
+        // Reload whenever the dietary profile is saved from Settings
+        prefs.$dietaryProfile
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                Task { await self.loadTodayRecipe() }
+            }
+            .store(in: &cancellables)
+
         prefs.$defaultServings
             .dropFirst()
             .receive(on: RunLoop.main)
@@ -25,8 +35,10 @@ final class HomeViewModel: ObservableObject {
     }
 
     func loadTodayRecipe() async {
+        guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
+        defer { isLoading = false }
 
         do {
             let recipes = try await firestoreService.fetchFilteredRecipes(
@@ -52,11 +64,11 @@ final class HomeViewModel: ObservableObject {
                     recipeName: todayRecipe?.title
                 )
             }
+        } catch is CancellationError {
+            // Task was cancelled (view disappeared) — don't show an error
         } catch {
             errorMessage = String(localized: "error.load_failed")
         }
-
-        isLoading = false
     }
 
     private func initialServings(for recipe: Recipe) -> Int {
