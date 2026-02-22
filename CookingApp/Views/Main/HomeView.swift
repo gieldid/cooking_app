@@ -124,8 +124,10 @@ private struct RecipeCard: View {
                     .lineLimit(3)
 
                 HStack(spacing: 16) {
-                    Label("\(recipe.prepTime + recipe.cookTime) min", systemImage: "clock")
-                    Label("\(servings) servings", systemImage: "person.2")
+                    let timeLabel = "\(recipe.prepTime + recipe.cookTime) min"
+                    let servingsLabel = "\(servings) servings"
+                    Label(timeLabel, systemImage: "clock")
+                    Label(servingsLabel, systemImage: "person.2")
                 }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)

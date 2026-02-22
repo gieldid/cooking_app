@@ -20,19 +20,19 @@ struct ShoppingListView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(recipe.title)
                                     .font(.headline)
-                                Text("\(recipe.ingredients.count) ingredients")
+                                Text(verbatim: "\(recipe.ingredients.count) ingredients")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
                             Spacer()
-                            Text("\(checkedItems.count)/\(recipe.ingredients.count)")
+                            Text(verbatim: "\(checkedItems.count)/\(recipe.ingredients.count)")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
                         HStack {
                             Text("Servings")
                             Spacer()
-                            Stepper("\(homeViewModel.servingsMultiplier)", value: $homeViewModel.servingsMultiplier, in: 1...20)
+                            Stepper(String(homeViewModel.servingsMultiplier), value: $homeViewModel.servingsMultiplier, in: 1...20)
                         }
                     }
 

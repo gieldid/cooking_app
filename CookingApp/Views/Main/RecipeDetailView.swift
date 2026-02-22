@@ -55,7 +55,7 @@ struct RecipeDetailView: View {
                         Text("Servings")
                             .font(.headline)
                         Spacer()
-                        Stepper("\(servingsMultiplier)", value: $servingsMultiplier, in: 1...20)
+                        Stepper(String(servingsMultiplier), value: $servingsMultiplier, in: 1...20)
                     }
 
                     Divider()
@@ -131,7 +131,7 @@ struct RecipeDetailView: View {
 
 private struct InfoBadge: View {
     let icon: String
-    let text: LocalizedStringKey
+    let text: String
 
     var body: some View {
         HStack(spacing: 4) {

@@ -101,13 +101,10 @@ struct SettingsView: View {
                     }
                 }
 
-                Stepper(
-                    prefs.defaultServings == 0
-                        ? "Default Servings: Recipe Default"
-                        : "Default Servings: \(prefs.defaultServings)",
-                    value: $prefs.defaultServings,
-                    in: 0...20
-                )
+                let stepperLabel = prefs.defaultServings == 0
+                    ? "Default Servings: Recipe Default"
+                    : "Default Servings: \(prefs.defaultServings)"
+                Stepper(stepperLabel, value: $prefs.defaultServings, in: 0...20)
             }
 
             Section("Units") {
