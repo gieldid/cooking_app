@@ -57,6 +57,28 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.borderless)
                 .padding(.vertical, 4)
+
+                DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
+                    ForEach(orderedWeekdays, id: \.self) { weekday in
+                        NavigationLink {
+                            DayPreferencesView(
+                                weekday: weekday,
+                                dayName: weekdayName(weekday),
+                                viewModel: viewModel
+                            )
+                        } label: {
+                            HStack {
+                                Text(weekdayName(weekday))
+                                Spacer()
+                                if viewModel.perDayOverrides[weekday] != nil {
+                                    Text("Custom")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             Section("Recipe Preferences") {
@@ -139,33 +161,7 @@ struct SettingsView: View {
                 .foregroundStyle(.secondary)
             }
 
-            Section {
-                DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
-                    ForEach(orderedWeekdays, id: \.self) { weekday in
-                        NavigationLink {
-                            DayPreferencesView(
-                                weekday: weekday,
-                                dayName: weekdayName(weekday),
-                                viewModel: viewModel
-                            )
-                        } label: {
-                            HStack {
-                                Text(weekdayName(weekday))
-                                Spacer()
-                                if viewModel.perDayOverrides[weekday] != nil {
-                                    Text("Custom")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-                        }
-                    }
-                }
-            } header: {
-                Text("Advanced")
-            }
-
-            Section("Legal") {
+Section("Legal") {
                 Link("Privacy Policy", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
                 Link("GDPR", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
                 Link("Terms of Service", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)

@@ -15,7 +15,7 @@ enum MeasurementPreference: String, Codable, CaseIterable {
         switch self {
         case .metric: return true
         case .imperial: return false
-        case .system: return Locale.current.measurementSystem != .us
+        case .system: return Locale.current.usesMetricSystem
         }
     }
 }
