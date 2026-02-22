@@ -165,6 +165,12 @@ struct SettingsView: View {
                 Text("Advanced")
             }
 
+            Section("Legal") {
+                Link("Privacy Policy", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
+                Link("GDPR", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
+                Link("Terms of Service", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
+            }
+
             Section {
                 Button("Reset & Show Onboarding") {
                     showResetAlert = true
