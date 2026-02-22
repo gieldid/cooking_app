@@ -121,7 +121,7 @@ private struct ShoppingListRow: View {
                         .strikethrough(isChecked)
                         .foregroundStyle(isChecked ? .secondary : .primary)
 
-                    Text("\(amount) \(unit)")
+                    Text(verbatim: "\(amount) \(unit)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

@@ -77,7 +77,7 @@ struct RecipeDetailView: View {
                                     .fontWeight(.semibold)
                                     .frame(width: 60, alignment: .leading)
 
-                                Text("\(disp.unit) \(ingredient.name)")
+                                Text(verbatim: "\(disp.unit) \(ingredient.name)")
                             }
                             .font(.body)
                         }

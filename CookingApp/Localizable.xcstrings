@@ -4,16 +4,6 @@
     "" : {
 
     },
-    "%@ %@" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einkaufen" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Shopping" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Courses" } },
-        "it" : { "stringUnit" : { "state" : "translated", "value" : "Spesa" } },
-        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Boodschappen" } }
-      }
-    },
-
     "Settings" : {
       "extractionState" : "manual",
       "localizations" : {
