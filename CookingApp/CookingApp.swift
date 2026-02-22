@@ -1,11 +1,13 @@
 import SwiftUI
 import FirebaseCore
 import UserNotifications
+import RevenueCat
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        Purchases.configure(withAPIKey: "test_JpTsHlZQQNzOzvFeXCisaVjWcIw")
         UNUserNotificationCenter.current().delegate = self
         return true
     }

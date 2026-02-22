@@ -32,7 +32,10 @@
 		A10022 /* MeasurementConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023 /* MeasurementConverter.swift */; };
 		A10023 /* RecipePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024 /* RecipePreferencesView.swift */; };
 		A10024 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B10025 /* Localizable.xcstrings */; };
+		A10025 /* RevenueCatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026 /* RevenueCatService.swift */; };
+		A10026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* PaywallView.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
+		A10031 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D10002 /* RevenueCat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,8 @@
 		B10023 /* MeasurementConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementConverter.swift; sourceTree = "<group>"; };
 		B10024 /* RecipePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePreferencesView.swift; sourceTree = "<group>"; };
 		B10025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B10026 /* RevenueCatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatService.swift; sourceTree = "<group>"; };
+		B10027 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -71,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10030 /* FirebaseFirestore in Frameworks */,
+				A10031 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +148,7 @@
 				B10012 /* RecipeDetailView.swift */,
 				B10013 /* ShoppingListView.swift */,
 				B10014 /* SettingsView.swift */,
+				B10027 /* PaywallView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 				B10018 /* UserPreferencesManager.swift */,
 				B10019 /* FirestoreService.swift */,
 				B10020 /* NotificationService.swift */,
+				B10026 /* RevenueCatService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -200,6 +208,7 @@
 			name = CookingApp;
 			packageProductDependencies = (
 				D10001 /* FirebaseFirestore */,
+				D10002 /* RevenueCat */,
 			);
 			productName = CookingApp;
 			productReference = C10001 /* CookingApp.app */;
@@ -235,6 +244,7 @@
 			mainGroup = G10001;
 			packageReferences = (
 				R10001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				R10002 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			productRefGroup = G10010 /* Products */;
 			projectDirPath = "";
@@ -285,6 +295,8 @@
 				A10020 /* NotificationService.swift in Sources */,
 				A10022 /* MeasurementConverter.swift in Sources */,
 				A10023 /* RecipePreferencesView.swift in Sources */,
+				A10025 /* RevenueCatService.swift in Sources */,
+				A10026 /* PaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +512,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		R10002 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -507,6 +527,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = R10001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		D10002 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R10002 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

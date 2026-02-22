@@ -3,7 +3,9 @@ import SwiftUI
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @ObservedObject private var prefs = UserPreferencesManager.shared
+    @ObservedObject private var rcService = RevenueCatService.shared
     @State private var showResetAlert = false
+    @State private var showPaywall = false
 
     let allergyColumns = [GridItem(.flexible()), GridItem(.flexible())]
     let dietColumns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -103,6 +105,24 @@ struct SettingsView: View {
                 }
             }
 
+            Section("Subscription") {
+                if rcService.isPremium {
+                    Label("Premium Active", systemImage: "checkmark.seal.fill")
+                        .foregroundStyle(.green)
+                } else {
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        Label("Upgrade to Premium", systemImage: "sparkles")
+                            .foregroundStyle(.accent)
+                    }
+                }
+                Button("Restore Purchases") {
+                    Task { try? await rcService.restorePurchases() }
+                }
+                .foregroundStyle(.secondary)
+            }
+
             Section {
                 Button("Reset & Show Onboarding") {
                     showResetAlert = true
@@ -111,6 +131,9 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings")
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+        }
         .alert("Reset App?", isPresented: $showResetAlert) {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
