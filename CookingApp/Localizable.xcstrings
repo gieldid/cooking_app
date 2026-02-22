@@ -575,25 +575,6 @@
       }
     },
 
-    "%lld servings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : { "stringUnit" : { "state" : "translated", "value" : "%lld Portion" } },
-              "other" : { "stringUnit" : { "state" : "translated", "value" : "%lld Portionen" } }
-            }
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@"
-          }
-        }
-      }
-    },
     "%lld" : {
 
     },
