@@ -37,10 +37,10 @@ struct OnboardingContainerView: View {
         .onAppear {
             AnalyticsService.shared.trackOnboardingStepViewed(step: 0)
         }
-        .onChange(of: viewModel.currentPage) { _, newPage in
+        .onChange(of: viewModel.currentPage) { newPage in
             AnalyticsService.shared.trackOnboardingStepViewed(step: newPage)
         }
-        .onChange(of: scenePhase) { _, newPhase in
+        .onChange(of: scenePhase) { newPhase in
             if newPhase == .background {
                 AnalyticsService.shared.trackOnboardingAbandoned(atStep: viewModel.currentPage)
             }
