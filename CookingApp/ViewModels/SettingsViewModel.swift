@@ -8,6 +8,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var preferredDifficulties: Set<Difficulty>
     @Published var maxDuration: MaxDuration
     @Published var notificationPreferences: NotificationPreferences
+    @Published var perDayOverrides: [Int: DayOverride]
 
     private let prefs = UserPreferencesManager.shared
     private var cancellables = Set<AnyCancellable>()
@@ -18,10 +19,14 @@ final class SettingsViewModel: ObservableObject {
         self.preferredDifficulties = prefs.dietaryProfile.preferredDifficulties
         self.maxDuration = prefs.dietaryProfile.maxDuration
         self.notificationPreferences = prefs.notificationPreferences
+        self.perDayOverrides = prefs.dietaryProfile.perDayOverrides
 
         Publishers.CombineLatest(
-            Publishers.CombineLatest3($selectedAllergies, $selectedDiets, $notificationPreferences),
-            Publishers.CombineLatest($preferredDifficulties, $maxDuration)
+            Publishers.CombineLatest(
+                Publishers.CombineLatest3($selectedAllergies, $selectedDiets, $notificationPreferences),
+                Publishers.CombineLatest($preferredDifficulties, $maxDuration)
+            ),
+            $perDayOverrides
         )
         .dropFirst()
         .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
@@ -56,12 +61,33 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
+    func togglePerDayDifficulty(weekday: Int, difficulty: Difficulty) {
+        var override = perDayOverrides[weekday] ?? DayOverride(difficulties: preferredDifficulties, maxDuration: maxDuration)
+        if override.difficulties.contains(difficulty) {
+            override.difficulties.remove(difficulty)
+        } else {
+            override.difficulties.insert(difficulty)
+        }
+        perDayOverrides[weekday] = override
+    }
+
+    func setPerDayDuration(weekday: Int, duration: MaxDuration) {
+        var override = perDayOverrides[weekday] ?? DayOverride(difficulties: preferredDifficulties, maxDuration: maxDuration)
+        override.maxDuration = duration
+        perDayOverrides[weekday] = override
+    }
+
+    func clearPerDayOverride(weekday: Int) {
+        perDayOverrides.removeValue(forKey: weekday)
+    }
+
     func save() async {
         let profile = DietaryProfile(
             selectedAllergies: selectedAllergies,
             selectedDiets: selectedDiets,
             preferredDifficulties: preferredDifficulties,
-            maxDuration: maxDuration
+            maxDuration: maxDuration,
+            perDayOverrides: perDayOverrides
         )
 
         prefs.dietaryProfile = profile

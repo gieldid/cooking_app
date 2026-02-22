@@ -79,6 +79,7 @@ final class OnboardingViewModel: ObservableObject {
         // Push dietary profile anonymously to Firestore
         try? await FirestoreService.shared.pushDietaryProfile(profile, deviceId: prefs.deviceId)
 
+        AnalyticsService.shared.trackOnboardingCompleted()
         prefs.hasCompletedOnboarding = true
     }
 }

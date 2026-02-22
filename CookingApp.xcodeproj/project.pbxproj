@@ -35,8 +35,10 @@
 		A10025 /* RevenueCatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026 /* RevenueCatService.swift */; };
 		A10026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* PaywallView.swift */; };
 		A10027 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028 /* SubscriptionView.swift */; };
+		A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* AnalyticsService.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 		A10031 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D10002 /* RevenueCat */; };
+		A10032 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D10003 /* FirebaseAnalytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +71,7 @@
 		B10026 /* RevenueCatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatService.swift; sourceTree = "<group>"; };
 		B10027 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		B10028 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
+		B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -79,6 +82,7 @@
 			files = (
 				A10030 /* FirebaseFirestore in Frameworks */,
 				A10031 /* RevenueCat in Frameworks */,
+				A10032 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +177,7 @@
 				B10019 /* FirestoreService.swift */,
 				B10020 /* NotificationService.swift */,
 				B10026 /* RevenueCatService.swift */,
+				B10029 /* AnalyticsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -212,6 +217,7 @@
 			packageProductDependencies = (
 				D10001 /* FirebaseFirestore */,
 				D10002 /* RevenueCat */,
+				D10003 /* FirebaseAnalytics */,
 			);
 			productName = CookingApp;
 			productReference = C10001 /* CookingApp.app */;
@@ -301,6 +307,7 @@
 				A10025 /* RevenueCatService.swift in Sources */,
 				A10026 /* PaywallView.swift in Sources */,
 				A10027 /* SubscriptionView.swift in Sources */,
+				A10028 /* AnalyticsService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +543,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = R10002 /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCat;
+		};
+		D10003 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R10001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

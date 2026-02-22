@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingContainerView: View {
     @StateObject private var viewModel = OnboardingViewModel()
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         VStack(spacing: 0) {
@@ -32,6 +33,17 @@ struct OnboardingContainerView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut, value: viewModel.currentPage)
+        }
+        .onAppear {
+            AnalyticsService.shared.trackOnboardingStepViewed(step: 0)
+        }
+        .onChange(of: viewModel.currentPage) { _, newPage in
+            AnalyticsService.shared.trackOnboardingStepViewed(step: newPage)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .background {
+                AnalyticsService.shared.trackOnboardingAbandoned(atStep: viewModel.currentPage)
+            }
         }
     }
 }

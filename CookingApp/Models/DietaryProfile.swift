@@ -33,7 +33,7 @@ enum Allergy: String, Codable, CaseIterable, Identifiable {
 }
 
 enum Diet: String, Codable, CaseIterable, Identifiable {
-    case vegetarian, vegan, pescatarian, keto, glutenFree, halal, kosher, dairyFree, lowCarb
+    case vegetarian, vegan, pescatarian, keto, glutenFree, halal, kosher, dairyFree, lowCarb, highProtein
 
     var id: String { rawValue }
 
@@ -48,6 +48,7 @@ enum Diet: String, Codable, CaseIterable, Identifiable {
         case .kosher: return String(localized: "diet.kosher")
         case .dairyFree: return String(localized: "diet.dairyFree")
         case .lowCarb: return String(localized: "diet.lowCarb")
+        case .highProtein: return String(localized: "diet.highProtein")
         }
     }
 
@@ -62,6 +63,7 @@ enum Diet: String, Codable, CaseIterable, Identifiable {
         case .kosher: return "✡️"
         case .dairyFree: return "🥛"
         case .lowCarb: return "📉"
+        case .highProtein: return "💪"
         }
     }
 }
@@ -110,11 +112,19 @@ enum MaxDuration: String, Codable, CaseIterable {
     }
 }
 
+// Per-weekday overrides for difficulty and duration.
+// weekday key matches Calendar.current.component(.weekday, from:): 1=Sunday, 2=Monday … 7=Saturday.
+struct DayOverride: Codable, Equatable {
+    var difficulties: Set<Difficulty>
+    var maxDuration: MaxDuration
+}
+
 struct DietaryProfile: Codable, Equatable {
     var selectedAllergies: Set<Allergy>
     var selectedDiets: Set<Diet>
     var preferredDifficulties: Set<Difficulty>
     var maxDuration: MaxDuration
+    var perDayOverrides: [Int: DayOverride]
 
     static let empty = DietaryProfile(
         selectedAllergies: [],
@@ -127,12 +137,14 @@ struct DietaryProfile: Codable, Equatable {
         selectedAllergies: Set<Allergy>,
         selectedDiets: Set<Diet>,
         preferredDifficulties: Set<Difficulty> = [],
-        maxDuration: MaxDuration = .any
+        maxDuration: MaxDuration = .any,
+        perDayOverrides: [Int: DayOverride] = [:]
     ) {
         self.selectedAllergies = selectedAllergies
         self.selectedDiets = selectedDiets
         self.preferredDifficulties = preferredDifficulties
         self.maxDuration = maxDuration
+        self.perDayOverrides = perDayOverrides
     }
 
     // Custom decoder so existing stored data (without the new keys) still loads cleanly.
@@ -142,5 +154,6 @@ struct DietaryProfile: Codable, Equatable {
         selectedDiets = try container.decode(Set<Diet>.self, forKey: .selectedDiets)
         preferredDifficulties = try container.decodeIfPresent(Set<Difficulty>.self, forKey: .preferredDifficulties) ?? []
         maxDuration = try container.decodeIfPresent(MaxDuration.self, forKey: .maxDuration) ?? .any
+        perDayOverrides = try container.decodeIfPresent([Int: DayOverride].self, forKey: .perDayOverrides) ?? [:]
     }
 }

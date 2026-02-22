@@ -43,16 +43,21 @@ final class FirestoreService {
             }
         }
 
+        // Apply per-day overrides for difficulty and duration if configured for today.
+        let todayWeekday = Calendar.current.component(.weekday, from: Date())
+        let effectiveDifficulties = profile.perDayOverrides[todayWeekday]?.difficulties ?? profile.preferredDifficulties
+        let effectiveDuration = profile.perDayOverrides[todayWeekday]?.maxDuration ?? profile.maxDuration
+
         // Difficulty: recipe must match one of the preferred difficulties (if any selected).
         // Recipes without a difficulty field (older documents) are always included.
-        if !profile.preferredDifficulties.isEmpty, let diff = recipe.difficulty {
-            if !profile.preferredDifficulties.map({ $0.rawValue }).contains(diff) {
+        if !effectiveDifficulties.isEmpty, let diff = recipe.difficulty {
+            if !effectiveDifficulties.map({ $0.rawValue }).contains(diff) {
                 return false
             }
         }
 
         // Duration: recipe total time must be within the limit
-        if let maxMinutes = profile.maxDuration.minutes, recipe.totalTime > maxMinutes {
+        if let maxMinutes = effectiveDuration.minutes, recipe.totalTime > maxMinutes {
             return false
         }
 

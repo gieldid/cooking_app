@@ -5,10 +5,27 @@ struct SettingsView: View {
     @ObservedObject private var prefs = UserPreferencesManager.shared
     @ObservedObject private var rcService = RevenueCatService.shared
     @State private var showResetAlert = false
+    @State private var showAdvancedSettings = false
 
     let allergyColumns = [GridItem(.flexible()), GridItem(.flexible())]
     let dietColumns = [GridItem(.flexible()), GridItem(.flexible())]
     let difficultyColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+
+    // Calendar weekday order: Mon–Sun (2–7, then 1)
+    private let orderedWeekdays = [2, 3, 4, 5, 6, 7, 1]
+
+    private func weekdayName(_ weekday: Int) -> String {
+        switch weekday {
+        case 1: return "Sunday"
+        case 2: return "Monday"
+        case 3: return "Tuesday"
+        case 4: return "Wednesday"
+        case 5: return "Thursday"
+        case 6: return "Friday"
+        case 7: return "Saturday"
+        default: return ""
+        }
+    }
 
     var body: some View {
         Form {
@@ -123,6 +140,32 @@ struct SettingsView: View {
             }
 
             Section {
+                DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
+                    ForEach(orderedWeekdays, id: \.self) { weekday in
+                        NavigationLink {
+                            DayPreferencesView(
+                                weekday: weekday,
+                                dayName: weekdayName(weekday),
+                                viewModel: viewModel
+                            )
+                        } label: {
+                            HStack {
+                                Text(weekdayName(weekday))
+                                Spacer()
+                                if viewModel.perDayOverrides[weekday] != nil {
+                                    Text("Custom")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                    }
+                }
+            } header: {
+                Text("Advanced")
+            }
+
+            Section {
                 Button("Reset & Show Onboarding") {
                     showResetAlert = true
                 }
@@ -138,6 +181,66 @@ struct SettingsView: View {
         } message: {
             Text("This will clear all your preferences and show the onboarding flow again.")
         }
+    }
+}
+
+private struct DayPreferencesView: View {
+    let weekday: Int
+    let dayName: String
+    @ObservedObject var viewModel: SettingsViewModel
+
+    private let difficultyColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+
+    private var override: DayOverride? { viewModel.perDayOverrides[weekday] }
+    private var difficulties: Set<Difficulty> { override?.difficulties ?? viewModel.preferredDifficulties }
+    private var duration: MaxDuration { override?.maxDuration ?? viewModel.maxDuration }
+
+    var body: some View {
+        Form {
+            Section("Difficulty") {
+                LazyVGrid(columns: difficultyColumns, spacing: 8) {
+                    ForEach(Difficulty.allCases) { difficulty in
+                        SettingsChip(
+                            text: "\(difficulty.icon) \(difficulty.displayName)",
+                            isSelected: difficulties.contains(difficulty)
+                        ) {
+                            viewModel.togglePerDayDifficulty(weekday: weekday, difficulty: difficulty)
+                        }
+                    }
+                }
+                .buttonStyle(.borderless)
+                .padding(.vertical, 4)
+            }
+
+            Section("Max Cook Time") {
+                Picker("Max Cook Time", selection: Binding(
+                    get: { duration },
+                    set: { viewModel.setPerDayDuration(weekday: weekday, duration: $0) }
+                )) {
+                    ForEach(MaxDuration.allCases, id: \.self) { d in
+                        Text(d.displayName).tag(d)
+                    }
+                }
+            }
+
+            if override != nil {
+                Section {
+                    Button("Reset to Defaults") {
+                        viewModel.clearPerDayOverride(weekday: weekday)
+                    }
+                    .foregroundStyle(.red)
+                } footer: {
+                    Text("Removes custom settings for \(dayName) and uses your global preferences.")
+                }
+            } else {
+                Section {
+                    EmptyView()
+                } footer: {
+                    Text("Showing global defaults. Adjust any setting above to create a custom override for \(dayName).")
+                }
+            }
+        }
+        .navigationTitle(dayName)
     }
 }
 
