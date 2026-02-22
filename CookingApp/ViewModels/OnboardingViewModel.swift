@@ -10,7 +10,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var notificationPreferences: NotificationPreferences = .default
     @Published var isCompleting = false
 
-    let totalPages = 5
+    let totalPages = 6
 
     var canAdvance: Bool {
         currentPage < totalPages - 1

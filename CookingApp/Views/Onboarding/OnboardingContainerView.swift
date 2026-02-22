@@ -27,6 +27,8 @@ struct OnboardingContainerView: View {
                     .tag(3)
                 NotificationSetupView(viewModel: viewModel)
                     .tag(4)
+                SubscriptionView(viewModel: viewModel)
+                    .tag(5)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut, value: viewModel.currentPage)

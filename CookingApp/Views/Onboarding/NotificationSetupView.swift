@@ -47,36 +47,27 @@ struct NotificationSetupView: View {
             VStack(spacing: 12) {
                 Button {
                     Task {
-                        await viewModel.completeOnboarding()
+                        let granted = await NotificationService.shared.requestPermission()
+                        if !granted {
+                            viewModel.notificationPreferences.isEnabled = false
+                        }
+                        viewModel.nextPage()
                     }
                 } label: {
-                    if viewModel.isCompleting {
-                        ProgressView()
-                            .tint(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.accentColor)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                    } else {
-                        Text("Enable Notifications & Start")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.accentColor)
-                            .foregroundColor(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                    }
+                    Text("Enable Notifications & Continue")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
-                .disabled(viewModel.isCompleting)
 
                 Button("Skip Notifications") {
                     viewModel.notificationPreferences.isEnabled = false
-                    Task {
-                        await viewModel.completeOnboarding()
-                    }
+                    viewModel.nextPage()
                 }
                 .foregroundStyle(.secondary)
-                .disabled(viewModel.isCompleting)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 32)

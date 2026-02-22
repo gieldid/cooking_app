@@ -5,7 +5,6 @@ struct SettingsView: View {
     @ObservedObject private var prefs = UserPreferencesManager.shared
     @ObservedObject private var rcService = RevenueCatService.shared
     @State private var showResetAlert = false
-    @State private var showPaywall = false
 
     let allergyColumns = [GridItem(.flexible()), GridItem(.flexible())]
     let dietColumns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -106,15 +105,15 @@ struct SettingsView: View {
             }
 
             Section("Subscription") {
-                if rcService.isPremium {
-                    Label("Premium Active", systemImage: "checkmark.seal.fill")
-                        .foregroundStyle(.green)
-                } else {
-                    Button {
-                        showPaywall = true
-                    } label: {
-                        Label("Upgrade to Premium", systemImage: "sparkles")
-                            .foregroundStyle(.accent)
+                Label(
+                    rcService.isPremium ? "Premium Active" : "No Active Subscription",
+                    systemImage: rcService.isPremium ? "checkmark.seal.fill" : "xmark.seal"
+                )
+                .foregroundStyle(rcService.isPremium ? .green : .secondary)
+
+                Button("Manage Subscription") {
+                    if let url = URL(string: "itms-apps://apps.apple.com/account/subscriptions") {
+                        UIApplication.shared.open(url)
                     }
                 }
                 Button("Restore Purchases") {
@@ -131,9 +130,6 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings")
-        .sheet(isPresented: $showPaywall) {
-            PaywallView()
-        }
         .alert("Reset App?", isPresented: $showResetAlert) {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
