@@ -35,14 +35,14 @@
       }
     },
 
-    "Welcome to Cooking App" : {
+    "Welcome to Inkgredients" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Willkommen bei Cooking App" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Welcome to Cooking App" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bienvenue dans Cooking App" } },
-        "it" : { "stringUnit" : { "state" : "translated", "value" : "Benvenuto su Cooking App" } },
-        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Welkom bij Cooking App" } }
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Willkommen bei Inkgredients" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Welcome to Inkgredients" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bienvenue dans Inkgredients" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Benvenuto su Inkgredients" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Welkom bij Inkgredients" } }
       }
     },
 

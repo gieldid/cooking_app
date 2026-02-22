@@ -7,9 +7,9 @@ final class NotificationService {
     private let center = UNUserNotificationCenter.current()
 
     enum NotificationId: String, CaseIterable {
-        case morningRecipe = "com.cookingapp.morning"
-        case shoppingList = "com.cookingapp.shopping"
-        case cookingReminder = "com.cookingapp.cooking"
+        case morningRecipe = "com.inkgredients.morning"
+        case shoppingList = "com.inkgredients.shopping"
+        case cookingReminder = "com.inkgredients.cooking"
     }
 
     private init() {}

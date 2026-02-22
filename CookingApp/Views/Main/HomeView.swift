@@ -157,8 +157,9 @@ private struct RecipeCard: View {
     }
 
     private var recipePlaceholder: some View {
-        Image("EmptyImage")
+        Image("PlaceholderImage")
             .resizable()
             .scaledToFit()
+            .frame(maxWidth: .infinity)
     }
 }
