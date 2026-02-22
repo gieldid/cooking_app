@@ -6,6 +6,586 @@
     },
     "%@ %@" : {
       "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einkaufen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Shopping" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Courses" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Spesa" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Boodschappen" } }
+      }
+    },
+
+    "Settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einstellungen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Paramètres" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Impostazioni" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Instellingen" } }
+      }
+    },
+
+    "Welcome to Inkgredients" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Willkommen bei Inkgredients" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Welcome to Inkgredients" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bienvenue dans Inkgredients" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Benvenuto su Inkgredients" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Welkom bij Inkgredients" } }
+      }
+    },
+
+    "Get personalized daily recipe suggestions tailored to your dietary needs." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erhalten Sie tägliche Rezeptvorschläge, die auf Ihre Ernährungsbedürfnisse zugeschnitten sind." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Get personalized daily recipe suggestions tailored to your dietary needs." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Recevez des suggestions de recettes quotidiennes adaptées à vos besoins alimentaires." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ricevi suggerimenti di ricette quotidiane su misura per le tue esigenze alimentari." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Ontvang dagelijkse receptsuggesties op maat van uw voedingsbehoeften." } }
+      }
+    },
+
+    "Get Started" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Loslegen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Get Started" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Commencer" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Inizia" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Aan de slag" } }
+      }
+    },
+
+    "Any Allergies?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Allergien?" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Any Allergies?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Des allergies ?" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Allergie?" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Allergieën?" } }
+      }
+    },
+
+    "Select any food allergies you have. We'll filter recipes to keep you safe." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wählen Sie Ihre Lebensmittelallergien aus. Wir filtern Rezepte für Ihre Sicherheit." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select any food allergies you have. We'll filter recipes to keep you safe." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sélectionnez vos allergies alimentaires. Nous filtrerons les recettes pour votre sécurité." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Seleziona le allergie alimentari che hai. Filtreremo le ricette per tenerti al sicuro." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Selecteer voedselallergieën die u heeft. We filteren recepten om u veilig te houden." } }
+      }
+    },
+
+    "Continue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Weiter" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Continua" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Doorgaan" } }
+      }
+    },
+
+    "Skip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Überspringen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Skip" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignorer" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Salta" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Overslaan" } }
+      }
+    },
+
+    "Dietary Preferences" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ernährungsvorlieben" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dietary Preferences" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Préférences alimentaires" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Preferenze alimentari" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Voedingsvoorkeuren" } }
+      }
+    },
+
+    "Select any diets you follow. We'll suggest recipes that fit your lifestyle." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wählen Sie Ihre Ernährungsform aus. Wir schlagen Rezepte vor, die zu Ihrem Lebensstil passen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select any diets you follow. We'll suggest recipes that fit your lifestyle." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sélectionnez les régimes que vous suivez. Nous vous suggérerons des recettes adaptées à votre style de vie." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Seleziona le diete che segui. Suggeriremo ricette che si adattano al tuo stile di vita." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Selecteer diëten die u volgt. We stellen recepten voor die bij uw levensstijl passen." } }
+      }
+    },
+
+    "Recipe Preferences" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rezeptvorlieben" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recipe Preferences" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Préférences de recettes" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Preferenze ricette" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Receptvoorkeuren" } }
+      }
+    },
+
+    "Pick a difficulty and how much time you have to cook." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wählen Sie einen Schwierigkeitsgrad und wie viel Zeit Sie zum Kochen haben." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pick a difficulty and how much time you have to cook." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisissez une difficulté et le temps dont vous disposez pour cuisiner." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Scegli una difficoltà e quanto tempo hai per cucinare." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Kies een moeilijkheidsgraad en hoeveel tijd je hebt om te koken." } }
+      }
+    },
+
+    "Difficulty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schwierigkeitsgrad" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Difficulty" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Difficulté" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Difficoltà" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Moeilijkheidsgraad" } }
+      }
+    },
+
+    "Leave blank to show all difficulties." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leer lassen, um alle Schwierigkeitsgrade anzuzeigen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Leave blank to show all difficulties." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Laissez vide pour afficher toutes les difficultés." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Lascia vuoto per mostrare tutte le difficoltà." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Laat leeg om alle moeilijkheidsgraden te tonen." } }
+      }
+    },
+
+    "Max Cook Time" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Max. Kochzeit" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Max Cook Time" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Temps de cuisson max." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Tempo max di cottura" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Maximale kooktijd" } }
+      }
+    },
+
+    "Max Duration" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Maximale Dauer" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Max Duration" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Durée maximum" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Durata massima" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Maximale duur" } }
+      }
+    },
+
+    "Set Reminders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erinnerungen einrichten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Set Reminders" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Configurer des rappels" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Imposta promemoria" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Herinneringen instellen" } }
+      }
+    },
+
+    "We'll send you 3 daily notifications to help you cook more." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wir senden Ihnen 3 tägliche Benachrichtigungen, um Ihnen beim Kochen zu helfen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "We'll send you 3 daily notifications to help you cook more." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nous vous enverrons 3 notifications quotidiennes pour vous aider à cuisiner davantage." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ti invieremo 3 notifiche giornaliere per aiutarti a cucinare di più." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "We sturen je 3 dagelijkse meldingen om je te helpen meer te koken." } }
+      }
+    },
+
+    "Morning Recipe" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Morgenrezept" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Morning Recipe" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Recette du matin" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ricetta mattutina" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Ochtendrecept" } }
+      }
+    },
+
+    "See today's recipe suggestion" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Heutigen Rezeptvorschlag ansehen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "See today's recipe suggestion" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Voir la suggestion de recette du jour" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Vedi il suggerimento di ricetta di oggi" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk de receptsuggestie van vandaag" } }
+      }
+    },
+
+    "Shopping Reminder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einkaufserinnerung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Shopping Reminder" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Rappel courses" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Promemoria spesa" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Boodschappenherinnering" } }
+      }
+    },
+
+    "Time to grab ingredients" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zeit, Zutaten zu besorgen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Time to grab ingredients" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Il est temps d'acheter les ingrédients" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Tempo di prendere gli ingredienti" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tijd om ingrediënten te halen" } }
+      }
+    },
+
+    "Cooking Reminder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kocherinnerung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cooking Reminder" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Rappel de cuisson" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Promemoria cottura" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Kookherinnering" } }
+      }
+    },
+
+    "Time to start cooking" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zeit zu kochen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Time to start cooking" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "C'est l'heure de cuisiner" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Tempo di iniziare a cucinare" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tijd om te beginnen met koken" } }
+      }
+    },
+
+    "Enable Notifications & Start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigungen aktivieren & starten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Enable Notifications & Start" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activer les notifications et commencer" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Abilita notifiche e inizia" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Meldingen inschakelen en starten" } }
+      }
+    },
+
+    "Skip Notifications" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigungen überspringen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Skip Notifications" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignorer les notifications" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Salta notifiche" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Meldingen overslaan" } }
+      }
+    },
+
+    "Today's Recipe" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Rezept des Tages" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Today's Recipe" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Recette du jour" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ricetta di oggi" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Recept van vandaag" } }
+      }
+    },
+
+    "Finding your perfect recipe..." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ihr perfektes Rezept wird gesucht..." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Finding your perfect recipe..." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Recherche de votre recette parfaite..." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ricerca della tua ricetta perfetta..." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Uw perfecte recept zoeken..." } }
+      }
+    },
+
+    "Let's Cook!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Los geht's!" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Let's Cook!" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "On cuisine !" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Cuciniamo!" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Aan het koken!" } }
+      }
+    },
+
+    "Servings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Portionen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Servings" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Portions" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Porzioni" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Porties" } }
+      }
+    },
+
+    "Ingredients" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zutaten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ingredients" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ingrédients" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ingredienti" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Ingrediënten" } }
+      }
+    },
+
+    "Instructions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anleitung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Instructions" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Instructions" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Istruzioni" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bereidingswijze" } }
+      }
+    },
+
+    "Shopping List" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einkaufsliste" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Shopping List" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Liste de courses" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Lista della spesa" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Boodschappenlijst" } }
+      }
+    },
+
+    "Loading shopping list..." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einkaufsliste wird geladen..." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Loading shopping list..." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chargement de la liste de courses..." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Caricamento lista della spesa..." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Boodschappenlijst laden..." } }
+      }
+    },
+
+    "No recipe selected yet." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch kein Rezept ausgewählt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No recipe selected yet." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune recette sélectionnée." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Nessuna ricetta selezionata." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nog geen recept geselecteerd." } }
+      }
+    },
+
+    "Check the Today tab for today's recipe." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sehen Sie im Tab Heute nach dem Rezept des Tages." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Check the Today tab for today's recipe." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Consultez l'onglet Aujourd'hui pour la recette du jour." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Controlla la scheda Oggi per la ricetta di oggi." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk het tabblad Vandaag voor het recept van vandaag." } }
+      }
+    },
+
+    "Allergies" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Allergien" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Allergies" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Allergies" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Allergie" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Allergieën" } }
+      }
+    },
+
+    "Units" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einheiten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Units" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Unités" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Unità" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Eenheden" } }
+      }
+    },
+
+    "Measurement System" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Maßsystem" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Measurement System" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Système de mesure" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Sistema di misura" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Meetsysteem" } }
+      }
+    },
+
+    "Notifications" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigungen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Notifiche" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Meldingen" } }
+      }
+    },
+
+    "Enable Notifications" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigungen aktivieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Enable Notifications" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activer les notifications" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Abilita notifiche" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Meldingen inschakelen" } }
+      }
+    },
+
+    "Reset & Show Onboarding" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zurücksetzen & Einführung zeigen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reset & Show Onboarding" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réinitialiser et afficher l'introduction" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Reimposta e mostra introduzione" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Resetten en onboarding tonen" } }
+      }
+    },
+
+    "Reset App?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "App zurücksetzen?" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reset App?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réinitialiser l'app ?" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Reimpostare l'app?" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "App resetten?" } }
+      }
+    },
+
+    "Cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Annuler" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Annulla" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Annuleren" } }
+      }
+    },
+
+    "Reset" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zurücksetzen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reset" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réinitialiser" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Reimposta" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Resetten" } }
+      }
+    },
+
+    "This will clear all your preferences and show the onboarding flow again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dadurch werden alle Einstellungen gelöscht und die Einführung erneut angezeigt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This will clear all your preferences and show the onboarding flow again." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cela effacera toutes vos préférences et affichera à nouveau le flux d'introduction." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Questo cancellerà tutte le tue preferenze e mostrerà nuovamente il flusso di introduzione." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Dit wist al uw voorkeuren en toont de onboarding opnieuw." } }
+      }
+    },
+
+    "Default Servings: Recipe Default" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Standardportionen: Rezeptstandard" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Default Servings: Recipe Default" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Portions par défaut : Défaut de la recette" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Porzioni predefinite: Default ricetta" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Standaard porties: Standaard recept" } }
+      }
+    },
+
+    "Default Servings: %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Standardportionen: %lld" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Default Servings: %lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Portions par défaut : %lld" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Porzioni predefinite: %lld" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Standaard porties: %lld" } }
+      }
+    },
+
+    "%lld min" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Min." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } }
+      }
+    },
+
+    "%lldm prep" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lldm Vorb." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%lldm prep" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lldm prép." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "%lldm prep." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lldm voor." } }
+      }
+    },
+
+    "%lldm cook" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lldm Gar." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%lldm cook" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lldm cuiss." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "%lldm cott." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "%lldm kook" } }
+      }
+    },
+
+    "%lld servings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : { "stringUnit" : { "state" : "translated", "value" : "%lld Portion" } },
+              "other" : { "stringUnit" : { "state" : "translated", "value" : "%lld Portionen" } }
+            }
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",

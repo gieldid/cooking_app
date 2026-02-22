@@ -12,7 +12,7 @@ struct WelcomeView: View {
                 .foregroundStyle(.accent)
 
             VStack(spacing: 12) {
-                Text("Welcome to Cooking App")
+                Text("Welcome to Inkgredients")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
