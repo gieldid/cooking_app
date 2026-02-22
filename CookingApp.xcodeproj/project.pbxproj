@@ -61,7 +61,7 @@
 		B10022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10023 /* MeasurementConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementConverter.swift; sourceTree = "<group>"; };
 		B10024 /* RecipePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipePreferencesView.swift; sourceTree = "<group>"; };
-		B10025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = "Localizable.xcstrings"; sourceTree = "<group>"; };
+		B10025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -100,14 +100,6 @@
 				536155A42F48616C0039E32F /* GoogleService-Info.plist */,
 			);
 			path = CookingApp;
-			sourceTree = "<group>";
-		};
-		G10009 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				B10023 /* MeasurementConverter.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		G10003 /* Models */ = {
@@ -172,6 +164,14 @@
 				B10020 /* NotificationService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		G10009 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B10023 /* MeasurementConverter.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		G10010 /* Products */ = {
@@ -361,6 +361,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YGUS8DP8YV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CookingApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Cooking App";
@@ -444,6 +445,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YGUS8DP8YV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CookingApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Cooking App";
