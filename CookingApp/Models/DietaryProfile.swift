@@ -147,12 +147,15 @@ struct DietaryProfile: Codable, Equatable {
         self.perDayOverrides = perDayOverrides
     }
 
-    // Custom decoder so existing stored data (without the new keys) still loads cleanly.
+    // Custom decoder so existing stored data (without new keys, or with removed enum cases) still loads cleanly.
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        selectedAllergies = try container.decode(Set<Allergy>.self, forKey: .selectedAllergies)
-        selectedDiets = try container.decode(Set<Diet>.self, forKey: .selectedDiets)
-        preferredDifficulties = try container.decodeIfPresent(Set<Difficulty>.self, forKey: .preferredDifficulties) ?? []
+        let rawAllergies = try container.decodeIfPresent([String].self, forKey: .selectedAllergies) ?? []
+        selectedAllergies = Set(rawAllergies.compactMap { Allergy(rawValue: $0) })
+        let rawDiets = try container.decodeIfPresent([String].self, forKey: .selectedDiets) ?? []
+        selectedDiets = Set(rawDiets.compactMap { Diet(rawValue: $0) })
+        let rawDifficulties = try container.decodeIfPresent([String].self, forKey: .preferredDifficulties) ?? []
+        preferredDifficulties = Set(rawDifficulties.compactMap { Difficulty(rawValue: $0) })
         maxDuration = try container.decodeIfPresent(MaxDuration.self, forKey: .maxDuration) ?? .any
         perDayOverrides = try container.decodeIfPresent([Int: DayOverride].self, forKey: .perDayOverrides) ?? [:]
     }
