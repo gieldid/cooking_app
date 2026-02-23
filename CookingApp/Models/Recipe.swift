@@ -36,8 +36,16 @@ struct Recipe: Codable, Identifiable {
 
     var totalTime: Int { prepTime + cookTime }
 
+    private var currentLanguageCode: String? {
+        if #available(iOS 16, *) {
+            return Locale.current.language.languageCode?.identifier
+        } else {
+            return Locale.current.languageCode
+        }
+    }
+
     var localizedDescription: String {
-        switch Locale.current.languageCode {
+        switch currentLanguageCode {
         case "nl": return descriptionNl ?? description
         case "fr": return descriptionFr ?? description
         case "de": return descriptionDe ?? description
@@ -47,7 +55,7 @@ struct Recipe: Codable, Identifiable {
     }
 
     var localizedSteps: [String] {
-        switch Locale.current.languageCode {
+        switch currentLanguageCode {
         case "nl": return stepsNl ?? steps
         case "fr": return stepsFr ?? steps
         case "de": return stepsDe ?? steps
@@ -58,7 +66,7 @@ struct Recipe: Codable, Identifiable {
 
     var localizedIngredients: [Ingredient] {
         let names: [String]?
-        switch Locale.current.languageCode {
+        switch currentLanguageCode {
         case "nl": names = ingredientNamesNl
         case "fr": names = ingredientNamesFr
         case "de": names = ingredientNamesDe
