@@ -58,27 +58,6 @@ struct SettingsView: View {
                 .buttonStyle(.borderless)
                 .padding(.vertical, 4)
 
-                DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
-                    ForEach(orderedWeekdays, id: \.self) { weekday in
-                        NavigationLink {
-                            DayPreferencesView(
-                                weekday: weekday,
-                                dayName: weekdayName(weekday),
-                                viewModel: viewModel
-                            )
-                        } label: {
-                            HStack {
-                                Text(weekdayName(weekday))
-                                Spacer()
-                                if viewModel.perDayOverrides[weekday] != nil {
-                                    Text("Custom")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-                        }
-                    }
-                }
             }
 
             Section("Recipe Preferences") {
@@ -105,6 +84,28 @@ struct SettingsView: View {
                     ? "Default Servings: Recipe Default"
                     : "Default Servings: \(prefs.defaultServings)"
                 Stepper(stepperLabel, value: $prefs.defaultServings, in: 0...20)
+
+                DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
+                    ForEach(orderedWeekdays, id: \.self) { weekday in
+                        NavigationLink {
+                            DayPreferencesView(
+                                weekday: weekday,
+                                dayName: weekdayName(weekday),
+                                viewModel: viewModel
+                            )
+                        } label: {
+                            HStack {
+                                Text(weekdayName(weekday))
+                                Spacer()
+                                if viewModel.perDayOverrides[weekday] != nil {
+                                    Text("Custom")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             Section("Units") {
