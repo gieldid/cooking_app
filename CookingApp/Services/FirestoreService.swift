@@ -64,6 +64,11 @@ final class FirestoreService {
         return true
     }
 
+    func fetchRecipe(id: String) async throws -> Recipe? {
+        let doc = try await db.collection(recipesCollection).document(id).getDocument()
+        return try? doc.data(as: Recipe.self)
+    }
+
     // MARK: - Dietary Profiles (anonymous)
 
     func pushDietaryProfile(_ profile: DietaryProfile, deviceId: String) async throws {

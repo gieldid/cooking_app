@@ -6,11 +6,15 @@ final class RevenueCatService: ObservableObject {
     static let shared = RevenueCatService()
 
     @Published var isPremium = false
+    @Published var isCheckingEntitlement = true
     @Published var offerings: Offerings?
     @Published var isLoading = false
 
     private init() {
-        Task { await checkEntitlement() }
+        Task {
+            await checkEntitlement()
+            isCheckingEntitlement = false
+        }
     }
 
     func checkEntitlement() async {

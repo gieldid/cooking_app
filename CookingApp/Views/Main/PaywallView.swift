@@ -2,6 +2,7 @@ import SwiftUI
 import RevenueCat
 
 struct PaywallView: View {
+    var showDismissButton: Bool = true
     @StateObject private var service = RevenueCatService.shared
     @Environment(\.dismiss) private var dismiss
     @State private var selectedPackage: Package?
@@ -156,11 +157,13 @@ struct PaywallView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .font(.title3)
+                if showDismissButton {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button { dismiss() } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.secondary)
+                                .font(.title3)
+                        }
                     }
                 }
             }

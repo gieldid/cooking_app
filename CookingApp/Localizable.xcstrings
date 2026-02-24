@@ -3920,6 +3920,50 @@
           }
         }
       }
+    },
+
+    "Favourites" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Favoriten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Favourites" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Favoris" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Preferiti" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Favorieten" } }
+      }
+    },
+
+    "No favourites yet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Favoriten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No favourites yet" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pas encore de favoris" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ancora nessun preferito" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Nog geen favorieten" } }
+      }
+    },
+
+    "Tap the heart on any recipe to save it here." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tippe auf das Herz bei einem Rezept, um es hier zu speichern." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap the heart on any recipe to save it here." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Appuyez sur le cœur d'une recette pour la sauvegarder ici." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Tocca il cuore su una ricetta per salvarla qui." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tik op het hartje bij een recept om het hier op te slaan." } }
+      }
+    },
+
+    "Get the full recipe on Inkgredients" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Vollständiges Rezept auf Inkgredients erhalten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Get the full recipe on Inkgredients" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Obtenez la recette complète sur Inkgredients" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ottieni la ricetta completa su Inkgredients" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Bekijk het volledige recept op Inkgredients" } }
+      }
     }
   },
   "version" : "1.0"

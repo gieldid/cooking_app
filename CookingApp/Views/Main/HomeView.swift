@@ -90,27 +90,43 @@ private struct LoadingView: View {
 private struct RecipeCard: View {
     let recipe: Recipe
     let servings: Int
+    @ObservedObject private var prefs = UserPreferencesManager.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Image placeholder
-            if let imageURL = recipe.imageURL, let url = URL(string: imageURL) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    default:
-                        recipePlaceholder
+            // Image with favourite overlay
+            ZStack(alignment: .topTrailing) {
+                if let imageURL = recipe.imageURL, let url = URL(string: imageURL) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        default:
+                            recipePlaceholder
+                        }
                     }
-                }
-                .frame(height: 220)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-            } else {
-                recipePlaceholder
                     .frame(height: 220)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+                } else {
+                    recipePlaceholder
+                        .frame(height: 220)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+
+                Button {
+                    prefs.toggleFavourite(recipe)
+                } label: {
+                    Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(prefs.isFavourite(recipe) ? .red : .white)
+                        .padding(10)
+                        .background(.ultraThinMaterial, in: Circle())
+                        .shadow(radius: 2)
+                }
+                .padding(10)
             }
 
             VStack(alignment: .leading, spacing: 8) {

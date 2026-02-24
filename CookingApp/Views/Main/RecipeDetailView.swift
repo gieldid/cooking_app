@@ -1,9 +1,12 @@
 import SwiftUI
+import UIKit
 
 struct RecipeDetailView: View {
     let recipe: Recipe
     @Binding var servingsMultiplier: Int
     @State private var completedSteps: Set<Int> = []
+    @State private var showShareSheet = false
+    @State private var shareItems: [Any] = []
     @ObservedObject private var prefs = UserPreferencesManager.shared
 
     var body: some View {
@@ -110,6 +113,56 @@ struct RecipeDetailView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                HStack(spacing: 4) {
+                    Button {
+                        Task { @MainActor in
+                            await buildShareItems()
+                            if !shareItems.isEmpty { showShareSheet = true }
+                        }
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+
+                    Button {
+                        prefs.toggleFavourite(recipe)
+                    } label: {
+                        Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
+                            .foregroundStyle(prefs.isFavourite(recipe) ? .red : .primary)
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showShareSheet) {
+            ActivityShareSheet(items: shareItems)
+                .ignoresSafeArea()
+        }
+    }
+
+    @MainActor
+    private func buildShareItems() async {
+        var items: [Any] = []
+        var preloadedImage: UIImage? = nil
+        if let urlString = recipe.imageURL, let url = URL(string: urlString) {
+            preloadedImage = try? await fetchUIImage(from: url)
+        }
+        let card = RecipeShareCard(recipe: recipe, preloadedImage: preloadedImage)
+        let renderer = ImageRenderer(content: card)
+        renderer.scale = 3.0
+        if let uiImage = renderer.uiImage {
+            items.append(uiImage)
+        }
+        if let recipeId = recipe.id,
+           let deepLink = URL(string: "inkgredients://recipe/\(recipeId)") {
+            items.append(deepLink)
+        }
+        shareItems = items
+    }
+
+    private func fetchUIImage(from url: URL) async throws -> UIImage? {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return UIImage(data: data)
     }
 
     private func displayIngredient(_ ingredient: Ingredient) -> (amount: String, unit: String) {
@@ -126,6 +179,87 @@ struct RecipeDetailView: View {
         Image("LoadingImage")
             .resizable()
             .scaledToFill()
+    }
+}
+
+private struct ActivityShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+private struct RecipeShareCard: View {
+    let recipe: Recipe
+    let preloadedImage: UIImage?
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Recipe image
+            if let uiImage = preloadedImage {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 360, height: 210)
+                    .clipped()
+            } else {
+                LinearGradient(
+                    colors: [Color.accentColor.opacity(0.7), Color.accentColor.opacity(0.3)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .frame(width: 360, height: 210)
+                .overlay(
+                    Image(systemName: "fork.knife")
+                        .font(.system(size: 52))
+                        .foregroundStyle(.white.opacity(0.8))
+                )
+            }
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text(recipe.title)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.primary)
+
+                Text(recipe.localizedDescription)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+
+                HStack(spacing: 16) {
+                    Label("\(recipe.totalTime) min", systemImage: "clock")
+                    Label("\(recipe.servings) servings", systemImage: "person.2")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+                Divider()
+
+                HStack(spacing: 10) {
+                    Image(systemName: "fork.knife.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(.accent)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Inkgredients")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                        Text(String(localized: "Get the full recipe on Inkgredients"))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                }
+            }
+            .padding(16)
+            .background(Color(.systemBackground))
+        }
+        .frame(width: 360)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
     }
 }
 

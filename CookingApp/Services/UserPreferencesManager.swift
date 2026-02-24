@@ -32,6 +32,7 @@ final class UserPreferencesManager: ObservableObject {
         static let deviceId = "deviceId"
         static let measurementPreference = "measurementPreference"
         static let defaultServings = "defaultServings"
+        static let favouriteRecipes = "favouriteRecipes"
     }
 
     @Published var hasCompletedOnboarding: Bool {
@@ -55,6 +56,10 @@ final class UserPreferencesManager: ObservableObject {
         didSet { defaults.set(defaultServings, forKey: Keys.defaultServings) }
     }
 
+    @Published var favouriteRecipes: [Recipe] {
+        didSet { saveCodable(favouriteRecipes, forKey: Keys.favouriteRecipes) }
+    }
+
     var deviceId: String {
         if let existing = defaults.string(forKey: Keys.deviceId) {
             return existing
@@ -70,6 +75,7 @@ final class UserPreferencesManager: ObservableObject {
         self.notificationPreferences = Self.loadCodable(forKey: Keys.notificationPreferences) ?? .default
         self.measurementPreference = Self.loadCodable(forKey: Keys.measurementPreference) ?? .system
         self.defaultServings = defaults.integer(forKey: Keys.defaultServings) // 0 if never set
+        self.favouriteRecipes = Self.loadCodable(forKey: Keys.favouriteRecipes) ?? []
     }
 
     private func saveCodable<T: Codable>(_ value: T, forKey key: String) {
@@ -81,6 +87,18 @@ final class UserPreferencesManager: ObservableObject {
     private static func loadCodable<T: Codable>(forKey key: String) -> T? {
         guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
         return try? JSONDecoder().decode(T.self, from: data)
+    }
+
+    func toggleFavourite(_ recipe: Recipe) {
+        if let index = favouriteRecipes.firstIndex(where: { $0.id == recipe.id }) {
+            favouriteRecipes.remove(at: index)
+        } else {
+            favouriteRecipes.append(recipe)
+        }
+    }
+
+    func isFavourite(_ recipe: Recipe) -> Bool {
+        favouriteRecipes.contains(where: { $0.id == recipe.id })
     }
 
     func resetOnboarding() {
