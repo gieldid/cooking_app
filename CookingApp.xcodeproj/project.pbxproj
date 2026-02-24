@@ -36,6 +36,8 @@
 		A10026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* PaywallView.swift */; };
 		A10027 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028 /* SubscriptionView.swift */; };
 		A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* AnalyticsService.swift */; };
+		A10033 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* FavouritesView.swift */; };
+		A10034 /* SharedRecipeGuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* SharedRecipeGuestView.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 		A10031 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D10002 /* RevenueCat */; };
 		A10032 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D10003 /* FirebaseAnalytics */; };
@@ -72,6 +74,8 @@
 		B10027 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		B10028 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		B10030 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
+		B10031 /* SharedRecipeGuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRecipeGuestView.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -156,6 +160,8 @@
 				B10013 /* ShoppingListView.swift */,
 				B10014 /* SettingsView.swift */,
 				B10027 /* PaywallView.swift */,
+				B10030 /* FavouritesView.swift */,
+				B10031 /* SharedRecipeGuestView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -308,6 +314,8 @@
 				A10026 /* PaywallView.swift in Sources */,
 				A10027 /* SubscriptionView.swift in Sources */,
 				A10028 /* AnalyticsService.swift in Sources */,
+				A10033 /* FavouritesView.swift in Sources */,
+				A10034 /* SharedRecipeGuestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
