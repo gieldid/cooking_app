@@ -160,11 +160,7 @@ struct RecipeDetailView: View {
         renderer.scale = 3.0
         renderer.proposedSize = .init(width: 360, height: nil)
         if let uiImage = renderer.uiImage {
-            items.append(ShareItemSource(image: uiImage, title: recipe.title))
-        }
-        if let recipeId = recipe.id,
-           let deepLink = URL(string: "inkgredients://recipe/\(recipeId)") {
-            items.append(deepLink)
+            items.append(ShareItemSource(cardImage: uiImage, title: recipe.title))
         }
         shareItems = items
     }
@@ -203,29 +199,32 @@ private struct ActivityShareSheet: UIViewControllerRepresentable {
 }
 
 private final class ShareItemSource: NSObject, UIActivityItemSource {
-    private let image: UIImage
+    private let cardImage: UIImage
     private let title: String
 
-    init(image: UIImage, title: String) {
-        self.image = image
+    init(cardImage: UIImage, title: String) {
+        self.cardImage = cardImage
         self.title = title
     }
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        image
+        cardImage
     }
 
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        image
+        cardImage
     }
 
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
         let metadata = LPLinkMetadata()
         metadata.title = title
-        metadata.imageProvider = NSItemProvider(object: image)
+        if let mascot = UIImage(named: "AppMascot") {
+            metadata.imageProvider = NSItemProvider(object: mascot)
+        }
         return metadata
     }
 }
+
 
 private struct RecipeShareCard: View {
     let recipe: Recipe
