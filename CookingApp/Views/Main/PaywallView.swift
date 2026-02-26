@@ -5,41 +5,75 @@ struct PaywallView: View {
     var showDismissButton: Bool = true
     @StateObject private var service = RevenueCatService.shared
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedPackage: Package?
     @State private var isPurchasing = false
     @State private var isRestoring = false
     @State private var errorMessage: String?
 
     private let features = [
-        ("sparkles", "Unlimited daily recipes"),
+        ("fork.knife",          "A new personalised recipe every day"),
         ("slider.horizontal.3", "Advanced filters & preferences"),
-        ("bell.badge", "Smart cooking reminders"),
-        ("arrow.clockwise", "Skip & rediscover recipes"),
+        ("bell.badge",          "Smart cooking reminders"),
+        ("arrow.clockwise",     "Skip & rediscover recipes"),
     ]
+
+    private var annualPackage: Package? {
+        service.offerings?.current?.availablePackages
+            .first(where: { $0.packageType == .annual })
+            ?? service.offerings?.current?.availablePackages.first
+    }
+
+    private var trialDays: Int? {
+        guard let intro = annualPackage?.storeProduct.introductoryDiscount,
+              intro.paymentMode == .freeTrial else { return nil }
+        return Int(intro.subscriptionPeriod.value)
+    }
+
+    private var monthlyPriceString: String? {
+        guard let pkg = annualPackage else { return nil }
+        let monthly = pkg.storeProduct.price / Decimal(12)
+        let fmt = NumberFormatter()
+        fmt.numberStyle = .currency
+        fmt.locale = pkg.storeProduct.priceLocale
+        fmt.minimumFractionDigits = 2
+        fmt.maximumFractionDigits = 2
+        return fmt.string(from: monthly as NSDecimalNumber)
+    }
+
+    private var yearlyPriceString: String? {
+        annualPackage?.localizedPriceString
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 28) {
-                    // Header
+
+                    // ── Hero ───────────────────────────────────────────────
                     VStack(spacing: 12) {
                         Image("AppIcon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 90, height: 90)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
 
-                        Text("Inkgredients Premium")
-                            .font(.title2)
-                            .fontWeight(.bold)
+                        if let days = trialDays {
+                            Text("\(days)-Day Free Trial")
+                                .font(.system(size: 34, weight: .bold, design: .rounded))
+                                .foregroundStyle(Color.accentColor)
+                        } else {
+                            Text("Inkgredients Premium")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
 
-                        Text("Cook smarter every day")
+                        Text("Full access, cancel anytime")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                     .padding(.top, 8)
 
-                    // Features
+                    // ── Features ───────────────────────────────────────────
                     VStack(spacing: 14) {
                         ForEach(features, id: \.0) { icon, text in
                             HStack(spacing: 14) {
@@ -50,6 +84,10 @@ struct PaywallView: View {
                                 Text(text)
                                     .font(.subheadline)
                                 Spacer()
+                                Image(systemName: "checkmark")
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.accent)
                             }
                         }
                     }
@@ -57,31 +95,6 @@ struct PaywallView: View {
                     .background(Color(.systemGray6))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                    // Packages
-                    if service.isLoading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    } else if let packages = service.offerings?.current?.availablePackages, !packages.isEmpty {
-                        VStack(spacing: 10) {
-                            ForEach(packages, id: \.identifier) { package in
-                                PackageRow(
-                                    package: package,
-                                    isSelected: selectedPackage?.identifier == package.identifier
-                                ) {
-                                    selectedPackage = package
-                                }
-                            }
-                        }
-                    } else {
-                        Text("No plans available right now.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-
-                    // Error
                     if let errorMessage {
                         Text(errorMessage)
                             .font(.caption)
@@ -89,39 +102,54 @@ struct PaywallView: View {
                             .multilineTextAlignment(.center)
                     }
 
-                    // Purchase button
-                    Button {
-                        guard let pkg = selectedPackage else { return }
-                        Task {
-                            isPurchasing = true
-                            errorMessage = nil
-                            do {
-                                try await service.purchase(package: pkg)
-                                dismiss()
-                            } catch {
-                                errorMessage = error.localizedDescription
+                    // ── CTA ────────────────────────────────────────────────
+                    if service.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    } else {
+                        Button {
+                            guard let pkg = annualPackage else { return }
+                            Task {
+                                isPurchasing = true
+                                errorMessage = nil
+                                do {
+                                    try await service.purchase(package: pkg)
+                                    dismiss()
+                                } catch {
+                                    if (error as? ErrorCode) != .purchaseCancelledError {
+                                        errorMessage = error.localizedDescription
+                                    }
+                                }
+                                isPurchasing = false
                             }
-                            isPurchasing = false
-                        }
-                    } label: {
-                        Group {
-                            if isPurchasing {
-                                ProgressView()
-                                    .tint(.white)
-                            } else {
-                                Text(selectedPackage == nil ? "Select a plan" : "Subscribe")
-                                    .fontWeight(.semibold)
+                        } label: {
+                            Group {
+                                if isPurchasing {
+                                    ProgressView().tint(.white)
+                                } else {
+                                    Text(trialDays != nil ? "Start Free Trial" : "Subscribe")
+                                        .fontWeight(.semibold)
+                                }
                             }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(annualPackage == nil ? Color.gray : Color.accentColor)
+                            .foregroundStyle(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(selectedPackage == nil ? Color.gray : Color.accentColor)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
-                    .disabled(selectedPackage == nil || isPurchasing)
+                        .disabled(annualPackage == nil || isPurchasing)
 
-                    // Restore
+                        // Monthly breakdown
+                        if let monthly = monthlyPriceString, let yearly = yearlyPriceString {
+                            Text("\(monthly) / month · billed \(yearly) yearly")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+
+                    // ── Restore ────────────────────────────────────────────
                     Button {
                         Task {
                             isRestoring = true
@@ -147,7 +175,7 @@ struct PaywallView: View {
                     }
                     .disabled(isRestoring)
 
-                    Text("Subscriptions auto-renew unless cancelled. Lifetime is a one-time purchase.")
+                    Text("Cancel anytime before trial ends. Subscription auto-renews yearly unless cancelled.")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                         .multilineTextAlignment(.center)
@@ -170,60 +198,6 @@ struct PaywallView: View {
         }
         .task {
             await service.fetchOfferings()
-            selectedPackage = service.offerings?.current?.availablePackages.first(where: {
-                $0.packageType == .annual
-            }) ?? service.offerings?.current?.availablePackages.first
         }
-    }
-}
-
-private struct PackageRow: View {
-    let package: Package
-    let isSelected: Bool
-    let onTap: () -> Void
-
-    private var isPopular: Bool {
-        package.packageType == .annual
-    }
-
-    var body: some View {
-        Button(action: onTap) {
-            HStack {
-                VStack(alignment: .leading, spacing: 3) {
-                    HStack(spacing: 6) {
-                        Text(package.storeProduct.localizedTitle)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                        if isPopular {
-                            Text("BEST VALUE")
-                                .font(.caption2)
-                                .fontWeight(.bold)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Color.accentColor)
-                                .foregroundStyle(.white)
-                                .clipShape(Capsule())
-                        }
-                    }
-                    Text(package.storeProduct.localizedDescription)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                Text(package.localizedPriceString)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-            }
-            .padding()
-            .background(isSelected ? Color.accentColor.opacity(0.1) : Color(.systemGray6))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
-            )
-        }
-        .tint(.primary)
     }
 }
