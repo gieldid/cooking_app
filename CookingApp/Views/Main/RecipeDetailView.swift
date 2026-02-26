@@ -145,11 +145,19 @@ struct RecipeDetailView: View {
         var items: [Any] = []
         var preloadedImage: UIImage? = nil
         if let urlString = recipe.imageURL, let url = URL(string: urlString) {
-            preloadedImage = try? await fetchUIImage(from: url)
+            // AsyncImage caches into URLCache.shared — try that first
+            let request = URLRequest(url: url)
+            if let cached = URLCache.shared.cachedResponse(for: request),
+               let img = UIImage(data: cached.data) {
+                preloadedImage = img
+            } else {
+                preloadedImage = await fetchUIImage(from: url)
+            }
         }
         let card = RecipeShareCard(recipe: recipe, preloadedImage: preloadedImage)
         let renderer = ImageRenderer(content: card)
         renderer.scale = 3.0
+        renderer.proposedSize = .init(width: 360, height: nil)
         if let uiImage = renderer.uiImage {
             items.append(uiImage)
         }
@@ -160,8 +168,9 @@ struct RecipeDetailView: View {
         shareItems = items
     }
 
-    private func fetchUIImage(from url: URL) async throws -> UIImage? {
-        let (data, _) = try await URLSession.shared.data(from: url)
+    private func fetchUIImage(from url: URL) async -> UIImage? {
+        guard let (data, response) = try? await URLSession.shared.data(from: url),
+              (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
         return UIImage(data: data)
     }
 
@@ -206,11 +215,17 @@ private struct RecipeShareCard: View {
                     .frame(width: 360, height: 210)
                     .clipped()
             } else {
-                Image("LoadingImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 360, height: 210)
-                    .clipped()
+                LinearGradient(
+                    colors: [Color.accentColor.opacity(0.6), Color.accentColor],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .frame(width: 360, height: 210)
+                .overlay {
+                    Image(systemName: "fork.knife")
+                        .font(.system(size: 56))
+                        .foregroundStyle(.white.opacity(0.5))
+                }
             }
 
             VStack(alignment: .leading, spacing: 10) {
