@@ -60,6 +60,9 @@ struct RecipeDetailView: View {
                             .font(.headline)
                         Spacer()
                         Stepper(String(servingsMultiplier), value: $servingsMultiplier, in: 1...20)
+                        .accessibilityLabel("Servings")
+                        .accessibilityValue("\(servingsMultiplier) servings")
+                        .accessibilityHint("Adjust number of servings")
                     }
 
                     Divider()
@@ -125,6 +128,7 @@ struct RecipeDetailView: View {
                     } label: {
                         Image(systemName: "square.and.arrow.up")
                     }
+                    .accessibilityLabel("Share recipe")
 
                     Button {
                         prefs.toggleFavourite(recipe)
@@ -132,6 +136,7 @@ struct RecipeDetailView: View {
                         Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
                             .foregroundStyle(prefs.isFavourite(recipe) ? .red : .primary)
                     }
+                    .accessibilityLabel(prefs.isFavourite(recipe) ? "Remove from favourites" : "Add to favourites")
                 }
             }
         }
@@ -185,6 +190,7 @@ struct RecipeDetailView: View {
         Image("LoadingImage")
             .resizable()
             .scaledToFill()
+            .accessibilityHidden(true)
     }
 }
 
@@ -334,6 +340,7 @@ private struct StepRow: View {
                             .foregroundColor(.white)
                     }
                 }
+                .accessibilityHidden(true)
 
                 Text(text)
                     .font(.body)
@@ -343,5 +350,8 @@ private struct StepRow: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Step \(stepNumber): \(text)")
+        .accessibilityValue(isCompleted ? "Completed" : "Not completed")
+        .accessibilityHint(isCompleted ? "Double tap to mark as incomplete" : "Double tap to mark as complete")
     }
 }

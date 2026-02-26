@@ -43,6 +43,7 @@ struct HomeView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 160, height: 160)
+                        .accessibilityHidden(true)
                     Text(error)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -75,6 +76,7 @@ private struct LoadingView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 180, height: 180)
+                .accessibilityHidden(true)
                 .scaleEffect(isAnimating ? 1.08 : 1.0)
                 .animation(
                     .easeInOut(duration: 0.9).repeatForever(autoreverses: true),
@@ -126,6 +128,7 @@ private struct RecipeCard: View {
                         .background(.ultraThinMaterial, in: Circle())
                         .shadow(radius: 2)
                 }
+                .accessibilityLabel(prefs.isFavourite(recipe) ? "Remove from favourites" : "Add to favourites")
                 .padding(10)
             }
 
@@ -179,5 +182,6 @@ private struct RecipeCard: View {
             .resizable()
             .scaledToFit()
             .frame(maxWidth: .infinity)
+            .accessibilityHidden(true)
     }
 }

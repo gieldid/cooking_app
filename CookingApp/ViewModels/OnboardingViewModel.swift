@@ -7,6 +7,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var selectedDiets: Set<Diet> = []
     @Published var selectedDifficulties: Set<Difficulty> = []
     @Published var maxDuration: MaxDuration = .any
+    @Published var perDayOverrides: [Int: DayOverride] = [:]
     @Published var notificationPreferences: NotificationPreferences = .default
     @Published var isCompleting = false
 
@@ -50,6 +51,26 @@ final class OnboardingViewModel: ObservableObject {
         }
     }
 
+    func togglePerDayDifficulty(weekday: Int, difficulty: Difficulty) {
+        var override = perDayOverrides[weekday] ?? DayOverride(difficulties: selectedDifficulties, maxDuration: maxDuration)
+        if override.difficulties.contains(difficulty) {
+            override.difficulties.remove(difficulty)
+        } else {
+            override.difficulties.insert(difficulty)
+        }
+        perDayOverrides[weekday] = override
+    }
+
+    func setPerDayDuration(weekday: Int, duration: MaxDuration) {
+        var override = perDayOverrides[weekday] ?? DayOverride(difficulties: selectedDifficulties, maxDuration: maxDuration)
+        override.maxDuration = duration
+        perDayOverrides[weekday] = override
+    }
+
+    func clearPerDayOverride(weekday: Int) {
+        perDayOverrides.removeValue(forKey: weekday)
+    }
+
     func completeOnboarding() async {
         isCompleting = true
         defer { isCompleting = false }
@@ -59,7 +80,8 @@ final class OnboardingViewModel: ObservableObject {
             selectedAllergies: selectedAllergies,
             selectedDiets: selectedDiets,
             preferredDifficulties: selectedDifficulties,
-            maxDuration: maxDuration
+            maxDuration: maxDuration,
+            perDayOverrides: perDayOverrides
         )
 
         prefs.dietaryProfile = profile

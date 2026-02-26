@@ -266,5 +266,7 @@ private struct SettingsChip: View {
                         .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 1.5)
                 )
         }
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityHint(isSelected ? "Double tap to deselect" : "Double tap to select")
     }
 }

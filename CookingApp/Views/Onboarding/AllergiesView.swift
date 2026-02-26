@@ -72,6 +72,7 @@ private struct AllergyChip: View {
             HStack(spacing: 8) {
                 Text(allergy.icon)
                     .font(.title3)
+                    .accessibilityHidden(true)
                 Text(allergy.displayName)
                     .font(.subheadline)
                     .fontWeight(.medium)
@@ -86,5 +87,8 @@ private struct AllergyChip: View {
                     .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
             )
         }
+        .accessibilityLabel(allergy.displayName)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityHint(isSelected ? "Double tap to deselect" : "Double tap to select")
     }
 }

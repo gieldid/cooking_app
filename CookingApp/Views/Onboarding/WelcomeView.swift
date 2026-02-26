@@ -11,6 +11,7 @@ struct WelcomeView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 180, height: 180)
+                .accessibilityHidden(true)
 
             VStack(spacing: 12) {
                 Text("Welcome to Inkgredients")

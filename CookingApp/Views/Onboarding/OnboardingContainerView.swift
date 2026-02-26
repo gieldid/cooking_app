@@ -16,6 +16,8 @@ struct OnboardingContainerView: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 16)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Step \(viewModel.currentPage + 1) of \(viewModel.totalPages)")
 
             TabView(selection: $viewModel.currentPage) {
                 WelcomeView(viewModel: viewModel)

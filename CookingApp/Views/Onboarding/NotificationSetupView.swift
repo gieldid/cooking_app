@@ -87,6 +87,7 @@ private struct NotificationTimeRow: View {
                 .font(.title2)
                 .foregroundStyle(.accent)
                 .frame(width: 32)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
@@ -100,6 +101,7 @@ private struct NotificationTimeRow: View {
 
             DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                 .labelsHidden()
+                .accessibilityLabel(title)
         }
         .padding()
         .background(Color(.systemGray6))

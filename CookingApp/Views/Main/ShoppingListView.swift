@@ -10,6 +10,7 @@ struct ShoppingListView: View {
             if homeViewModel.isLoading {
                 VStack(spacing: 16) {
                     ProgressView()
+                        .accessibilityLabel("Loading shopping list")
                     Text("Loading shopping list...")
                         .foregroundStyle(.secondary)
                 }
@@ -33,6 +34,9 @@ struct ShoppingListView: View {
                             Text("Servings")
                             Spacer()
                             Stepper(String(homeViewModel.servingsMultiplier), value: $homeViewModel.servingsMultiplier, in: 1...20)
+                                .accessibilityLabel("Servings")
+                                .accessibilityValue("\(homeViewModel.servingsMultiplier) servings")
+                                .accessibilityHint("Adjust number of servings")
                         }
                     }
 
@@ -60,6 +64,7 @@ struct ShoppingListView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 160, height: 160)
+                        .accessibilityHidden(true)
                     Text(error)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -75,6 +80,7 @@ struct ShoppingListView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 160, height: 160)
+                        .accessibilityHidden(true)
                     Text("No recipe selected yet.")
                         .foregroundStyle(.secondary)
                     Text("Check the Today tab for today's recipe.")
@@ -114,6 +120,7 @@ private struct ShoppingListRow: View {
                 Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
                     .font(.title3)
                     .foregroundStyle(isChecked ? .green : .secondary)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(ingredient.name)
@@ -130,5 +137,8 @@ private struct ShoppingListRow: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(ingredient.name), \(amount) \(unit)")
+        .accessibilityValue(isChecked ? "Checked" : "Unchecked")
+        .accessibilityHint("Double tap to \(isChecked ? "uncheck" : "check")")
     }
 }
