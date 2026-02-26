@@ -25,7 +25,7 @@ struct SubscriptionView: View {
         let monthly = pkg.storeProduct.price / Decimal(12)
         let fmt = NumberFormatter()
         fmt.numberStyle = .currency
-        fmt.locale = pkg.storeProduct.priceLocale
+        fmt.currencyCode = pkg.storeProduct.currencyCode
         fmt.minimumFractionDigits = 2
         fmt.maximumFractionDigits = 2
         return fmt.string(from: monthly as NSDecimalNumber)
