@@ -64,7 +64,7 @@ struct SettingsView: View {
                 LazyVGrid(columns: difficultyColumns, spacing: 8) {
                     ForEach(Difficulty.allCases) { difficulty in
                         SettingsChip(
-                            text: "\(difficulty.icon) \(difficulty.displayName)",
+                            text: difficulty.displayName,
                             isSelected: viewModel.preferredDifficulties.contains(difficulty)
                         ) {
                             viewModel.toggleDifficulty(difficulty)
@@ -201,7 +201,7 @@ private struct DayPreferencesView: View {
                 LazyVGrid(columns: difficultyColumns, spacing: 8) {
                     ForEach(Difficulty.allCases) { difficulty in
                         SettingsChip(
-                            text: "\(difficulty.icon) \(difficulty.displayName)",
+                            text: difficulty.displayName,
                             isSelected: difficulties.contains(difficulty)
                         ) {
                             viewModel.togglePerDayDifficulty(weekday: weekday, difficulty: difficulty)

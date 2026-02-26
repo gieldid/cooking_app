@@ -1325,25 +1325,25 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einfach"
+            "value" : "Anfänger"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easy"
+            "value" : "Beginner"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Facile"
+            "value" : "Débutant"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Facile"
+            "value" : "Débutant"
           }
         },
         "nl" : {
@@ -1360,25 +1360,25 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schwer"
+            "value" : "Experte"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hard"
+            "value" : "Expert"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Difficile"
+            "value" : "Expert"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Difficile"
+            "value" : "Expert"
           }
         },
         "nl" : {
@@ -1395,19 +1395,19 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mittel"
+            "value" : "Fortgeschritten"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Medium"
+            "value" : "Intermediate"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Moyen"
+            "value" : "Intermédiaire"
           }
         },
         "it" : {

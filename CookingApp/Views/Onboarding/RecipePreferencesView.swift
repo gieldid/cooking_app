@@ -205,14 +205,9 @@ private struct DifficultyChip: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 6) {
-                Text(difficulty.icon)
-                    .font(.title2)
-                    .accessibilityHidden(true)
-                Text(difficulty.displayName)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-            }
+            Text(difficulty.displayName)
+                .font(.subheadline)
+                .fontWeight(.medium)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(isSelected ? Color.accentColor.opacity(0.15) : Color(.systemGray6))

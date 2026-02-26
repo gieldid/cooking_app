@@ -81,13 +81,6 @@ enum Difficulty: String, Codable, CaseIterable, Identifiable {
         }
     }
 
-    var icon: String {
-        switch self {
-        case .easy: return "🟢"
-        case .medium: return "🟡"
-        case .hard: return "🔴"
-        }
-    }
 }
 
 enum MaxDuration: String, Codable, CaseIterable {
