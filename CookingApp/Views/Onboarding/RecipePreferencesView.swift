@@ -22,86 +22,90 @@ struct RecipePreferencesView: View {
     }
 
     var body: some View {
-        ScrollView {
-          VStack(spacing: 24) {
-            VStack(spacing: 8) {
-                Text("Recipe Preferences")
-                    .font(.title)
-                    .fontWeight(.bold)
+        VStack(spacing: 0) {
+            // Scrollable content
+            ScrollView {
+                VStack(spacing: 24) {
+                    VStack(spacing: 8) {
+                        Text("Recipe Preferences")
+                            .font(.title)
+                            .fontWeight(.bold)
 
-                Text("Pick a difficulty and how much time you have to cook.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-            }
-            .padding(.top, 24)
+                        Text("Pick a difficulty and how much time you have to cook.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                    }
+                    .padding(.top, 24)
 
-            VStack(alignment: .leading, spacing: 20) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Difficulty")
-                        .font(.headline)
-                        .padding(.horizontal, 24)
+                    VStack(alignment: .leading, spacing: 20) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Difficulty")
+                                .font(.headline)
+                                .padding(.horizontal, 24)
 
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(Difficulty.allCases) { difficulty in
-                            DifficultyChip(
-                                difficulty: difficulty,
-                                isSelected: viewModel.selectedDifficulties.contains(difficulty)
-                            ) {
-                                viewModel.toggleDifficulty(difficulty)
+                            LazyVGrid(columns: columns, spacing: 12) {
+                                ForEach(Difficulty.allCases) { difficulty in
+                                    DifficultyChip(
+                                        difficulty: difficulty,
+                                        isSelected: viewModel.selectedDifficulties.contains(difficulty)
+                                    ) {
+                                        viewModel.toggleDifficulty(difficulty)
+                                    }
+                                }
                             }
+                            .padding(.horizontal, 24)
+
+                            Text("Leave blank to show all difficulties.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 24)
                         }
-                    }
-                    .padding(.horizontal, 24)
 
-                    Text("Leave blank to show all difficulties.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .padding(.horizontal, 24)
-                }
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Max Cook Time")
+                                .font(.headline)
+                                .padding(.horizontal, 24)
 
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Max Cook Time")
-                        .font(.headline)
-                        .padding(.horizontal, 24)
-
-                    Picker("Max Duration", selection: $viewModel.maxDuration) {
-                        ForEach(MaxDuration.allCases, id: \.self) { duration in
-                            Text(duration.displayName).tag(duration)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal, 24)
-                }
-
-                DisclosureGroup(isExpanded: $showPerDay) {
-                    VStack(spacing: 0) {
-                        ForEach(orderedWeekdays, id: \.self) { weekday in
-                            PerDayRow(
-                                weekday: weekday,
-                                dayName: weekdayName(weekday),
-                                columns: columns,
-                                viewModel: viewModel
-                            )
-                            if weekday != orderedWeekdays.last {
-                                Divider().padding(.leading, 16)
+                            Picker("Max Duration", selection: $viewModel.maxDuration) {
+                                ForEach(MaxDuration.allCases, id: \.self) { duration in
+                                    Text(duration.displayName).tag(duration)
+                                }
                             }
+                            .pickerStyle(.segmented)
+                            .padding(.horizontal, 24)
                         }
+
+                        DisclosureGroup(isExpanded: $showPerDay) {
+                            VStack(spacing: 0) {
+                                ForEach(orderedWeekdays, id: \.self) { weekday in
+                                    PerDayRow(
+                                        weekday: weekday,
+                                        dayName: weekdayName(weekday),
+                                        columns: columns,
+                                        viewModel: viewModel
+                                    )
+                                    if weekday != orderedWeekdays.last {
+                                        Divider().padding(.leading, 16)
+                                    }
+                                }
+                            }
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .padding(.top, 8)
+                        } label: {
+                            Text("Per-day Preferences")
+                                .font(.headline)
+                        }
+                        .padding(.horizontal, 24)
+                        .animation(.easeInOut, value: showPerDay)
                     }
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .padding(.top, 8)
-                } label: {
-                    Text("Per-day Preferences")
-                        .font(.headline)
                 }
-                .padding(.horizontal, 24)
-                .animation(.easeInOut, value: showPerDay)
+                .padding(.bottom, 16)
             }
 
-            Spacer()
-
+            // Buttons always pinned at the bottom
             VStack(spacing: 12) {
                 Button {
                     viewModel.nextPage()
@@ -124,8 +128,9 @@ struct RecipePreferencesView: View {
                 .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 24)
+            .padding(.top, 12)
             .padding(.bottom, 32)
-          }
+            .background(Color(.systemBackground))
         }
     }
 }
