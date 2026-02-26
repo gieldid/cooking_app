@@ -4,6 +4,16 @@
     "" : {
 
     },
+    "%@, %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@ %3$@"
+          }
+        }
+      }
+    },
     "%lld" : {
 
     },
@@ -303,6 +313,12 @@
       }
     },
     "3-day free trial included" : {
+
+    },
+    "Add to favourites" : {
+
+    },
+    "Adjust number of servings" : {
 
     },
     "Allergies" : {
@@ -730,6 +746,12 @@
           }
         }
       }
+    },
+    "Checked" : {
+
+    },
+    "Completed" : {
+
     },
     "Continue" : {
       "extractionState" : "manual",
@@ -1402,6 +1424,21 @@
         }
       }
     },
+    "Double tap to %@" : {
+
+    },
+    "Double tap to deselect" : {
+
+    },
+    "Double tap to mark as complete" : {
+
+    },
+    "Double tap to mark as incomplete" : {
+
+    },
+    "Double tap to select" : {
+
+    },
     "duration.any" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2015,6 +2052,9 @@
         }
       }
     },
+    "Loading shopping list" : {
+
+    },
     "Loading shopping list..." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2373,6 +2413,9 @@
           }
         }
       }
+    },
+    "Not completed" : {
+
     },
     "notification.cooking.body" : {
       "extractionState" : "manual",
@@ -2736,6 +2779,9 @@
         }
       }
     },
+    "Remove from favourites" : {
+
+    },
     "Removes custom settings for %@ and uses your global preferences." : {
 
     },
@@ -2843,6 +2889,9 @@
           }
         }
       }
+    },
+    "Reset to defaults" : {
+
     },
     "Reset to Defaults" : {
 
@@ -3063,6 +3112,9 @@
         }
       }
     },
+    "Share recipe" : {
+
+    },
     "Shopping" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3246,6 +3298,26 @@
     },
     "Start Free Trial" : {
 
+    },
+    "Step %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "Step %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld: %2$@"
+          }
+        }
+      }
     },
     "Subscribe" : {
 
@@ -3476,6 +3548,9 @@
 
     },
     "Try Inkgredients Free" : {
+
+    },
+    "Unchecked" : {
 
     },
     "Units" : {
