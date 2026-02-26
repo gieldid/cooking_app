@@ -240,17 +240,11 @@ private struct RecipeShareCard: View {
                     .frame(width: 360, height: 210)
                     .clipped()
             } else {
-                LinearGradient(
-                    colors: [Color.accentColor.opacity(0.6), Color.accentColor],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .frame(width: 360, height: 210)
-                .overlay {
-                    Image(systemName: "fork.knife")
-                        .font(.system(size: 56))
-                        .foregroundStyle(.white.opacity(0.5))
-                }
+                Image("PlaceholderImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 360, height: 210)
+                    .clipped()
             }
 
             VStack(alignment: .leading, spacing: 10) {

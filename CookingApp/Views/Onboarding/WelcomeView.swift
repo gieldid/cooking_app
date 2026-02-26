@@ -7,9 +7,10 @@ struct WelcomeView: View {
         VStack(spacing: 32) {
             Spacer()
 
-            Image(systemName: "fork.knife.circle.fill")
-                .font(.system(size: 100))
-                .foregroundStyle(.accent)
+            Image("PlaceholderImage")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 180, height: 180)
 
             VStack(spacing: 12) {
                 Text("Welcome to Inkgredients")
