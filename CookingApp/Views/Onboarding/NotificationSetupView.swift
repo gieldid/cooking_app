@@ -20,7 +20,7 @@ struct NotificationSetupView: View {
 
             VStack(spacing: 16) {
                 NotificationTimeRow(
-                    icon: "sun.rise.fill",
+                    icon: "fork.knife",
                     title: "Morning Recipe",
                     subtitle: "See today's recipe suggestion",
                     time: $viewModel.notificationPreferences.morningRecipeTime
