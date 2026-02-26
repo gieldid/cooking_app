@@ -194,6 +194,7 @@ private struct PerDayRow: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
         }
+        .padding(.trailing, 12)
         .animation(.easeInOut, value: isExpanded)
     }
 }
