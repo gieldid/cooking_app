@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import LinkPresentation
 
 struct RecipeDetailView: View {
     let recipe: Recipe
@@ -159,7 +160,7 @@ struct RecipeDetailView: View {
         renderer.scale = 3.0
         renderer.proposedSize = .init(width: 360, height: nil)
         if let uiImage = renderer.uiImage {
-            items.append(uiImage)
+            items.append(ShareItemSource(image: uiImage, title: recipe.title))
         }
         if let recipeId = recipe.id,
            let deepLink = URL(string: "inkgredients://recipe/\(recipeId)") {
@@ -199,6 +200,31 @@ private struct ActivityShareSheet: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+private final class ShareItemSource: NSObject, UIActivityItemSource {
+    private let image: UIImage
+    private let title: String
+
+    init(image: UIImage, title: String) {
+        self.image = image
+        self.title = title
+    }
+
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        image
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        image
+    }
+
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let metadata = LPLinkMetadata()
+        metadata.title = title
+        metadata.imageProvider = NSItemProvider(object: image)
+        return metadata
+    }
 }
 
 private struct RecipeShareCard: View {
