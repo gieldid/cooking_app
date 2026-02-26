@@ -38,6 +38,7 @@
 		A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* AnalyticsService.swift */; };
 		A10033 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* FavouritesView.swift */; };
 		A10034 /* SharedRecipeGuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* SharedRecipeGuestView.swift */; };
+		A10035 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* SplashScreenView.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 		A10031 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D10002 /* RevenueCat */; };
 		A10032 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D10003 /* FirebaseAnalytics */; };
@@ -76,6 +77,7 @@
 		B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		B10030 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
 		B10031 /* SharedRecipeGuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRecipeGuestView.swift; sourceTree = "<group>"; };
+		B10032 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				B10002 /* ContentView.swift */,
+				B10032 /* SplashScreenView.swift */,
 				G10005 /* Onboarding */,
 				G10006 /* Main */,
 			);
@@ -316,6 +319,7 @@
 				A10028 /* AnalyticsService.swift in Sources */,
 				A10033 /* FavouritesView.swift in Sources */,
 				A10034 /* SharedRecipeGuestView.swift in Sources */,
+				A10035 /* SplashScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
