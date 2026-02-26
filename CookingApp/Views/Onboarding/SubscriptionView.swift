@@ -7,13 +7,6 @@ struct SubscriptionView: View {
     @State private var isPurchasing = false
     @State private var errorMessage: String?
 
-    private let features: [(String, String)] = [
-        ("fork.knife",        "A new personalised recipe every day"),
-        ("slider.horizontal.3", "Filters for diet, allergies & difficulty"),
-        ("cart",              "Auto-generated shopping lists"),
-        ("bell.badge",        "Smart daily cooking reminders"),
-    ]
-
     // Yearly package only
     private var annualPackage: Package? {
         service.offerings?.current?.availablePackages
@@ -72,25 +65,34 @@ struct SubscriptionView: View {
                     }
                     .padding(.top, 24)
 
-                    // ── Features ────────────────────────────────────────────
-                    VStack(spacing: 12) {
-                        ForEach(features, id: \.0) { icon, text in
-                            HStack(spacing: 12) {
-                                Image(systemName: icon)
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(.accent)
-                                    .frame(width: 26)
-                                Text(text)
-                                    .font(.subheadline)
-                                Spacer()
-                                Image(systemName: "checkmark")
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.accent)
-                            }
-                        }
+                    // ── Trial timeline ──────────────────────────────────────
+                    VStack(alignment: .leading, spacing: 0) {
+                        TrialDayRow(
+                            day: "Day 1",
+                            icon: "flame.fill",
+                            iconColor: .orange,
+                            title: "Fire up your kitchen",
+                            subtitle: "Get your first personalised recipe and dive straight in",
+                            isLast: false
+                        )
+                        TrialDayRow(
+                            day: "Day 2",
+                            icon: "bell.badge.fill",
+                            iconColor: .accentColor,
+                            title: "We've got your back",
+                            subtitle: "A friendly reminder lands before any charge",
+                            isLast: false
+                        )
+                        TrialDayRow(
+                            day: "Day 3",
+                            icon: "sparkles",
+                            iconColor: .purple,
+                            title: "Your kitchen, your rules",
+                            subtitle: "Cancel freely — or keep cooking and save all year",
+                            isLast: true
+                        )
                     }
-                    .padding()
+                    .padding(16)
                     .background(Color(.systemGray6))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
@@ -179,6 +181,56 @@ struct SubscriptionView: View {
         }
         .task {
             await service.fetchOfferings()
+        }
+    }
+}
+
+private struct TrialDayRow: View {
+    let day: String
+    let icon: String
+    let iconColor: Color
+    let title: String
+    let subtitle: String
+    let isLast: Bool
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            // Icon column with connecting line
+            VStack(spacing: 0) {
+                ZStack {
+                    Circle()
+                        .fill(iconColor.opacity(0.15))
+                        .frame(width: 42, height: 42)
+                    Image(systemName: icon)
+                        .font(.system(size: 18))
+                        .foregroundStyle(iconColor)
+                }
+                if !isLast {
+                    Rectangle()
+                        .fill(Color(.systemGray4))
+                        .frame(width: 2, height: 36)
+                }
+            }
+
+            // Text column
+            VStack(alignment: .leading, spacing: 3) {
+                Text(day)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(iconColor)
+                    .textCase(.uppercase)
+                    .kerning(0.5)
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.top, 10)
+
+            Spacer()
         }
     }
 }
