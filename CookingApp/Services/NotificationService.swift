@@ -37,12 +37,16 @@ final class NotificationService {
             time: preferences.morningRecipeTime
         )
 
-        scheduleNotification(
-            id: .shoppingList,
-            title: String(localized: "notification.shopping.title"),
-            body: String(format: String(localized: "notification.shopping.body"), name),
-            time: preferences.shoppingListTime
-        )
+        if preferences.shoppingListEnabled {
+            scheduleNotification(
+                id: .shoppingList,
+                title: String(localized: "notification.shopping.title"),
+                body: String(format: String(localized: "notification.shopping.body"), name),
+                time: preferences.shoppingListTime
+            )
+        } else {
+            center.removePendingNotificationRequests(withIdentifiers: [NotificationId.shoppingList.rawValue])
+        }
 
         scheduleNotification(
             id: .cookingReminder,

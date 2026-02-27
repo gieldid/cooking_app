@@ -179,6 +179,17 @@ struct PaywallView: View {
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                         .multilineTextAlignment(.center)
+
+                    // ── Legal links ────────────────────────────────────────
+                    HStack(spacing: 12) {
+                        Link("Privacy Policy", destination: URL(string: "https://gieljurriens.nl/inkgredients/#privacy")!)
+                        Text("·").foregroundStyle(.quaternary)
+                        Link("GDPR", destination: URL(string: "https://gieljurriens.nl/inkgredients/#gdpr")!)
+                        Text("·").foregroundStyle(.quaternary)
+                        Link("Terms of Service", destination: URL(string: "https://gieljurriens.nl/inkgredients/#terms")!)
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 32)

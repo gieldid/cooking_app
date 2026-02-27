@@ -127,11 +127,14 @@ struct SettingsView: View {
                         displayedComponents: .hourAndMinute
                     )
 
-                    DatePicker(
-                        "Shopping Reminder",
-                        selection: $viewModel.notificationPreferences.shoppingListTime,
-                        displayedComponents: .hourAndMinute
-                    )
+                    Toggle("Shopping Reminder", isOn: $viewModel.notificationPreferences.shoppingListEnabled)
+                    if viewModel.notificationPreferences.shoppingListEnabled {
+                        DatePicker(
+                            "Shopping Time",
+                            selection: $viewModel.notificationPreferences.shoppingListTime,
+                            displayedComponents: .hourAndMinute
+                        )
+                    }
 
                     DatePicker(
                         "Cooking Reminder",
@@ -160,9 +163,9 @@ struct SettingsView: View {
             }
 
 Section("Legal") {
-                Link("Privacy Policy", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
-                Link("GDPR", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
-                Link("Terms of Service", destination: URL(string: "https://gieljurriens.nl/inkgredients/")!)
+                Link("Privacy Policy", destination: URL(string: "https://gieljurriens.nl/inkgredients/#privacy")!)
+                Link("GDPR", destination: URL(string: "https://gieljurriens.nl/inkgredients/#gdpr")!)
+                Link("Terms of Service", destination: URL(string: "https://gieljurriens.nl/inkgredients/#terms")!)
             }
 
             Section {

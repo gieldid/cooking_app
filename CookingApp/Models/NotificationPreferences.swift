@@ -5,6 +5,7 @@ struct NotificationPreferences: Codable, Equatable {
     var shoppingListTime: Date
     var cookingReminderTime: Date
     var isEnabled: Bool
+    var shoppingListEnabled: Bool
 
     static let `default`: NotificationPreferences = {
         let calendar = Calendar.current
@@ -16,7 +17,8 @@ struct NotificationPreferences: Codable, Equatable {
             morningRecipeTime: morning,
             shoppingListTime: shopping,
             cookingReminderTime: cooking,
-            isEnabled: true
+            isEnabled: true,
+            shoppingListEnabled: true
         )
     }()
 }

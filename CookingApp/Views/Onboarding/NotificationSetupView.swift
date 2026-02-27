@@ -30,7 +30,8 @@ struct NotificationSetupView: View {
                     icon: "cart.fill",
                     title: "Shopping Reminder",
                     subtitle: "Time to grab ingredients",
-                    time: $viewModel.notificationPreferences.shoppingListTime
+                    time: $viewModel.notificationPreferences.shoppingListTime,
+                    isEnabled: $viewModel.notificationPreferences.shoppingListEnabled
                 )
 
                 NotificationTimeRow(
@@ -80,6 +81,7 @@ private struct NotificationTimeRow: View {
     let title: String
     let subtitle: String
     @Binding var time: Date
+    var isEnabled: Binding<Bool>? = nil
 
     var body: some View {
         HStack(spacing: 16) {
@@ -99,12 +101,22 @@ private struct NotificationTimeRow: View {
 
             Spacer()
 
-            DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
-                .labelsHidden()
-                .accessibilityLabel(title)
+            if let enabledBinding = isEnabled {
+                Toggle("", isOn: enabledBinding).labelsHidden()
+                if enabledBinding.wrappedValue {
+                    DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                        .accessibilityLabel(title)
+                }
+            } else {
+                DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
+                    .labelsHidden()
+                    .accessibilityLabel(title)
+            }
         }
         .padding()
         .background(Color(.systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .opacity(isEnabled?.wrappedValue == false ? 0.5 : 1.0)
     }
 }

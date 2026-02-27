@@ -34,11 +34,11 @@ final class FirestoreService {
             }
         }
 
-        // Dietary tags: recipe must match at least one selected diet
+        // Dietary tags: recipe must satisfy ALL selected diets
         if !profile.selectedDiets.isEmpty {
             let recipeTags = Set(recipe.dietaryTags)
             let userDiets = Set(profile.selectedDiets.map { $0.rawValue })
-            if recipeTags.isDisjoint(with: userDiets) {
+            if !userDiets.isSubset(of: recipeTags) {
                 return false
             }
         }
