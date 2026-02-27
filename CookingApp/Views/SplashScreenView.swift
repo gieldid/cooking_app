@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SplashScreenView: View {
     let onComplete: () -> Void
+    var namespace: Namespace.ID
 
     // Falling drop
     @State private var dropY: CGFloat      = -500
@@ -22,9 +23,10 @@ struct SplashScreenView: View {
     @State private var s6: CGSize = .zero
     @State private var scatterOpacity: Double = 0
 
-    // Content reveal
-    @State private var contentOpacity: Double = 0
-    @State private var contentScale: CGFloat  = 0.82
+    // Content reveal — mascot and text fade independently
+    @State private var mascotOpacity: Double = 0
+    @State private var textOpacity: Double   = 0
+    @State private var contentScale: CGFloat = 0.85
 
     var body: some View {
         ZStack {
@@ -63,18 +65,22 @@ struct SplashScreenView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
+                    .matchedGeometryEffect(id: "mascot", in: namespace)
                     .accessibilityHidden(true)
+                    .opacity(mascotOpacity)
 
-                Text("Inkgredients")
-                    .font(.system(size: 38, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color.accentColor)
+                VStack(spacing: 8) {
+                    Text("Inkgredients")
+                        .font(.system(size: 38, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.accentColor)
 
-                Text("Cook something amazing today")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    Text("Cook something amazing today")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .scaleEffect(contentScale)
+                .opacity(textOpacity)
             }
-            .scaleEffect(contentScale)
-            .opacity(contentOpacity)
 
             // ── Falling ink drop (on top) ────────────────────────────────────
             InkDropShape()
@@ -135,8 +141,20 @@ struct SplashScreenView: View {
         // ── Phase 3: reveal content at 1.1 s ──────────────────────────────
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
             withAnimation(.spring(response: 0.55, dampingFraction: 0.72)) {
-                contentOpacity = 1
-                contentScale   = 1
+                mascotOpacity = 1
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                withAnimation(.spring(response: 0.55, dampingFraction: 0.72)) {
+                    textOpacity  = 1
+                    contentScale = 1
+                }
+            }
+        }
+
+        // ── Phase 3b: pre-fade text at 2.6 s (mascot stays, ready to hero) ─
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.6) {
+            withAnimation(.easeOut(duration: 0.3)) {
+                textOpacity = 0
             }
         }
 
