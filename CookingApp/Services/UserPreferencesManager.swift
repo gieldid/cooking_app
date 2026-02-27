@@ -33,6 +33,9 @@ final class UserPreferencesManager: ObservableObject {
         static let measurementPreference = "measurementPreference"
         static let defaultServings = "defaultServings"
         static let favouriteRecipes = "favouriteRecipes"
+        static let todayRecipeId = "todayRecipeId"
+        static let todayDateString = "todayDateString"
+        static let recentRecipeIds = "recentRecipeIds"
     }
 
     @Published var hasCompletedOnboarding: Bool {
@@ -105,5 +108,38 @@ final class UserPreferencesManager: ObservableObject {
         hasCompletedOnboarding = false
         dietaryProfile = .empty
         notificationPreferences = .default
+    }
+
+    // MARK: - Daily recipe persistence
+
+    private static var todayString: String {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return f.string(from: Date())
+    }
+
+    /// Returns the persisted recipe ID if it was saved today, otherwise clears stale data and returns nil.
+    func pickedRecipeIdForToday() -> String? {
+        guard defaults.string(forKey: Keys.todayDateString) == Self.todayString else {
+            defaults.removeObject(forKey: Keys.todayRecipeId)
+            defaults.removeObject(forKey: Keys.todayDateString)
+            return nil
+        }
+        return defaults.string(forKey: Keys.todayRecipeId)
+    }
+
+    /// Persists today's picked recipe and records it in the recent-recipes list (max 14 entries).
+    func savePickedRecipe(id: String) {
+        defaults.set(id, forKey: Keys.todayRecipeId)
+        defaults.set(Self.todayString, forKey: Keys.todayDateString)
+
+        var recent = defaults.stringArray(forKey: Keys.recentRecipeIds) ?? []
+        recent.removeAll { $0 == id }
+        recent.insert(id, at: 0)
+        defaults.set(Array(recent.prefix(14)), forKey: Keys.recentRecipeIds)
+    }
+
+    var recentRecipeIds: [String] {
+        defaults.stringArray(forKey: Keys.recentRecipeIds) ?? []
     }
 }

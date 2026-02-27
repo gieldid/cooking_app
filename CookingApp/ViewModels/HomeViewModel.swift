@@ -50,12 +50,20 @@ final class HomeViewModel: ObservableObject {
                 todayRecipe = nil
                 errorMessage = String(localized: "error.no_recipes")
             } else {
-                // Pick a recipe based on the day — deterministic per day
-                let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
-                let picked = recipes[dayIndex % recipes.count]
-                if picked.id != todayRecipe?.id {
+                // Use today's persisted pick if available (survives screen switches & app restarts)
+                if let savedId = prefs.pickedRecipeIdForToday(),
+                   let saved = recipes.first(where: { $0.id == savedId }) {
+                    if saved.id != todayRecipe?.id {
+                        todayRecipe = saved
+                        servingsMultiplier = initialServings(for: saved)
+                    }
+                } else {
+                    // New day or first launch — pick deterministically and persist
+                    let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
+                    let picked = recipes[dayIndex % recipes.count]
                     todayRecipe = picked
                     servingsMultiplier = initialServings(for: picked)
+                    if let id = picked.id { prefs.savePickedRecipe(id: id) }
                 }
 
                 // Update notifications with recipe name
@@ -84,10 +92,19 @@ final class HomeViewModel: ObservableObject {
             recipeTitle: current.title
         )
 
-        var filtered = allFilteredRecipes.filter { $0.id != current.id }
-        if filtered.isEmpty { filtered = allFilteredRecipes }
-        todayRecipe = filtered.randomElement()
-        if let recipe = todayRecipe { servingsMultiplier = initialServings(for: recipe) }
+        // Prefer recipes not seen recently; fall back to just excluding the current one
+        let recentIds = Set(prefs.recentRecipeIds)
+        var candidates = allFilteredRecipes.filter {
+            $0.id != current.id && !recentIds.contains($0.id ?? "")
+        }
+        if candidates.isEmpty {
+            candidates = allFilteredRecipes.filter { $0.id != current.id }
+        }
+
+        guard let newRecipe = candidates.randomElement() else { return }
+        todayRecipe = newRecipe
+        servingsMultiplier = initialServings(for: newRecipe)
+        if let id = newRecipe.id { prefs.savePickedRecipe(id: id) }
 
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,
