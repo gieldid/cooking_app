@@ -18,7 +18,7 @@ MVVM with three singleton services. All ViewModels are `@MainActor ObservableObj
 
 **Services (all singletons):**
 - `UserPreferencesManager.shared` — Wraps UserDefaults. Persists `DietaryProfile` and `NotificationPreferences` as Codable JSON. `@Published` properties auto-save via `didSet`. Generates and stores a stable device UUID.
-- `FirestoreService.shared` — Reads `recipes` collection, writes to `dietaryProfiles` collection. Recipe filtering is **client-side**: fetches all recipes then filters by allergens (recipe must be free of all user allergies) and dietary tags (recipe must match at least one user diet).
+- `FirestoreService.shared` — Reads `recipes` collection, writes to `dietaryProfiles` collection. Recipe filtering is **client-side**: fetches all recipes then filters by allergens (recipe must be free of all user allergies) and dietary tags (recipe must match ALL selected user diets).
 - `NotificationService.shared` — Schedules 3 repeating daily local notifications via `UNCalendarNotificationTrigger`. Each has a unique identifier (`com.cookingapp.morning/shopping/cooking`) so they update independently. Notifications are rescheduled whenever the recipe changes or settings are saved.
 
 **Today's recipe selection:** Deterministic per calendar day — uses `Calendar.current.ordinality(of: .day, in: .era)` mod recipe count. The "Skip" button picks a random alternative.
