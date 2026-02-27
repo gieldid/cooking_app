@@ -13,7 +13,9 @@ struct HomeView: View {
 
                     HStack(spacing: 16) {
                         Button {
-                            viewModel.skipRecipe()
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                viewModel.skipRecipe()
+                            }
                         } label: {
                             Label("Skip", systemImage: "forward.fill")
                                 .font(.headline)
@@ -100,18 +102,11 @@ private struct RecipeCard: View {
             // Image with favourite overlay
             ZStack(alignment: .topTrailing) {
                 if let imageURL = recipe.imageURL, let url = URL(string: imageURL) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        default:
-                            recipePlaceholder
-                        }
-                    }
-                    .frame(height: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    RecipeImageView(url: url)
+                        .id(url)
+                        .frame(height: 220)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .transition(.opacity)
                 } else {
                     recipePlaceholder
                         .frame(height: 220)
@@ -184,5 +179,32 @@ private struct RecipeCard: View {
             .scaledToFit()
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
+    }
+}
+
+private struct RecipeImageView: View {
+    let url: URL
+    @State private var isLoaded = false
+
+    var body: some View {
+        AsyncImage(url: url) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .opacity(isLoaded ? 1 : 0)
+                    .onAppear {
+                        withAnimation(.easeIn(duration: 0.25)) { isLoaded = true }
+                    }
+            default:
+                Image("PlaceholderImage")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .accessibilityHidden(true)
+                    .onAppear { isLoaded = false }
+            }
+        }
     }
 }
