@@ -1,5 +1,15 @@
 import SwiftUI
 
+// Shared protocol so both OnboardingViewModel and SettingsViewModel can drive PerDayRow
+protocol PerDayPreferencesViewModel: ObservableObject {
+    var perDayOverrides: [Int: DayOverride] { get set }
+    var globalDifficulties: Set<Difficulty> { get }
+    var maxDuration: MaxDuration { get }
+    func togglePerDayDifficulty(weekday: Int, difficulty: Difficulty)
+    func setPerDayDuration(weekday: Int, duration: MaxDuration)
+    func clearPerDayOverride(weekday: Int)
+}
+
 struct RecipePreferencesView: View {
     @ObservedObject var viewModel: OnboardingViewModel
 
@@ -135,15 +145,15 @@ struct RecipePreferencesView: View {
     }
 }
 
-private struct PerDayRow: View {
+struct PerDayRow<VM: PerDayPreferencesViewModel>: View {
     let weekday: Int
     let dayName: String
     let columns: [GridItem]
-    @ObservedObject var viewModel: OnboardingViewModel
+    @ObservedObject var viewModel: VM
     @State private var isExpanded = false
 
     private var override: DayOverride? { viewModel.perDayOverrides[weekday] }
-    private var difficulties: Set<Difficulty> { override?.difficulties ?? viewModel.selectedDifficulties }
+    private var difficulties: Set<Difficulty> { override?.difficulties ?? viewModel.globalDifficulties }
     private var duration: MaxDuration { override?.maxDuration ?? viewModel.maxDuration }
 
     var body: some View {
@@ -199,7 +209,7 @@ private struct PerDayRow: View {
     }
 }
 
-private struct DifficultyChip: View {
+struct DifficultyChip: View {
     let difficulty: Difficulty
     let isSelected: Bool
     let action: () -> Void

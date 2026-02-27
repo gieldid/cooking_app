@@ -86,26 +86,26 @@ struct SettingsView: View {
                 Stepper(stepperLabel, value: $prefs.defaultServings, in: 0...20)
 
                 DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
-                    ForEach(orderedWeekdays, id: \.self) { weekday in
-                        NavigationLink {
-                            DayPreferencesView(
+                    VStack(spacing: 0) {
+                        ForEach(orderedWeekdays, id: \.self) { weekday in
+                            PerDayRow(
                                 weekday: weekday,
                                 dayName: weekdayName(weekday),
+                                columns: difficultyColumns,
                                 viewModel: viewModel
                             )
-                        } label: {
-                            HStack {
-                                Text(weekdayName(weekday))
-                                Spacer()
-                                if viewModel.perDayOverrides[weekday] != nil {
-                                    Text("Custom")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
+                            if weekday != orderedWeekdays.last {
+                                Divider().padding(.leading, 16)
                             }
                         }
                     }
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.top, 8)
+                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                    .listRowBackground(Color.clear)
                 }
+                .animation(.easeInOut, value: showAdvancedSettings)
             }
 
             Section("Units") {
@@ -195,65 +195,6 @@ Section("Legal") {
     }
 }
 
-private struct DayPreferencesView: View {
-    let weekday: Int
-    let dayName: String
-    @ObservedObject var viewModel: SettingsViewModel
-
-    private let difficultyColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
-
-    private var override: DayOverride? { viewModel.perDayOverrides[weekday] }
-    private var difficulties: Set<Difficulty> { override?.difficulties ?? viewModel.preferredDifficulties }
-    private var duration: MaxDuration { override?.maxDuration ?? viewModel.maxDuration }
-
-    var body: some View {
-        Form {
-            Section("Difficulty") {
-                LazyVGrid(columns: difficultyColumns, spacing: 8) {
-                    ForEach(Difficulty.allCases) { difficulty in
-                        SettingsChip(
-                            text: difficulty.displayName,
-                            isSelected: difficulties.contains(difficulty)
-                        ) {
-                            viewModel.togglePerDayDifficulty(weekday: weekday, difficulty: difficulty)
-                        }
-                    }
-                }
-                .buttonStyle(.borderless)
-                .padding(.vertical, 4)
-            }
-
-            Section("Max Cook Time") {
-                Picker("Max Cook Time", selection: Binding(
-                    get: { duration },
-                    set: { viewModel.setPerDayDuration(weekday: weekday, duration: $0) }
-                )) {
-                    ForEach(MaxDuration.allCases, id: \.self) { d in
-                        Text(d.displayName).tag(d)
-                    }
-                }
-            }
-
-            if override != nil {
-                Section {
-                    Button("Reset to Defaults") {
-                        viewModel.clearPerDayOverride(weekday: weekday)
-                    }
-                    .foregroundStyle(.red)
-                } footer: {
-                    Text("Removes custom settings for \(dayName) and uses your global preferences.")
-                }
-            } else {
-                Section {
-                    EmptyView()
-                } footer: {
-                    Text("Showing global defaults. Adjust any setting above to create a custom override for \(dayName).")
-                }
-            }
-        }
-        .navigationTitle(dayName)
-    }
-}
 
 private struct SettingsChip: View {
     let text: String

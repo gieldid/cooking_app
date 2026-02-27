@@ -71,6 +71,9 @@ final class OnboardingViewModel: ObservableObject {
         perDayOverrides.removeValue(forKey: weekday)
     }
 
+    // MARK: - PerDayPreferencesViewModel
+    var globalDifficulties: Set<Difficulty> { selectedDifficulties }
+
     func completeOnboarding() async {
         isCompleting = true
         defer { isCompleting = false }

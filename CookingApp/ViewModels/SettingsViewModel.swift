@@ -81,6 +81,9 @@ final class SettingsViewModel: ObservableObject {
         perDayOverrides.removeValue(forKey: weekday)
     }
 
+    // MARK: - PerDayPreferencesViewModel
+    var globalDifficulties: Set<Difficulty> { preferredDifficulties }
+
     func save() async {
         let profile = DietaryProfile(
             selectedAllergies: selectedAllergies,
