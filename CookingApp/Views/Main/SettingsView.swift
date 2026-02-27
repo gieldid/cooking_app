@@ -86,24 +86,14 @@ struct SettingsView: View {
                 Stepper(stepperLabel, value: $prefs.defaultServings, in: 0...20)
 
                 DisclosureGroup("Per-day Preferences", isExpanded: $showAdvancedSettings) {
-                    VStack(spacing: 0) {
-                        ForEach(orderedWeekdays, id: \.self) { weekday in
-                            PerDayRow(
-                                weekday: weekday,
-                                dayName: weekdayName(weekday),
-                                columns: difficultyColumns,
-                                viewModel: viewModel
-                            )
-                            if weekday != orderedWeekdays.last {
-                                Divider().padding(.leading, 16)
-                            }
-                        }
+                    ForEach(orderedWeekdays, id: \.self) { weekday in
+                        SettingsPerDayRow(
+                            weekday: weekday,
+                            dayName: weekdayName(weekday),
+                            columns: difficultyColumns,
+                            viewModel: viewModel
+                        )
                     }
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .padding(.top, 8)
-                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    .listRowBackground(Color.clear)
                 }
                 .animation(.easeInOut, value: showAdvancedSettings)
             }
@@ -121,33 +111,25 @@ struct SettingsView: View {
                 Toggle("Enable Notifications", isOn: $viewModel.notificationPreferences.isEnabled)
 
                 if viewModel.notificationPreferences.isEnabled {
-                    NotificationTimeRow(
-                        icon: "fork.knife",
-                        title: "Morning Recipe",
-                        subtitle: "See today's recipe suggestion",
-                        time: $viewModel.notificationPreferences.morningRecipeTime
+                    DatePicker(
+                        "Morning Recipe",
+                        selection: $viewModel.notificationPreferences.morningRecipeTime,
+                        displayedComponents: .hourAndMinute
                     )
-                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    .listRowBackground(Color.clear)
 
-                    NotificationTimeRow(
-                        icon: "cart.fill",
-                        title: "Shopping Reminder",
-                        subtitle: "Time to grab ingredients",
-                        time: $viewModel.notificationPreferences.shoppingListTime,
-                        isEnabled: $viewModel.notificationPreferences.shoppingListEnabled
-                    )
-                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    .listRowBackground(Color.clear)
+                    HStack {
+                        Toggle("Shopping Reminder", isOn: $viewModel.notificationPreferences.shoppingListEnabled)
+                        if viewModel.notificationPreferences.shoppingListEnabled {
+                            DatePicker("", selection: $viewModel.notificationPreferences.shoppingListTime, displayedComponents: .hourAndMinute)
+                                .labelsHidden()
+                        }
+                    }
 
-                    NotificationTimeRow(
-                        icon: "flame.fill",
-                        title: "Cooking Reminder",
-                        subtitle: "Time to start cooking",
-                        time: $viewModel.notificationPreferences.cookingReminderTime
+                    DatePicker(
+                        "Cooking Reminder",
+                        selection: $viewModel.notificationPreferences.cookingReminderTime,
+                        displayedComponents: .hourAndMinute
                     )
-                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-                    .listRowBackground(Color.clear)
                 }
             }
 
@@ -195,6 +177,62 @@ Section("Legal") {
     }
 }
 
+
+private struct SettingsPerDayRow: View {
+    let weekday: Int
+    let dayName: String
+    let columns: [GridItem]
+    @ObservedObject var viewModel: SettingsViewModel
+    @State private var isExpanded = false
+
+    private var override: DayOverride? { viewModel.perDayOverrides[weekday] }
+    private var difficulties: Set<Difficulty> { override?.difficulties ?? viewModel.preferredDifficulties }
+    private var duration: MaxDuration { override?.maxDuration ?? viewModel.maxDuration }
+
+    var body: some View {
+        DisclosureGroup(isExpanded: $isExpanded) {
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(Difficulty.allCases) { difficulty in
+                    SettingsChip(
+                        text: difficulty.displayName,
+                        isSelected: difficulties.contains(difficulty)
+                    ) {
+                        viewModel.togglePerDayDifficulty(weekday: weekday, difficulty: difficulty)
+                    }
+                }
+            }
+            .buttonStyle(.borderless)
+            .padding(.vertical, 4)
+
+            Picker("Max Cook Time", selection: Binding(
+                get: { duration },
+                set: { viewModel.setPerDayDuration(weekday: weekday, duration: $0) }
+            )) {
+                ForEach(MaxDuration.allCases, id: \.self) { d in
+                    Text(d.displayName).tag(d)
+                }
+            }
+
+            if override != nil {
+                Button("Reset to defaults") {
+                    viewModel.clearPerDayOverride(weekday: weekday)
+                }
+                .foregroundStyle(.red)
+            }
+        } label: {
+            HStack {
+                Text(dayName)
+                Spacer()
+                if override != nil {
+                    Text("Custom")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .animation(.easeInOut, value: isExpanded)
+    }
+}
 
 private struct SettingsChip: View {
     let text: String
