@@ -30,34 +30,6 @@ struct TrialReminderView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 8)
                 }
-
-                // Timeline
-                VStack(alignment: .leading, spacing: 0) {
-                    TrialTimelineRow(
-                        icon: "gift.fill",
-                        iconColor: .green,
-                        title: "Today",
-                        subtitle: "3-day free trial begins — full access",
-                        isLast: false
-                    )
-                    TrialTimelineRow(
-                        icon: "bell.fill",
-                        iconColor: .accentColor,
-                        title: "Day 2",
-                        subtitle: "We send you a billing reminder",
-                        isLast: false
-                    )
-                    TrialTimelineRow(
-                        icon: "creditcard.fill",
-                        iconColor: Color(.systemGray),
-                        title: "Day 3",
-                        subtitle: "Trial ends — cancel anytime before this",
-                        isLast: true
-                    )
-                }
-                .padding(16)
-                .background(Color(.systemGray6))
-                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .padding(.horizontal, 24)
 
