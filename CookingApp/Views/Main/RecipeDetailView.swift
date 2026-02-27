@@ -195,13 +195,9 @@ private final class RecipeLinkItemSource: NSObject, UIActivityItemSource {
     }
 
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
-        guard let url else { return nil }
         let metadata = LPLinkMetadata()
         metadata.title = recipe.title
-        metadata.url = url
-        metadata.originalURL = url
-        if let icon = UIImage(named: "AppIcon") {
-            metadata.iconProvider = NSItemProvider(object: icon)
+        if let icon = UIImage(named: "ChefMascot") {
             metadata.imageProvider = NSItemProvider(object: icon)
         }
         return metadata
