@@ -31,31 +31,46 @@ struct SplashScreenView: View {
             Color(.systemBackground)
                 .ignoresSafeArea()
 
-            // Ripple rings centred on the impact point
-            Circle()
+            // Ripple rings — horizontal ellipses (2:1) like a drop hitting water
+            Ellipse()
                 .stroke(Color.accentColor, lineWidth: 2.5)
-                .frame(width: 80, height: 80)
+                .frame(width: 80, height: 40)
                 .scaleEffect(ring1Scale)
                 .opacity(ring1Opacity)
 
-            Circle()
+            Ellipse()
                 .stroke(Color.accentColor, lineWidth: 2)
-                .frame(width: 80, height: 80)
+                .frame(width: 80, height: 40)
                 .scaleEffect(ring2Scale)
                 .opacity(ring2Opacity)
 
-            Circle()
+            Ellipse()
                 .stroke(Color.accentColor, lineWidth: 1.5)
-                .frame(width: 80, height: 80)
+                .frame(width: 80, height: 40)
                 .scaleEffect(ring3Scale)
                 .opacity(ring3Opacity)
 
-            // Filled splat circle on impact
-            Circle()
-                .fill(Color.accentColor)
-                .frame(width: 50, height: 50)
-                .scaleEffect(splatScale)
-                .opacity(splatOpacity)
+            // Ink splat on impact: layered flat ellipses + scatter droplets
+            ZStack {
+                Ellipse()
+                    .fill(Color.accentColor.opacity(0.15))
+                    .frame(width: 110, height: 55)
+                Ellipse()
+                    .fill(Color.accentColor.opacity(0.22))
+                    .frame(width: 75, height: 37)
+                Ellipse()
+                    .fill(Color.accentColor.opacity(0.42))
+                    .frame(width: 42, height: 21)
+                // Scatter droplets
+                Circle().fill(Color.accentColor.opacity(0.30)).frame(width: 7,  height: 7 ).offset(x: -42, y: -5 )
+                Circle().fill(Color.accentColor.opacity(0.25)).frame(width: 8,  height: 8 ).offset(x:  40, y:  5 )
+                Circle().fill(Color.accentColor.opacity(0.20)).frame(width: 6,  height: 6 ).offset(x: -30, y:  19)
+                Circle().fill(Color.accentColor.opacity(0.20)).frame(width: 5,  height: 5 ).offset(x:  28, y: -17)
+                Circle().fill(Color.accentColor.opacity(0.15)).frame(width: 5,  height: 5 ).offset(x: -48, y:  12)
+                Circle().fill(Color.accentColor.opacity(0.15)).frame(width: 4,  height: 4 ).offset(x:  49, y: -10)
+            }
+            .scaleEffect(splatScale)
+            .opacity(splatOpacity)
 
             // App content — revealed after the splash
             VStack(spacing: 16) {
@@ -104,10 +119,10 @@ struct SplashScreenView: View {
                 dropScaleX = 2.5
                 dropScaleY = 0.22
             }
-            // Show filled splat
-            withAnimation(.easeOut(duration: 0.11)) {
+            // Show splat with bounce overshoot
+            withAnimation(.spring(response: 0.32, dampingFraction: 0.55)) {
                 splatScale = 1.0
-                splatOpacity = 0.9
+                splatOpacity = 1.0
             }
 
             // 0.7 s: fade out drop + splat, trigger ripples
