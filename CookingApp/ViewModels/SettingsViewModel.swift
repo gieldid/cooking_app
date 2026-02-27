@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 @MainActor
-final class SettingsViewModel: ObservableObject {
+final class SettingsViewModel: ObservableObject, PerDayPreferencesViewModel {
     @Published var selectedAllergies: Set<Allergy>
     @Published var selectedDiets: Set<Diet>
     @Published var preferredDifficulties: Set<Difficulty>

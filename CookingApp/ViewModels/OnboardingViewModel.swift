@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class OnboardingViewModel: ObservableObject {
+final class OnboardingViewModel: ObservableObject, PerDayPreferencesViewModel {
     @Published var currentPage = 0
     @Published var selectedAllergies: Set<Allergy> = []
     @Published var selectedDiets: Set<Diet> = []
