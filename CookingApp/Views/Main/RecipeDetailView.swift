@@ -1,13 +1,9 @@
 import SwiftUI
-import UIKit
-import LinkPresentation
 
 struct RecipeDetailView: View {
     let recipe: Recipe
     @Binding var servingsMultiplier: Int
     @State private var completedSteps: Set<Int> = []
-    @State private var showShareSheet = false
-    @State private var shareItems: [Any] = []
     @ObservedObject private var prefs = UserPreferencesManager.shared
 
     var body: some View {
@@ -120,15 +116,17 @@ struct RecipeDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack(spacing: 4) {
-                    Button {
-                        Task { @MainActor in
-                            await buildShareItems()
-                            if !shareItems.isEmpty { showShareSheet = true }
+                    if let recipeId = recipe.id,
+                       let url = URL(string: "inkgredients://recipe/\(recipeId)") {
+                        ShareLink(
+                            item: url,
+                            subject: Text(recipe.title),
+                            message: Text("Check out '\(recipe.title)' on Inkgredients!")
+                        ) {
+                            Image(systemName: "square.and.arrow.up")
                         }
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
+                        .accessibilityLabel("Share recipe")
                     }
-                    .accessibilityLabel("Share recipe")
 
                     Button {
                         prefs.toggleFavourite(recipe)
@@ -140,40 +138,6 @@ struct RecipeDetailView: View {
                 }
             }
         }
-        .sheet(isPresented: $showShareSheet) {
-            ActivityShareSheet(items: shareItems)
-                .ignoresSafeArea()
-        }
-    }
-
-    @MainActor
-    private func buildShareItems() async {
-        var items: [Any] = []
-        var preloadedImage: UIImage? = nil
-        if let urlString = recipe.imageURL, let url = URL(string: urlString) {
-            // AsyncImage caches into URLCache.shared — try that first
-            let request = URLRequest(url: url)
-            if let cached = URLCache.shared.cachedResponse(for: request),
-               let img = UIImage(data: cached.data) {
-                preloadedImage = img
-            } else {
-                preloadedImage = await fetchUIImage(from: url)
-            }
-        }
-        let card = RecipeShareCard(recipe: recipe, preloadedImage: preloadedImage)
-        let renderer = ImageRenderer(content: card)
-        renderer.scale = 3.0
-        renderer.proposedSize = .init(width: 360, height: nil)
-        if let uiImage = renderer.uiImage {
-            items.append(ShareItemSource(cardImage: uiImage, title: recipe.title))
-        }
-        shareItems = items
-    }
-
-    private func fetchUIImage(from url: URL) async -> UIImage? {
-        guard let (data, response) = try? await URLSession.shared.data(from: url),
-              (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
-        return UIImage(data: data)
     }
 
     private func displayIngredient(_ ingredient: Ingredient) -> (amount: String, unit: String) {
@@ -191,109 +155,6 @@ struct RecipeDetailView: View {
             .resizable()
             .scaledToFill()
             .accessibilityHidden(true)
-    }
-}
-
-private struct ActivityShareSheet: UIViewControllerRepresentable {
-    let items: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
-
-private final class ShareItemSource: NSObject, UIActivityItemSource {
-    private let cardImage: UIImage
-    private let title: String
-
-    init(cardImage: UIImage, title: String) {
-        self.cardImage = cardImage
-        self.title = title
-    }
-
-    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        cardImage
-    }
-
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        cardImage
-    }
-
-    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
-        let metadata = LPLinkMetadata()
-        metadata.title = title
-        if let mascot = UIImage(named: "AppMascot") {
-            metadata.imageProvider = NSItemProvider(object: mascot)
-        }
-        return metadata
-    }
-}
-
-
-private struct RecipeShareCard: View {
-    let recipe: Recipe
-    let preloadedImage: UIImage?
-
-    var body: some View {
-        VStack(spacing: 0) {
-            // Recipe image
-            if let uiImage = preloadedImage {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 360, height: 210)
-                    .clipped()
-            } else {
-                Image("PlaceholderImage")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 360, height: 210)
-                    .clipped()
-            }
-
-            VStack(alignment: .leading, spacing: 10) {
-                Text(recipe.title)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.primary)
-
-                Text(recipe.localizedDescription)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-
-                HStack(spacing: 16) {
-                    Label("\(recipe.totalTime) min", systemImage: "clock")
-                    Label("\(recipe.servings) servings", systemImage: "person.2")
-                }
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-                Divider()
-
-                HStack(spacing: 10) {
-                    Image(systemName: "fork.knife.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(.accent)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Inkgredients")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        Text(String(localized: "Get the full recipe on Inkgredients"))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    Spacer()
-                }
-            }
-            .padding(16)
-            .background(Color(.systemBackground))
-        }
-        .frame(width: 360)
-        .clipShape(RoundedRectangle(cornerRadius: 18))
-        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
     }
 }
 
