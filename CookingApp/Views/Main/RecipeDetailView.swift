@@ -142,6 +142,7 @@ struct RecipeDetailView: View {
                 }
             }
         }
+        .trackScreenTime("recipe_detail")
     }
 
     private func displayIngredient(_ ingredient: Ingredient) -> (amount: String, unit: String) {

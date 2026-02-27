@@ -184,6 +184,7 @@ Section("Legal") {
         } message: {
             Text("This will clear all your preferences and show the onboarding flow again.")
         }
+        .trackScreenTime("settings")
     }
 }
 

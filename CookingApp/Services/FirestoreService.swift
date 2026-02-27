@@ -7,6 +7,7 @@ final class FirestoreService {
     private let db = Firestore.firestore()
     private let recipesCollection = "recipes"
     private let profilesCollection = "dietaryProfiles"
+    private let analyticsCollection = "analytics_events"
 
     private init() {}
 
@@ -67,6 +68,18 @@ final class FirestoreService {
     func fetchRecipe(id: String) async throws -> Recipe? {
         let doc = try await db.collection(recipesCollection).document(id).getDocument()
         return try? doc.data(as: Recipe.self)
+    }
+
+    // MARK: - Dietary Profiles (anonymous)
+
+    // MARK: - Analytics events
+
+    /// Fire-and-forget write to the analytics_events collection.
+    /// Caller is responsible for including "event" and any event-specific fields.
+    func logAnalyticsEvent(_ params: [String: Any]) {
+        var data = params
+        data["timestamp"] = FieldValue.serverTimestamp()
+        db.collection(analyticsCollection).addDocument(data: data)
     }
 
     // MARK: - Dietary Profiles (anonymous)

@@ -94,6 +94,7 @@ struct ShoppingListView: View {
             guard homeViewModel.todayRecipe == nil && !homeViewModel.isLoading else { return }
             await homeViewModel.loadTodayRecipe()
         }
+        .trackScreenTime("shopping_list")
     }
 
     private func displayIngredient(_ ingredient: Ingredient, recipe: Recipe) -> (amount: String, unit: String) {

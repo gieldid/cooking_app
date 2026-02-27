@@ -63,6 +63,7 @@ struct HomeView: View {
         .task {
             await viewModel.loadTodayRecipe()
         }
+        .trackScreenTime("home")
     }
 }
 

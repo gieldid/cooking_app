@@ -78,6 +78,12 @@ final class HomeViewModel: ObservableObject {
 
     func skipRecipe() {
         guard allFilteredRecipes.count > 1, let current = todayRecipe else { return }
+
+        AnalyticsService.shared.trackRecipeSkipped(
+            recipeId: current.id ?? "unknown",
+            recipeTitle: current.title
+        )
+
         var filtered = allFilteredRecipes.filter { $0.id != current.id }
         if filtered.isEmpty { filtered = allFilteredRecipes }
         todayRecipe = filtered.randomElement()

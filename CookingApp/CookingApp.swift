@@ -22,10 +22,16 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 @main
 struct CookingApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .background {
+                AnalyticsService.shared.trackAppBackgrounded()
+            }
         }
     }
 }

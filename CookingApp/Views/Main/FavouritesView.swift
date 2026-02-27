@@ -24,6 +24,7 @@ struct FavouritesView: View {
             }
         }
         .navigationTitle(String(localized: "Favourites"))
+        .trackScreenTime("favourites")
     }
 
     private var emptyState: some View {
