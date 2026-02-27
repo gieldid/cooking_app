@@ -18,7 +18,6 @@
 		A10008 /* AllergiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* AllergiesView.swift */; };
 		A10009 /* DietaryPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* DietaryPreferencesView.swift */; };
 		A10010 /* NotificationSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* NotificationSetupView.swift */; };
-		A10036 /* TrialReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10036 /* TrialReminderView.swift */; };
 		A10011 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* HomeView.swift */; };
 		A10012 /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* RecipeDetailView.swift */; };
 		A10013 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* ShoppingListView.swift */; };
@@ -37,12 +36,13 @@
 		A10026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* PaywallView.swift */; };
 		A10027 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028 /* SubscriptionView.swift */; };
 		A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* AnalyticsService.swift */; };
-		A10033 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* FavouritesView.swift */; };
-		A10034 /* SharedRecipeGuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* SharedRecipeGuestView.swift */; };
-		A10035 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* SplashScreenView.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 		A10031 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D10002 /* RevenueCat */; };
 		A10032 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D10003 /* FirebaseAnalytics */; };
+		A10033 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* FavouritesView.swift */; };
+		A10034 /* SharedRecipeGuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* SharedRecipeGuestView.swift */; };
+		A10035 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* SplashScreenView.swift */; };
+		A10036 /* TrialReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10036 /* TrialReminderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,7 +57,6 @@
 		B10008 /* AllergiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllergiesView.swift; sourceTree = "<group>"; };
 		B10009 /* DietaryPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietaryPreferencesView.swift; sourceTree = "<group>"; };
 		B10010 /* NotificationSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSetupView.swift; sourceTree = "<group>"; };
-		B10036 /* TrialReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialReminderView.swift; sourceTree = "<group>"; };
 		B10011 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B10012 /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		B10013 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		B10030 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
 		B10031 /* SharedRecipeGuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRecipeGuestView.swift; sourceTree = "<group>"; };
 		B10032 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		B10036 /* TrialReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialReminderView.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -414,7 +414,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nl.gieljurriens.cookingapp;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.gieljurriens.inkgredients;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -499,7 +499,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nl.gieljurriens.cookingapp;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.gieljurriens.inkgredients;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

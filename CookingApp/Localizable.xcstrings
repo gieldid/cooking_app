@@ -4,6 +4,16 @@
     "" : {
 
     },
+    "%@ / month · billed %@ yearly" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ / month · billed %2$@ yearly"
+          }
+        }
+      }
+    },
     "%@, %@ %@" : {
       "localizations" : {
         "en" : {
@@ -242,6 +252,9 @@
         }
       }
     },
+    "%lld-Day Free Trial" : {
+
+    },
     "%lldm cook" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -311,9 +324,6 @@
           }
         }
       }
-    },
-    "3-day free trial included" : {
-
     },
     "Add to favourites" : {
 
@@ -671,9 +681,6 @@
         }
       }
     },
-    "BEST VALUE" : {
-
-    },
     "Cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -709,7 +716,10 @@
         }
       }
     },
-    "Cancel anytime. Billed after trial ends." : {
+    "Cancel anytime before trial ends. No charge during trial." : {
+
+    },
+    "Cancel anytime before trial ends. Subscription auto-renews yearly unless cancelled." : {
 
     },
     "Check the Today tab for today's recipe." : {
@@ -788,7 +798,7 @@
         }
       }
     },
-    "Cook smarter every day" : {
+    "Cook something amazing today" : {
 
     },
     "Cooking Reminder" : {
@@ -1792,6 +1802,9 @@
         }
       }
     },
+    "Full access, cancel anytime" : {
+
+    },
     "GDPR" : {
 
     },
@@ -1902,6 +1915,9 @@
           }
         }
       }
+    },
+    "Got it, continue" : {
+
     },
     "Ingredients" : {
       "extractionState" : "manual",
@@ -2051,6 +2067,9 @@
           }
         }
       }
+    },
+    "Loading Inkgredients" : {
+
     },
     "Loading shopping list" : {
 
@@ -2375,9 +2394,6 @@
           }
         }
       }
-    },
-    "No plans available right now." : {
-
     },
     "No recipe selected yet." : {
       "extractionState" : "manual",
@@ -2934,9 +2950,6 @@
         }
       }
     },
-    "Select a plan" : {
-
-    },
     "Select any diets you follow. We'll suggest recipes that fit your lifestyle." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3325,9 +3338,6 @@
     "Subscription" : {
 
     },
-    "Subscriptions auto-renew unless cancelled. Lifetime is a one-time purchase." : {
-
-    },
     "Tap the heart on any recipe to save it here." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3622,6 +3632,12 @@
           }
         }
       }
+    },
+    "We'll send you a reminder the day before your trial ends — no unexpected charges." : {
+
+    },
+    "We've got you covered" : {
+
     },
     "Welcome to Cooking App" : {
       "extractionState" : "manual",
