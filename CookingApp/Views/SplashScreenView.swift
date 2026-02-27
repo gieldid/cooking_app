@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SplashScreenView: View {
-    var namespace: Namespace.ID
     let onComplete: () -> Void
 
     // Falling drop
@@ -65,7 +64,6 @@ struct SplashScreenView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
-                    .matchedGeometryEffect(id: "mascot", in: namespace)
                     .accessibilityHidden(true)
                     .opacity(mascotOpacity)
 

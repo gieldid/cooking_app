@@ -11,13 +11,12 @@ struct ContentView: View {
     @State private var deepLinkedRecipe: RecipeDeepLink? = nil
     @State private var showSplash = true
     @State private var splashDismissed = false
-    @Namespace private var heroNS
 
     var body: some View {
         ZStack {
             Group {
                 if !hasCompletedOnboarding {
-                    OnboardingContainerView(heroNamespace: heroNS, splashDismissed: splashDismissed)
+                    OnboardingContainerView(splashDismissed: splashDismissed)
                         .transition(.opacity)
                 } else if revenueCat.isCheckingEntitlement {
                     // Brief loading state while RevenueCat verifies the entitlement.
@@ -49,7 +48,7 @@ struct ContentView: View {
             }
 
             if showSplash {
-                SplashScreenView(namespace: heroNS) {
+                SplashScreenView {
                     splashDismissed = true
                     withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                         showSplash = false

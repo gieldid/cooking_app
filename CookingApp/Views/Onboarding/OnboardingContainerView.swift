@@ -3,7 +3,6 @@ import SwiftUI
 struct OnboardingContainerView: View {
     @StateObject private var viewModel = OnboardingViewModel()
     @Environment(\.scenePhase) private var scenePhase
-    var heroNamespace: Namespace.ID
     var splashDismissed: Bool
 
     var body: some View {
@@ -22,7 +21,7 @@ struct OnboardingContainerView: View {
             .accessibilityLabel("Step \(viewModel.currentPage + 1) of \(viewModel.totalPages)")
 
             TabView(selection: $viewModel.currentPage) {
-                WelcomeView(viewModel: viewModel, heroNamespace: heroNamespace, splashDismissed: splashDismissed)
+                WelcomeView(viewModel: viewModel, splashDismissed: splashDismissed)
                     .tag(0)
                 AllergiesView(viewModel: viewModel)
                     .tag(1)

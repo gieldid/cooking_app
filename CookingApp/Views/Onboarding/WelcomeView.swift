@@ -2,9 +2,9 @@ import SwiftUI
 
 struct WelcomeView: View {
     @ObservedObject var viewModel: OnboardingViewModel
-    var heroNamespace: Namespace.ID
     var splashDismissed: Bool
 
+    @State private var mascotVisible  = false
     @State private var contentVisible = false
 
     var body: some View {
@@ -15,8 +15,8 @@ struct WelcomeView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 180, height: 180)
-                .matchedGeometryEffect(id: "mascot", in: heroNamespace, isSource: false)
                 .accessibilityHidden(true)
+                .opacity(mascotVisible ? 1 : 0)
 
             VStack(spacing: 12) {
                 Text("Welcome to Inkgredients")
@@ -53,7 +53,12 @@ struct WelcomeView: View {
         }
         .onChange(of: splashDismissed) { dismissed in
             guard dismissed else { return }
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.75).delay(0.2)) {
+            // Mascot fades in as the splash fades out — same image, smooth cross-dissolve
+            withAnimation(.easeInOut(duration: 0.3)) {
+                mascotVisible = true
+            }
+            // Text and button slide up shortly after
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.75).delay(0.25)) {
                 contentVisible = true
             }
         }
