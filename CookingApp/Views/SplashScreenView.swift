@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct SplashScreenView: View {
-    let onComplete: () -> Void
     var namespace: Namespace.ID
+    let onComplete: () -> Void
 
     // Falling drop
     @State private var dropY: CGFloat      = -500
