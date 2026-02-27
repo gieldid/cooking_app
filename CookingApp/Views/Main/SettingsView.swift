@@ -121,26 +121,33 @@ struct SettingsView: View {
                 Toggle("Enable Notifications", isOn: $viewModel.notificationPreferences.isEnabled)
 
                 if viewModel.notificationPreferences.isEnabled {
-                    DatePicker(
-                        "Morning Recipe",
-                        selection: $viewModel.notificationPreferences.morningRecipeTime,
-                        displayedComponents: .hourAndMinute
+                    NotificationTimeRow(
+                        icon: "fork.knife",
+                        title: "Morning Recipe",
+                        subtitle: "See today's recipe suggestion",
+                        time: $viewModel.notificationPreferences.morningRecipeTime
                     )
+                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                    .listRowBackground(Color.clear)
 
-                    Toggle("Shopping Reminder", isOn: $viewModel.notificationPreferences.shoppingListEnabled)
-                    if viewModel.notificationPreferences.shoppingListEnabled {
-                        DatePicker(
-                            "Shopping Time",
-                            selection: $viewModel.notificationPreferences.shoppingListTime,
-                            displayedComponents: .hourAndMinute
-                        )
-                    }
-
-                    DatePicker(
-                        "Cooking Reminder",
-                        selection: $viewModel.notificationPreferences.cookingReminderTime,
-                        displayedComponents: .hourAndMinute
+                    NotificationTimeRow(
+                        icon: "cart.fill",
+                        title: "Shopping Reminder",
+                        subtitle: "Time to grab ingredients",
+                        time: $viewModel.notificationPreferences.shoppingListTime,
+                        isEnabled: $viewModel.notificationPreferences.shoppingListEnabled
                     )
+                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                    .listRowBackground(Color.clear)
+
+                    NotificationTimeRow(
+                        icon: "flame.fill",
+                        title: "Cooking Reminder",
+                        subtitle: "Time to start cooking",
+                        time: $viewModel.notificationPreferences.cookingReminderTime
+                    )
+                    .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                    .listRowBackground(Color.clear)
                 }
             }
 

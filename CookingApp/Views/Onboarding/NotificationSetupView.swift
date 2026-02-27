@@ -76,7 +76,7 @@ struct NotificationSetupView: View {
     }
 }
 
-private struct NotificationTimeRow: View {
+struct NotificationTimeRow: View {
     let icon: String
     let title: String
     let subtitle: String
