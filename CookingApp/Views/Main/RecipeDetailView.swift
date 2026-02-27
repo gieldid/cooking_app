@@ -1,9 +1,12 @@
 import SwiftUI
+import UIKit
+import LinkPresentation
 
 struct RecipeDetailView: View {
     let recipe: Recipe
     @Binding var servingsMultiplier: Int
     @State private var completedSteps: Set<Int> = []
+    @State private var showShareSheet = false
     @ObservedObject private var prefs = UserPreferencesManager.shared
 
     var body: some View {
@@ -116,16 +119,17 @@ struct RecipeDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack(spacing: 4) {
-                    if let recipeId = recipe.id,
-                       let url = URL(string: "inkgredients://recipe/\(recipeId)") {
-                        ShareLink(
-                            item: url,
-                            subject: Text(recipe.title),
-                            message: Text("Check out '\(recipe.title)' on Inkgredients!")
-                        ) {
+                    if recipe.id != nil {
+                        Button {
+                            showShareSheet = true
+                        } label: {
                             Image(systemName: "square.and.arrow.up")
                         }
                         .accessibilityLabel("Share recipe")
+                        .sheet(isPresented: $showShareSheet) {
+                            ActivityShareSheet(recipe: recipe)
+                                .ignoresSafeArea()
+                        }
                     }
 
                     Button {
@@ -155,6 +159,52 @@ struct RecipeDetailView: View {
             .resizable()
             .scaledToFill()
             .accessibilityHidden(true)
+    }
+}
+
+private struct ActivityShareSheet: UIViewControllerRepresentable {
+    let recipe: Recipe
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let source = RecipeLinkItemSource(recipe: recipe)
+        return UIActivityViewController(activityItems: [source], applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+private final class RecipeLinkItemSource: NSObject, UIActivityItemSource {
+    private let recipe: Recipe
+    private let url: URL?
+
+    init(recipe: Recipe) {
+        self.recipe = recipe
+        if let id = recipe.id {
+            self.url = URL(string: "inkgredients://recipe/\(id)")
+        } else {
+            self.url = nil
+        }
+    }
+
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        url as Any
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        url
+    }
+
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        guard let url else { return nil }
+        let metadata = LPLinkMetadata()
+        metadata.title = recipe.title
+        metadata.url = url
+        metadata.originalURL = url
+        if let icon = UIImage(named: "AppIcon") {
+            metadata.iconProvider = NSItemProvider(object: icon)
+            metadata.imageProvider = NSItemProvider(object: icon)
+        }
+        return metadata
     }
 }
 
