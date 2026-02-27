@@ -51,6 +51,11 @@ struct WelcomeView: View {
             .opacity(contentVisible ? 1 : 0)
             .offset(y: contentVisible ? 0 : 16)
         }
+        .onAppear {
+            guard splashDismissed else { return }
+            mascotVisible = true
+            contentVisible = true
+        }
         .onChange(of: splashDismissed) { dismissed in
             guard dismissed else { return }
             // Mascot fades in as the splash fades out — same image, smooth cross-dissolve
