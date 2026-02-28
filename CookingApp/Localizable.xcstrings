@@ -752,7 +752,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bekijk het tabblad Vandaag voor het recept van vandaag."
+            "value" : "Bekijk het tabblad Vandaag voor je recept van de dag."
           }
         }
       }
@@ -1692,7 +1692,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Recepten laden mislukt. Controleer uw internetverbinding."
+            "value" : "Recepten laden mislukt. Controleer je internetverbinding."
           }
         }
       }
@@ -1727,7 +1727,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Geen recepten gevonden voor uw dieetprofiel. Pas uw voorkeuren aan in Instellingen."
+            "value" : "Geen recepten gevonden voor jouw dieetprofiel. Pas je voorkeuren aan in Instellingen."
           }
         }
       }
@@ -1797,7 +1797,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uw perfecte recept zoeken..."
+            "value" : "Op zoek naar jouw perfecte recept..."
           }
         }
       }
@@ -1841,7 +1841,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ontvang dagelijkse receptsuggesties op maat van uw voedingsbehoeften."
+            "value" : "Ontvang dagelijkse receptsuggesties op maat van jouw voedingswensen."
           }
         }
       }
@@ -2063,7 +2063,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aan het koken!"
+            "value" : "Laten we koken!"
           }
         }
       }
@@ -2638,7 +2638,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vergeet niet de ingrediënten voor %@ te halen! Tik voor uw boodschappenlijst."
+            "value" : "Vergeet niet de ingrediënten voor %@ te halen! Tik voor je boodschappenlijst."
           }
         }
       }
@@ -2980,7 +2980,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecteer diëten die u volgt. We stellen recepten voor die bij uw levensstijl passen."
+            "value" : "Selecteer diëten die je volgt. We stellen recepten voor die bij jouw levensstijl passen."
           }
         }
       }
@@ -3015,7 +3015,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecteer voedselallergieën die u heeft. We filteren recepten om u veilig te houden."
+            "value" : "Selecteer voedselallergieën die je hebt. We filteren recepten zodat je veilig kunt eten."
           }
         }
       }
@@ -3409,7 +3409,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dit wist al uw voorkeuren en toont de onboarding opnieuw."
+            "value" : "Dit wist al je voorkeuren en toont de onboarding opnieuw."
           }
         }
       }
