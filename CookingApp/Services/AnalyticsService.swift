@@ -3,6 +3,7 @@ import SwiftUI
 
 final class AnalyticsService {
     static let shared = AnalyticsService()
+    private(set) var currentScreen: String = "unknown"
     private init() {}
 
     // MARK: - Onboarding funnel
@@ -59,8 +60,8 @@ final class AnalyticsService {
     // MARK: - App lifecycle
 
     func trackAppBackgrounded() {
-        Analytics.logEvent("app_backgrounded", parameters: nil)
-        logToFirestore(event: "app_backgrounded")
+        Analytics.logEvent("app_backgrounded", parameters: ["screen": currentScreen])
+        logToFirestore(event: "app_backgrounded", params: ["screen": currentScreen])
     }
 
     // MARK: - Private
@@ -99,7 +100,10 @@ private struct ScreenTimeModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .onAppear { appearTime = Date() }
+            .onAppear {
+                appearTime = Date()
+                AnalyticsService.shared.currentScreen = screen
+            }
             .onDisappear {
                 guard let t = appearTime else { return }
                 AnalyticsService.shared.trackScreenTime(
