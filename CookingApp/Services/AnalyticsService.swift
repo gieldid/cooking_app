@@ -3,7 +3,7 @@ import SwiftUI
 
 final class AnalyticsService {
     static let shared = AnalyticsService()
-    private(set) var currentScreen: String = "unknown"
+    var currentScreen: String = "unknown"
     private init() {}
 
     // MARK: - Onboarding funnel
