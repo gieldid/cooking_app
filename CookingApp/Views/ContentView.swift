@@ -34,7 +34,10 @@ struct ContentView: View {
                     .transition(.opacity)
                 }
             }
-            .animation(.easeInOut(duration: 0.3), value: hasCompletedOnboarding)
+            // Only animate going *into* the main app (onboarding → main).
+            // The reset direction (main → onboarding) is instant so that MainTabView
+            // is immediately removed and its SettingsView onDisappear fires exactly once.
+            .animation(hasCompletedOnboarding ? .easeInOut(duration: 0.3) : nil, value: hasCompletedOnboarding)
             .animation(.easeInOut(duration: 0.3), value: revenueCat.isPremium)
             .sheet(item: $deepLinkedRecipe) { link in
                 SharedRecipeGuestView(recipeId: link.id)
