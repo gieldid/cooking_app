@@ -10,6 +10,7 @@ final class AnalyticsService {
 
     func trackOnboardingStepViewed(step: Int) {
         let name = stepName(for: step)
+        currentScreen = "onboarding_\(name)"
         Analytics.logEvent("onboarding_step_viewed", parameters: [
             "step": step,
             "step_name": name

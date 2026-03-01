@@ -40,7 +40,6 @@ struct OnboardingContainerView: View {
             .animation(.easeInOut, value: viewModel.currentPage)
         }
         .onAppear {
-            AnalyticsService.shared.currentScreen = "onboarding"
             AnalyticsService.shared.trackOnboardingStepViewed(step: 0)
         }
         .onChange(of: viewModel.currentPage) { newPage in
