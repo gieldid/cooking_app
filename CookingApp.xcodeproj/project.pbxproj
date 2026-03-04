@@ -43,6 +43,7 @@
 		A10034 /* SharedRecipeGuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* SharedRecipeGuestView.swift */; };
 		A10035 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* SplashScreenView.swift */; };
 		A10036 /* TrialReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10036 /* TrialReminderView.swift */; };
+		A10037 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10037 /* HapticManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		B10031 /* SharedRecipeGuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRecipeGuestView.swift; sourceTree = "<group>"; };
 		B10032 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		B10036 /* TrialReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialReminderView.swift; sourceTree = "<group>"; };
+		B10037 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -198,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				B10023 /* MeasurementConverter.swift */,
+				B10037 /* HapticManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				A10019 /* FirestoreService.swift in Sources */,
 				A10020 /* NotificationService.swift in Sources */,
 				A10022 /* MeasurementConverter.swift in Sources */,
+				A10037 /* HapticManager.swift in Sources */,
 				A10023 /* RecipePreferencesView.swift in Sources */,
 				A10025 /* RevenueCatService.swift in Sources */,
 				A10026 /* PaywallView.swift in Sources */,
