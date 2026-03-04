@@ -36,6 +36,7 @@ struct TrialReminderView: View {
             Spacer()
 
             Button {
+                HapticManager.impact(.medium)
                 viewModel.nextPage()
             } label: {
                 Text("Got it, continue")

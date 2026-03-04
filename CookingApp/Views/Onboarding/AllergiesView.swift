@@ -39,6 +39,7 @@ struct AllergiesView: View {
 
             VStack(spacing: 12) {
                 Button {
+                    HapticManager.impact(.medium)
                     viewModel.nextPage()
                 } label: {
                     Text("Continue")
@@ -51,6 +52,7 @@ struct AllergiesView: View {
                 }
 
                 Button("Skip") {
+                    HapticManager.impact(.light)
                     viewModel.selectedAllergies.removeAll()
                     viewModel.nextPage()
                 }
@@ -68,7 +70,10 @@ private struct AllergyChip: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticManager.impact(.light)
+            action()
+        } label: {
             HStack(spacing: 8) {
                 Text(allergy.icon)
                     .font(.title3)

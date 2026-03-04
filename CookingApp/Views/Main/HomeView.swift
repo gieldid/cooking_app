@@ -13,6 +13,7 @@ struct HomeView: View {
 
                     HStack(spacing: 16) {
                         Button {
+                            HapticManager.impact(.light)
                             withAnimation(.easeInOut(duration: 0.25)) {
                                 viewModel.skipRecipe()
                             }
@@ -51,6 +52,7 @@ struct HomeView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
                     Button("Try Again") {
+                        HapticManager.impact(.medium)
                         Task { await viewModel.loadTodayRecipe() }
                     }
                     .buttonStyle(.borderedProminent)
@@ -114,6 +116,7 @@ private struct RecipeCard: View {
                 }
 
                 Button {
+                    HapticManager.impact(.medium)
                     prefs.toggleFavourite(recipe)
                 } label: {
                     Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")

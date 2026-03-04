@@ -110,6 +110,7 @@ struct PaywallView: View {
                     } else {
                         Button {
                             guard let pkg = annualPackage else { return }
+                            HapticManager.impact(.medium)
                             Task {
                                 isPurchasing = true
                                 errorMessage = nil
@@ -151,6 +152,7 @@ struct PaywallView: View {
 
                     // ── Restore ────────────────────────────────────────────
                     Button {
+                        HapticManager.impact(.light)
                         Task {
                             isRestoring = true
                             errorMessage = nil
@@ -198,7 +200,10 @@ struct PaywallView: View {
             .toolbar {
                 if showDismissButton {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button { dismiss() } label: {
+                        Button {
+                            HapticManager.impact(.light)
+                            dismiss()
+                        } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(.secondary)
                                 .font(.title3)

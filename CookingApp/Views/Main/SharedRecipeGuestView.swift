@@ -30,7 +30,10 @@ struct SharedRecipeGuestView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button { dismiss() } label: {
+                    Button {
+                        HapticManager.impact(.light)
+                        dismiss()
+                    } label: {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundStyle(.secondary)
                             .font(.title3)
@@ -51,6 +54,7 @@ struct SharedRecipeGuestView: View {
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
             Button {
+                HapticManager.impact(.medium)
                 showPaywall = true
             } label: {
                 Text("Try Inkgredients Free")

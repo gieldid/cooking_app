@@ -70,6 +70,7 @@ struct ShoppingListView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
                     Button("Try Again") {
+                        HapticManager.impact(.medium)
                         Task { await homeViewModel.loadTodayRecipe() }
                     }
                     .buttonStyle(.borderedProminent)
@@ -116,7 +117,10 @@ private struct ShoppingListRow: View {
     let onToggle: () -> Void
 
     var body: some View {
-        Button(action: onToggle) {
+        Button {
+            HapticManager.impact(.light)
+            onToggle()
+        } label: {
             HStack(spacing: 12) {
                 Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
                     .font(.title3)

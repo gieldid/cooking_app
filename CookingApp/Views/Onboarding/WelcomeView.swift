@@ -36,6 +36,7 @@ struct WelcomeView: View {
             Spacer()
 
             Button {
+                HapticManager.impact(.medium)
                 viewModel.nextPage()
             } label: {
                 Text("Get Started")

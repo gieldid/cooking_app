@@ -47,6 +47,7 @@ struct NotificationSetupView: View {
 
             VStack(spacing: 12) {
                 Button {
+                    HapticManager.impact(.medium)
                     Task {
                         let granted = await NotificationService.shared.requestPermission()
                         if !granted {
@@ -65,6 +66,7 @@ struct NotificationSetupView: View {
                 }
 
                 Button("Skip Notifications") {
+                    HapticManager.impact(.light)
                     viewModel.notificationPreferences.isEnabled = false
                     viewModel.nextPage()
                 }

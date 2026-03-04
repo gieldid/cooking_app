@@ -141,11 +141,13 @@ struct SettingsView: View {
                 .foregroundStyle(rcService.isPremium ? .green : .secondary)
 
                 Button("Manage Subscription") {
+                    HapticManager.impact(.light)
                     if let url = URL(string: "itms-apps://apps.apple.com/account/subscriptions") {
                         UIApplication.shared.open(url)
                     }
                 }
                 Button("Restore Purchases") {
+                    HapticManager.impact(.light)
                     Task { try? await rcService.restorePurchases() }
                 }
                 .foregroundStyle(.secondary)
@@ -159,6 +161,7 @@ Section("Legal") {
 
             Section {
                 Button("Reset & Show Onboarding") {
+                    HapticManager.impact(.medium)
                     showResetAlert = true
                 }
                 .foregroundStyle(.red)
@@ -215,6 +218,7 @@ private struct SettingsPerDayRow: View {
 
             if override != nil {
                 Button("Reset to defaults") {
+                    HapticManager.impact(.light)
                     viewModel.clearPerDayOverride(weekday: weekday)
                 }
                 .foregroundStyle(.red)
@@ -240,7 +244,10 @@ private struct SettingsChip: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticManager.impact(.light)
+            action()
+        } label: {
             Text(text)
                 .font(.caption)
                 .fontWeight(.medium)

@@ -121,6 +121,7 @@ struct RecipeDetailView: View {
                 HStack(spacing: 4) {
                     if recipe.id != nil {
                         Button {
+                            HapticManager.impact(.light)
                             showShareSheet = true
                         } label: {
                             Image(systemName: "square.and.arrow.up")
@@ -133,6 +134,7 @@ struct RecipeDetailView: View {
                     }
 
                     Button {
+                        HapticManager.impact(.medium)
                         prefs.toggleFavourite(recipe)
                     } label: {
                         Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
@@ -230,7 +232,10 @@ private struct StepRow: View {
     let onToggle: () -> Void
 
     var body: some View {
-        Button(action: onToggle) {
+        Button {
+            HapticManager.impact(.light)
+            onToggle()
+        } label: {
             HStack(alignment: .top, spacing: 12) {
                 ZStack {
                     Circle()

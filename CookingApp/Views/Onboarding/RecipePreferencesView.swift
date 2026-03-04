@@ -118,6 +118,7 @@ struct RecipePreferencesView: View {
             // Buttons always pinned at the bottom
             VStack(spacing: 12) {
                 Button {
+                    HapticManager.impact(.medium)
                     viewModel.nextPage()
                 } label: {
                     Text("Continue")
@@ -130,6 +131,7 @@ struct RecipePreferencesView: View {
                 }
 
                 Button("Skip") {
+                    HapticManager.impact(.light)
                     viewModel.selectedDifficulties.removeAll()
                     viewModel.maxDuration = .any
                     viewModel.perDayOverrides.removeAll()
@@ -182,6 +184,7 @@ struct PerDayRow<VM: PerDayPreferencesViewModel>: View {
 
                 if override != nil {
                     Button("Reset to defaults") {
+                        HapticManager.impact(.light)
                         viewModel.clearPerDayOverride(weekday: weekday)
                     }
                     .font(.caption)
@@ -215,7 +218,10 @@ struct DifficultyChip: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticManager.impact(.light)
+            action()
+        } label: {
             Text(difficulty.displayName)
                 .font(.subheadline)
                 .fontWeight(.medium)

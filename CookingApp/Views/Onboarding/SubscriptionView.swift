@@ -116,6 +116,7 @@ struct SubscriptionView: View {
                 } else {
                     Button {
                         guard let pkg = annualPackage else { return }
+                        HapticManager.impact(.medium)
                         Task {
                             isPurchasing = true
                             errorMessage = nil
@@ -156,6 +157,7 @@ struct SubscriptionView: View {
                 }
 
                 Button("Restore Purchases") {
+                    HapticManager.impact(.light)
                     Task {
                         isPurchasing = true
                         do {
