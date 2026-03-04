@@ -44,6 +44,7 @@
 		A10035 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* SplashScreenView.swift */; };
 		A10036 /* TrialReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10036 /* TrialReminderView.swift */; };
 		A10037 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10037 /* HapticManager.swift */; };
+		A10038 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10038 /* WatchSessionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		B10032 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		B10036 /* TrialReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialReminderView.swift; sourceTree = "<group>"; };
 		B10037 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		B10038 /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -192,6 +194,7 @@
 				B10020 /* NotificationService.swift */,
 				B10026 /* RevenueCatService.swift */,
 				B10029 /* AnalyticsService.swift */,
+				B10038 /* WatchSessionManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				A10033 /* FavouritesView.swift in Sources */,
 				A10034 /* SharedRecipeGuestView.swift in Sources */,
 				A10035 /* SplashScreenView.swift in Sources */,
+				A10038 /* WatchSessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
