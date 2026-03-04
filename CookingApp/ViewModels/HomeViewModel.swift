@@ -66,6 +66,11 @@ final class HomeViewModel: ObservableObject {
                     if let id = picked.id { prefs.savePickedRecipe(id: id) }
                 }
 
+                // Sync current recipe to paired Apple Watch
+                if let recipe = todayRecipe {
+                    WatchSessionManager.shared.sendRecipe(recipe)
+                }
+
                 // Update notifications with recipe name
                 NotificationService.shared.scheduleAllNotifications(
                     preferences: prefs.notificationPreferences,
@@ -105,6 +110,7 @@ final class HomeViewModel: ObservableObject {
         todayRecipe = newRecipe
         servingsMultiplier = initialServings(for: newRecipe)
         if let id = newRecipe.id { prefs.savePickedRecipe(id: id) }
+        WatchSessionManager.shared.sendRecipe(newRecipe)
 
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,
