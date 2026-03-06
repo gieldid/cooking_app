@@ -8,6 +8,7 @@ import XCTest
 // Run via:  fastlane screenshots
 // Or:       xcodebuild test -scheme CookingApp -destination "name=iPhone 17 Pro Max"
 
+@MainActor
 final class CookingAppUITests: XCTestCase {
 
     var app: XCUIApplication!
