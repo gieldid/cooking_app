@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "·" : {
+
+    },
     "%@ / month · billed %@ yearly" : {
       "localizations" : {
         "en" : {
@@ -3599,6 +3602,7 @@
       }
     },
     "Removes custom settings for %@ and uses your global preferences." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3760,6 +3764,7 @@
       }
     },
     "Reset to Defaults" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4159,6 +4164,7 @@
       }
     },
     "Showing global defaults. Adjust any setting above to create a custom override for %@." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

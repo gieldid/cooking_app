@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,8 +47,19 @@
 		A10038 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10038 /* WatchSessionManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		53AE048F2F5B4F1600DBAB85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P10001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T10001;
+			remoteInfo = CookingApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		536155A42F48616C0039E32F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		53AE04892F5B4F1600DBAB85 /* CookingAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CookingAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10001 /* CookingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingApp.swift; sourceTree = "<group>"; };
 		B10002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B10003 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
@@ -87,7 +98,18 @@
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		53AE048A2F5B4F1600DBAB85 /* CookingAppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CookingAppUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		53AE04862F5B4F1600DBAB85 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E10001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				G10002 /* CookingApp */,
+				53AE048A2F5B4F1600DBAB85 /* CookingAppUITests */,
 				G10010 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -212,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				C10001 /* CookingApp.app */,
+				53AE04892F5B4F1600DBAB85 /* CookingAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -219,6 +243,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		53AE04882F5B4F1600DBAB85 /* CookingAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53AE04932F5B4F1600DBAB85 /* Build configuration list for PBXNativeTarget "CookingAppUITests" */;
+			buildPhases = (
+				53AE04852F5B4F1600DBAB85 /* Sources */,
+				53AE04862F5B4F1600DBAB85 /* Frameworks */,
+				53AE04872F5B4F1600DBAB85 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				53AE04902F5B4F1600DBAB85 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				53AE048A2F5B4F1600DBAB85 /* CookingAppUITests */,
+			);
+			name = CookingAppUITests;
+			packageProductDependencies = (
+			);
+			productName = CookingAppUITests;
+			productReference = 53AE04892F5B4F1600DBAB85 /* CookingAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		T10001 /* CookingApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = X10003 /* Build configuration list for PBXNativeTarget "CookingApp" */;
@@ -248,9 +295,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					53AE04882F5B4F1600DBAB85 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = T10001;
+					};
 					T10001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -278,11 +329,19 @@
 			projectRoot = "";
 			targets = (
 				T10001 /* CookingApp */,
+				53AE04882F5B4F1600DBAB85 /* CookingAppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		53AE04872F5B4F1600DBAB85 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E10003 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -296,6 +355,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		53AE04852F5B4F1600DBAB85 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E10002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,7 +403,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		53AE04902F5B4F1600DBAB85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10001 /* CookingApp */;
+			targetProxy = 53AE048F2F5B4F1600DBAB85 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		53AE04912F5B4F1600DBAB85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YGUS8DP8YV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.gieljurriens.CookingAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CookingApp;
+			};
+			name = Debug;
+		};
+		53AE04922F5B4F1600DBAB85 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YGUS8DP8YV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.gieljurriens.CookingAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CookingApp;
+			};
+			name = Release;
+		};
 		X10D01 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -518,6 +636,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		53AE04932F5B4F1600DBAB85 /* Build configuration list for PBXNativeTarget "CookingAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53AE04912F5B4F1600DBAB85 /* Debug */,
+				53AE04922F5B4F1600DBAB85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		X10001 /* Build configuration list for PBXProject "CookingApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
