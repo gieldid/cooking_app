@@ -1,41 +1,58 @@
-//
-//  CookingAppUITests.swift
-//  CookingAppUITests
-//
-//  Created by Giel Jurriens on 06/03/2026.
-//
-
 import XCTest
+
+// MARK: - App Store Screenshot Tests
+//
+// These tests drive the app through key screens and call snapshot() at each one.
+// SnapshotHelper.swift (from Fastlane) must be added to this target alongside this file.
+//
+// Run via:  fastlane screenshots
+// Or:       xcodebuild test -scheme CookingApp -destination "name=iPhone 17 Pro Max"
 
 final class CookingAppUITests: XCTestCase {
 
+    var app: XCUIApplication!
+
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+        app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments = [
+            "--screenshots",          // activates mock data + skips splash/RevenueCat
+            "-hasCompletedOnboarding", "YES",  // UserDefaults override → skip onboarding
+        ]
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+    func testScreenshots() throws {
+        // ── 1. Home – Today's Recipe ──────────────────────────────────────────
+        // Mock data loads synchronously; wait for the "Let's Cook!" button.
+        let cookButton = app.buttons["btn_cook"]
+        XCTAssert(cookButton.waitForExistence(timeout: 5), "Cook button not found on Home tab")
+        snapshot("01_today")
+
+        // ── 2. Recipe Detail ──────────────────────────────────────────────────
+        cookButton.tap()
+        sleep(1)
+        snapshot("02_recipe_detail")
+
+        // Scroll down to show ingredients section
+        app.swipeUp()
+        sleep(1)
+        snapshot("03_recipe_ingredients")
+
+        // Back to Home
+        app.navigationBars.buttons.firstMatch.tap()
+        sleep(1)
+
+        // ── 3. Shopping List ──────────────────────────────────────────────────
+        // Tab bar order: 0=Today, 1=Shopping, 2=Favourites, 3=Settings
+        app.tabBars.firstMatch.buttons.element(boundBy: 1).tap()
+        sleep(1)
+        snapshot("04_shopping_list")
+
+        // ── 4. Favourites ─────────────────────────────────────────────────────
+        app.tabBars.firstMatch.buttons.element(boundBy: 2).tap()
+        sleep(1)
+        snapshot("05_favourites")
     }
 }
