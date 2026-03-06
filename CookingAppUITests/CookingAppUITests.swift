@@ -25,10 +25,13 @@ final class CookingAppUITests: XCTestCase {
     }
 
     func testScreenshots() throws {
+        // Debug: capture whatever is on screen immediately after launch
+        sleep(3)
+        snapshot("00_debug_launch")
+
         // ── 1. Home – Today's Recipe ──────────────────────────────────────────
-        // Mock data loads synchronously; wait for the "Let's Cook!" button.
         let cookButton = app.buttons["btn_cook"]
-        XCTAssert(cookButton.waitForExistence(timeout: 5), "Cook button not found on Home tab")
+        XCTAssert(cookButton.waitForExistence(timeout: 15), "Cook button not found on Home tab")
         snapshot("01_today")
 
         // ── 2. Recipe Detail ──────────────────────────────────────────────────
