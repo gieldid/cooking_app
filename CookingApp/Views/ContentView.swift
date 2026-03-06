@@ -9,7 +9,7 @@ struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @ObservedObject private var revenueCat = RevenueCatService.shared
     @State private var deepLinkedRecipe: RecipeDeepLink? = nil
-    @State private var showSplash = true
+    @State private var showSplash = !ProcessInfo.processInfo.arguments.contains("--screenshots")
     @State private var splashDismissed = false
 
     var body: some View {

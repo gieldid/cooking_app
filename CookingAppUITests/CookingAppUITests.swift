@@ -1,0 +1,58 @@
+import XCTest
+
+// MARK: - App Store Screenshot Tests
+//
+// These tests drive the app through key screens and call snapshot() at each one.
+// SnapshotHelper.swift (from Fastlane) must be added to this target alongside this file.
+//
+// Run via:  fastlane screenshots
+// Or:       xcodebuild test -scheme CookingApp -destination "name=iPhone 16 Pro Max"
+
+final class CookingAppUITests: XCTestCase {
+
+    var app: XCUIApplication!
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments = [
+            "--screenshots",          // activates mock data + skips splash/RevenueCat
+            "-hasCompletedOnboarding", "YES",  // UserDefaults override → skip onboarding
+        ]
+        app.launch()
+    }
+
+    func testScreenshots() throws {
+        // ── 1. Home – Today's Recipe ──────────────────────────────────────────
+        // Mock data loads synchronously; wait for the "Let's Cook!" button.
+        let cookButton = app.buttons["btn_cook"]
+        XCTAssert(cookButton.waitForExistence(timeout: 5), "Cook button not found on Home tab")
+        snapshot("01_today")
+
+        // ── 2. Recipe Detail ──────────────────────────────────────────────────
+        cookButton.tap()
+        sleep(1)
+        snapshot("02_recipe_detail")
+
+        // Scroll down to show ingredients section
+        app.swipeUp()
+        sleep(1)
+        snapshot("03_recipe_ingredients")
+
+        // Back to Home
+        app.navigationBars.buttons.firstMatch.tap()
+        sleep(1)
+
+        // ── 3. Shopping List ──────────────────────────────────────────────────
+        // Tab bar order: 0=Today, 1=Shopping, 2=Favourites, 3=Settings
+        app.tabBars.firstMatch.buttons.element(boundBy: 1).tap()
+        sleep(1)
+        snapshot("04_shopping_list")
+
+        // ── 4. Favourites ─────────────────────────────────────────────────────
+        app.tabBars.firstMatch.buttons.element(boundBy: 2).tap()
+        sleep(1)
+        snapshot("05_favourites")
+    }
+}

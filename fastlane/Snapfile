@@ -1,0 +1,32 @@
+# Fastlane Snapfile
+# Run: fastlane screenshots
+
+# Required App Store device sizes
+devices([
+  "iPhone 16 Pro Max",  # 6.9" – required
+  "iPhone 14 Plus",     # 6.5" – required
+])
+
+# All supported app languages
+languages([
+  "en-US",
+  "nl-NL",
+  "de-DE",
+  "fr-FR",
+  "it-IT",
+])
+
+# Xcode scheme (must have the UI test target in its Test action)
+scheme("CookingApp")
+
+# Path to the UI test target source folder
+# (where SnapshotHelper.swift lives)
+output_directory("./fastlane/screenshots")
+
+clear_previous_screenshots(true)
+
+# Clean status bar: 9:41 AM, full signal/battery
+override_status_bar(true)
+
+# Stop on first failure per language/device combo
+stop_after_first_error(false)

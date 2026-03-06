@@ -11,6 +11,13 @@ final class RevenueCatService: ObservableObject {
     @Published var isLoading = false
 
     private init() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--screenshots") {
+            isPremium = true
+            isCheckingEntitlement = false
+            return
+        }
+        #endif
         Task {
             await checkEntitlement()
             isCheckingEntitlement = false

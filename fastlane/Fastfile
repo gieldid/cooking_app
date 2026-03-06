@@ -1,0 +1,27 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Generate App Store screenshots for all languages and devices"
+  lane :screenshots do
+    capture_ios_simulator_screenshots
+  end
+
+  desc "Upload existing screenshots to App Store Connect (no binary upload)"
+  lane :upload_screenshots do
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_metadata:      true,
+      screenshots_path:   "./fastlane/screenshots"
+    )
+  end
+
+  desc "Generate and upload screenshots in one step"
+  lane :release_screenshots do
+    capture_ios_simulator_screenshots
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_metadata:      true,
+      screenshots_path:   "./fastlane/screenshots"
+    )
+  end
+end
