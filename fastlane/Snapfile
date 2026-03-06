@@ -18,7 +18,7 @@ languages([
 
 # Xcode scheme (must have the UI test target in its Test action)
 scheme("CookingApp")
-ui_test_target("CookingAppUITests")
+test_target_name("CookingAppUITests")
 
 # Path to the UI test target source folder
 # (where SnapshotHelper.swift lives)
