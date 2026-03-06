@@ -45,6 +45,7 @@
 		A10036 /* TrialReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10036 /* TrialReminderView.swift */; };
 		A10037 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10037 /* HapticManager.swift */; };
 		A10038 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10038 /* WatchSessionManager.swift */; };
+		A10039 /* ScreenshotMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10039 /* ScreenshotMockData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		B10036 /* TrialReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialReminderView.swift; sourceTree = "<group>"; };
 		B10037 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		B10038 /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
+		B10039 /* ScreenshotMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotMockData.swift; sourceTree = "<group>"; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -227,6 +229,7 @@
 			children = (
 				B10023 /* MeasurementConverter.swift */,
 				B10037 /* HapticManager.swift */,
+				B10039 /* ScreenshotMockData.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				A10034 /* SharedRecipeGuestView.swift in Sources */,
 				A10035 /* SplashScreenView.swift in Sources */,
 				A10038 /* WatchSessionManager.swift in Sources */,
+				A10039 /* ScreenshotMockData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
