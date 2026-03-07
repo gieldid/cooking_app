@@ -228,7 +228,7 @@ extension Recipe {
         }
         dict.removeValue(forKey: "id")
         do {
-            return try Firestore.Decoder().decode(Recipe.self, from: dict)
+            return try Firestore.Decoder().decode(Recipe.self, from: dict, in: nil)
         } catch {
             fatalError("ScreenshotMockData decode error: \(error)")
         }
