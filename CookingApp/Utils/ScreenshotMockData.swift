@@ -1,5 +1,6 @@
 #if DEBUG
 import Foundation
+import FirebaseFirestore
 
 // MARK: - Mock recipes for Fastlane screenshots
 // These are only compiled in DEBUG builds and only activate when --screenshots is passed.
@@ -222,7 +223,13 @@ extension Recipe {
     // MARK: - Helper
     private static func decodeRecipe(_ json: String) -> Recipe {
         guard let data = json.data(using: .utf8),
-              let recipe = try? JSONDecoder().decode(Recipe.self, from: data) else {
+              var dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            fatalError("ScreenshotMockData: invalid JSON string")
+        }
+        // @DocumentID is populated from the Firestore document reference, not the document data.
+        // Remove the key so Firestore.Decoder leaves it nil instead of throwing.
+        dict.removeValue(forKey: "id")
+        guard let recipe = try? Firestore.Decoder().decode(Recipe.self, from: dict) else {
             fatalError("ScreenshotMockData: failed to decode mock recipe — check the JSON")
         }
         return recipe
