@@ -35,6 +35,5 @@ stop_after_first_error(false)
 # Write build log to a project-local path to avoid ~/Library/Logs permission issues
 buildlog_path("./fastlane/buildlogs")
 
-# Save test result bundle to project directory so it persists after the run
+# Save test result bundle so it persists after the run
 result_bundle(true)
-result_bundle_path("./fastlane/test_results")
