@@ -15,7 +15,7 @@ final class CookingAppUITests: XCTestCase {
 
     override func setUpWithError() throws {
         continueAfterFailure = false
-        app = XCUIApplication()
+        app = XCUIApplication(bundleIdentifier: "nl.gieljurriens.inkgredients")
         setupSnapshot(app)
         app.launchArguments = [
             "--screenshots",          // activates mock data + skips splash/RevenueCat

@@ -19,7 +19,7 @@ final class CookingAppUITestsLaunchTests: XCTestCase {
 
     @MainActor
     func testLaunch() throws {
-        let app = XCUIApplication()
+        let app = XCUIApplication(bundleIdentifier: "nl.gieljurriens.inkgredients")
         app.launch()
 
         // Insert steps here to perform after app launch but before taking a screenshot,
