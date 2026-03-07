@@ -12,10 +12,12 @@ struct ContentView: View {
     @State private var showSplash = !ProcessInfo.processInfo.arguments.contains("--screenshots")
     @State private var splashDismissed = false
 
+    private let isScreenshotMode = ProcessInfo.processInfo.arguments.contains("--screenshots")
+
     var body: some View {
         ZStack {
             Group {
-                if !hasCompletedOnboarding {
+                if !hasCompletedOnboarding && !isScreenshotMode {
                     OnboardingContainerView(splashDismissed: splashDismissed)
                         .transition(.opacity)
                 } else if revenueCat.isCheckingEntitlement {
