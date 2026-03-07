@@ -34,31 +34,32 @@ final class CookingAppUITests: XCTestCase {
         // NavigationLink registers as a button or another type in the accessibility tree.
         let cookButton = app.descendants(matching: .any).matching(identifier: "btn_cook").firstMatch
         XCTAssert(cookButton.waitForExistence(timeout: 15), "Cook button not found on Home tab")
+        sleep(2) // wait for appear animations to finish
         snapshot("01_today")
 
         // ── 2. Recipe Detail ──────────────────────────────────────────────────
         cookButton.tap()
-        sleep(1)
+        sleep(2)
         snapshot("02_recipe_detail")
 
         // Scroll down to show ingredients section
         app.swipeUp()
-        sleep(1)
+        sleep(2)
         snapshot("03_recipe_ingredients")
 
         // Back to Home
         app.navigationBars.buttons.firstMatch.tap()
-        sleep(1)
+        sleep(2)
 
         // ── 3. Shopping List ──────────────────────────────────────────────────
         // Tab bar order: 0=Today, 1=Shopping, 2=Favourites, 3=Settings
         app.tabBars.firstMatch.buttons.element(boundBy: 1).tap()
-        sleep(1)
+        sleep(2)
         snapshot("04_shopping_list")
 
         // ── 4. Favourites ─────────────────────────────────────────────────────
         app.tabBars.firstMatch.buttons.element(boundBy: 2).tap()
-        sleep(1)
+        sleep(2)
         snapshot("05_favourites")
     }
 }

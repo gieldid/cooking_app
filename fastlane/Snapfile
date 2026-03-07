@@ -4,16 +4,16 @@
 # Required App Store device sizes
 devices([
   "iPhone 17 Pro Max",  # 6.9" – required
-  # "iPhone Air",       # 6.7" – required (disabled for debugging)
+  "iPhone Air",         # 6.7" – required
 ])
 
 # All supported app languages
 languages([
   "en-US",
-  # "nl-NL",  # disabled for debugging
-  # "de-DE",  # disabled for debugging
-  # "fr-FR",  # disabled for debugging
-  # "it-IT",  # disabled for debugging
+  "nl-NL",
+  "de-DE",
+  "fr-FR",
+  "it-IT",
 ])
 
 # Xcode scheme (must have the UI test target in its Test action)
