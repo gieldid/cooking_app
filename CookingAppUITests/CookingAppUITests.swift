@@ -30,7 +30,9 @@ final class CookingAppUITests: XCTestCase {
         snapshot("00_debug_launch")
 
         // ── 1. Home – Today's Recipe ──────────────────────────────────────────
-        let cookButton = app.buttons["btn_cook"]
+        // Use a broad descendant query so the element is found regardless of whether
+        // NavigationLink registers as a button or another type in the accessibility tree.
+        let cookButton = app.descendants(matching: .any).matching(identifier: "btn_cook").firstMatch
         XCTAssert(cookButton.waitForExistence(timeout: 15), "Cook button not found on Home tab")
         snapshot("01_today")
 
