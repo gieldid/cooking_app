@@ -31,3 +31,6 @@ override_status_bar(true)
 
 # Stop on first failure per language/device combo
 stop_after_first_error(false)
+
+# Write build log to a project-local path to avoid ~/Library/Logs permission issues
+buildlog_path("./fastlane/buildlogs")
