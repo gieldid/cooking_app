@@ -226,13 +226,12 @@ extension Recipe {
               var dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             fatalError("ScreenshotMockData: invalid JSON string")
         }
-        // @DocumentID is populated from the Firestore document reference, not the document data.
-        // Remove the key so Firestore.Decoder leaves it nil instead of throwing.
         dict.removeValue(forKey: "id")
-        guard let recipe = try? Firestore.Decoder().decode(Recipe.self, from: dict) else {
-            fatalError("ScreenshotMockData: failed to decode mock recipe — check the JSON")
+        do {
+            return try Firestore.Decoder().decode(Recipe.self, from: dict)
+        } catch {
+            fatalError("ScreenshotMockData decode error: \(error)")
         }
-        return recipe
     }
 }
 #endif
