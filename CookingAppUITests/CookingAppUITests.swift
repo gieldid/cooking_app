@@ -70,5 +70,14 @@ final class CookingAppUITests: XCTestCase {
         app.tabBars.firstMatch.buttons.element(boundBy: 2).tap()
         sleep(2)
         snapshot("05_favourites")
+
+        // ── 5. Settings ───────────────────────────────────────────────────────
+        app.tabBars.firstMatch.buttons.element(boundBy: 3).tap()
+        sleep(2)
+        snapshot("06_settings_top")
+
+        app.swipeUp()
+        sleep(1)
+        snapshot("07_settings_bottom")
     }
 }
