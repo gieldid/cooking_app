@@ -79,11 +79,6 @@ final class UserPreferencesManager: ObservableObject {
         self.measurementPreference = Self.loadCodable(forKey: Keys.measurementPreference) ?? .system
         self.defaultServings = defaults.integer(forKey: Keys.defaultServings) // 0 if never set
         self.favouriteRecipes = Self.loadCodable(forKey: Keys.favouriteRecipes) ?? []
-        #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("--screenshots") {
-            favouriteRecipes = [.screenshotMockSalad, .screenshotMockChicken, .screenshotMock]
-        }
-        #endif
     }
 
     private func saveCodable<T: Codable>(_ value: T, forKey key: String) {

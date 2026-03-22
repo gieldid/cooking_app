@@ -35,14 +35,6 @@ final class HomeViewModel: ObservableObject {
     }
 
     func loadTodayRecipe() async {
-        #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("--screenshots") {
-            todayRecipe = .screenshotMock
-            allFilteredRecipes = [.screenshotMock, .screenshotMockSalad, .screenshotMockChicken]
-            servingsMultiplier = 2
-            return
-        }
-        #endif
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil

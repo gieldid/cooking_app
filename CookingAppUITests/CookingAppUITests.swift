@@ -18,7 +18,7 @@ final class CookingAppUITests: XCTestCase {
         app = XCUIApplication(bundleIdentifier: "nl.gieljurriens.inkgredients")
         setupSnapshot(app)
         app.launchArguments = [
-            "--screenshots",          // activates mock data + skips splash/RevenueCat
+            "--screenshots",          // skips splash/RevenueCat, uses real Firestore data
             "-hasCompletedOnboarding", "YES",  // UserDefaults override → skip onboarding
         ]
         app.launch()
@@ -32,14 +32,23 @@ final class CookingAppUITests: XCTestCase {
         // ── 1. Home – Today's Recipe ──────────────────────────────────────────
         // Use a broad descendant query so the element is found regardless of whether
         // NavigationLink registers as a button or another type in the accessibility tree.
+        // Extended timeout to allow Firestore fetch to complete.
         let cookButton = app.descendants(matching: .any).matching(identifier: "btn_cook").firstMatch
-        XCTAssert(cookButton.waitForExistence(timeout: 15), "Cook button not found on Home tab")
+        XCTAssert(cookButton.waitForExistence(timeout: 30), "Cook button not found on Home tab")
         sleep(2) // wait for appear animations to finish
         snapshot("01_today")
 
         // ── 2. Recipe Detail ──────────────────────────────────────────────────
         cookButton.tap()
         sleep(2)
+
+        // Favourite the recipe so it appears in the Favourites tab later
+        let favouriteBtn = app.buttons["btn_favourite"]
+        if favouriteBtn.waitForExistence(timeout: 5) {
+            favouriteBtn.tap()
+            sleep(1)
+        }
+
         snapshot("02_recipe_detail")
 
         // Scroll down to show ingredients section

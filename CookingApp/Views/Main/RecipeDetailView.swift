@@ -141,6 +141,7 @@ struct RecipeDetailView: View {
                             .foregroundStyle(prefs.isFavourite(recipe) ? .red : .primary)
                     }
                     .accessibilityLabel(prefs.isFavourite(recipe) ? "Remove from favourites" : "Add to favourites")
+                    .accessibilityIdentifier("btn_favourite")
                 }
             }
         }
