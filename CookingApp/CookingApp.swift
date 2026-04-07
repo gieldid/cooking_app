@@ -7,7 +7,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        #if DEBUG
+        Purchases.configure(withAPIKey: "test_JpTsHlZQQNzOzvFeXCisaVjWcIw")
+        #else
         Purchases.configure(withAPIKey: "appl_xTigKZFWzNkFvMSJwnsMpnoisLs")
+        #endif
         UNUserNotificationCenter.current().delegate = self
         return true
     }
