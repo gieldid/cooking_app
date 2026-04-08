@@ -32,10 +32,9 @@ struct CookingApp: App {
         WindowGroup {
             ContentView()
         }
-        .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .background {
-                AnalyticsService.shared.trackAppBackgrounded()
-            }
+        .task(id: scenePhase) {
+            guard scenePhase == .background else { return }
+            AnalyticsService.shared.trackAppBackgrounded()
         }
     }
 }

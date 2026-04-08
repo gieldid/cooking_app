@@ -39,16 +39,12 @@ struct OnboardingContainerView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut, value: viewModel.currentPage)
         }
-        .onAppear {
-            AnalyticsService.shared.trackOnboardingStepViewed(step: 0)
+        .task(id: viewModel.currentPage) {
+            AnalyticsService.shared.trackOnboardingStepViewed(step: viewModel.currentPage)
         }
-        .onChange(of: viewModel.currentPage) { _, newPage in
-            AnalyticsService.shared.trackOnboardingStepViewed(step: newPage)
-        }
-        .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .background {
-                AnalyticsService.shared.trackOnboardingAbandoned(atStep: viewModel.currentPage)
-            }
+        .task(id: scenePhase) {
+            guard scenePhase == .background else { return }
+            AnalyticsService.shared.trackOnboardingAbandoned(atStep: viewModel.currentPage)
         }
     }
 }
