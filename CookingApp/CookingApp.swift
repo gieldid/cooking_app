@@ -31,10 +31,10 @@ struct CookingApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }
-        .task(id: scenePhase) {
-            guard scenePhase == .background else { return }
-            AnalyticsService.shared.trackAppBackgrounded()
+                .task(id: scenePhase) {
+                    guard scenePhase == .background else { return }
+                    AnalyticsService.shared.trackAppBackgrounded()
+                }
         }
     }
 }
