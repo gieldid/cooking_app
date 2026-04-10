@@ -47,7 +47,7 @@ final class OnboardingUITests: XCTestCase {
         app.buttons["Get Started"].tap()
 
         XCTAssert(
-            app.staticTexts["Allergies"].waitForExistence(timeout: 3),
+            app.staticTexts["Any Allergies?"].waitForExistence(timeout: 3),
             "Expected Allergies screen after tapping Get Started"
         )
     }
@@ -81,9 +81,11 @@ final class OnboardingUITests: XCTestCase {
         XCTAssert(app.buttons["Unlock My Recipe"].waitForExistence(timeout: 15))
         app.buttons["Unlock My Recipe"].tap()
 
-        // Subscription screen
-        let trialText = app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Trial' OR label CONTAINS 'Subscribe'")).firstMatch
-        XCTAssert(trialText.waitForExistence(timeout: 5), "Expected subscription screen")
+        // Subscription screen — "Restore Purchases" is always rendered regardless of RevenueCat loading state
+        XCTAssert(
+            app.buttons["Restore Purchases"].waitForExistence(timeout: 5),
+            "Expected subscription screen"
+        )
     }
 
     // MARK: - Tab navigation
