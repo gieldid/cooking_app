@@ -81,15 +81,18 @@ final class UserPreferencesManager: ObservableObject {
         self.favouriteRecipes = Self.loadCodable(forKey: Keys.favouriteRecipes) ?? []
     }
 
+    private static let encoder = JSONEncoder()
+    private static let decoder = JSONDecoder()
+
     private func saveCodable<T: Codable>(_ value: T, forKey key: String) {
-        if let data = try? JSONEncoder().encode(value) {
+        if let data = try? Self.encoder.encode(value) {
             defaults.set(data, forKey: key)
         }
     }
 
     private static func loadCodable<T: Codable>(forKey key: String) -> T? {
         guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
-        return try? JSONDecoder().decode(T.self, from: data)
+        return try? decoder.decode(T.self, from: data)
     }
 
     func toggleFavourite(_ recipe: Recipe) {
@@ -112,10 +115,14 @@ final class UserPreferencesManager: ObservableObject {
 
     // MARK: - Daily recipe persistence
 
-    private static var todayString: String {
+    private static let todayFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: Date())
+        return f
+    }()
+
+    private static var todayString: String {
+        todayFormatter.string(from: Date())
     }
 
     /// Returns the persisted recipe ID if it was saved today, otherwise clears stale data and returns nil.

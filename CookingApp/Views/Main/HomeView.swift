@@ -54,7 +54,7 @@ struct HomeView: View {
                         .padding(.horizontal, 32)
                     Button("Try Again") {
                         HapticManager.impact(.medium)
-                        Task { await viewModel.loadTodayRecipe() }
+                        viewModel.loadTodayRecipe()
                     }
                     .buttonStyle(.borderedProminent)
                     .padding(.top, 8)
@@ -63,10 +63,12 @@ struct HomeView: View {
         }
         .navigationTitle("Today's Recipe")
         .refreshable {
-            await viewModel.loadTodayRecipe()
+            viewModel.loadTodayRecipe()
+            // Wait for load to complete so the pull-to-refresh spinner dismisses correctly
+            while viewModel.isLoading { try? await Task.sleep(nanoseconds: 50_000_000) }
         }
         .task {
-            await viewModel.loadTodayRecipe()
+            viewModel.loadTodayRecipe()
         }
         .trackScreenTime("home")
     }
@@ -101,6 +103,7 @@ private struct RecipeCard: View {
     @ObservedObject private var prefs = UserPreferencesManager.shared
 
     var body: some View {
+        let isFav = prefs.isFavourite(recipe)
         VStack(alignment: .leading, spacing: 16) {
             // Image with favourite overlay
             ZStack(alignment: .topTrailing) {
@@ -120,15 +123,15 @@ private struct RecipeCard: View {
                     HapticManager.impact(.medium)
                     prefs.toggleFavourite(recipe)
                 } label: {
-                    Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
+                    Image(systemName: isFav ? "heart.fill" : "heart")
                         .font(.title3)
                         .fontWeight(.semibold)
-                        .foregroundStyle(prefs.isFavourite(recipe) ? .red : .white)
+                        .foregroundStyle(isFav ? .red : .white)
                         .padding(10)
                         .background(.ultraThinMaterial, in: Circle())
                         .shadow(radius: 2)
                 }
-                .accessibilityLabel(prefs.isFavourite(recipe) ? "Remove from favourites" : "Add to favourites")
+                .accessibilityLabel(isFav ? "Remove from favourites" : "Add to favourites")
                 .padding(10)
             }
 

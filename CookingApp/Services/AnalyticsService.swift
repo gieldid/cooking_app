@@ -36,13 +36,9 @@ final class AnalyticsService {
 
     func trackRecipeSkipped(recipeId: String, recipeTitle: String) {
         Analytics.logEvent("recipe_skipped", parameters: [
-            "recipe_id": recipeId,
-            "recipe_title": recipeTitle
+            "recipe_id": recipeId
         ])
-        logToFirestore(event: "recipe_skipped", params: [
-            "recipeId": recipeId,
-            "recipeTitle": recipeTitle
-        ])
+        logToFirestore(event: "recipe_skipped", params: ["recipeId": recipeId])
     }
 
     // MARK: - Screen time
@@ -81,7 +77,8 @@ final class AnalyticsService {
         case 2: return "dietary_preferences"
         case 3: return "recipe_preferences"
         case 4: return "notifications"
-        case 5: return "subscription"
+        case 5: return "recipe_reveal"
+        case 6: return "subscription"
         default: return "unknown"
         }
     }

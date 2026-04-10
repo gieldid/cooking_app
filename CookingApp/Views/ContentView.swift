@@ -47,7 +47,10 @@ struct ContentView: View {
             .onOpenURL { url in
                 guard url.scheme == "inkgredients",
                       url.host == "recipe",
-                      let recipeId = url.pathComponents.dropFirst().first
+                      let recipeId = url.pathComponents.dropFirst().first,
+                      !recipeId.isEmpty,
+                      recipeId.count <= 128,
+                      recipeId.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" })
                 else { return }
                 deepLinkedRecipe = RecipeDeepLink(id: recipeId)
             }

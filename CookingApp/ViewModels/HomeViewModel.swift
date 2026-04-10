@@ -12,16 +12,14 @@ final class HomeViewModel: ObservableObject {
     private let firestoreService = FirestoreService.shared
     private let prefs = UserPreferencesManager.shared
     private var cancellables = Set<AnyCancellable>()
+    private var loadTask: Task<Void, Never>?
 
     init() {
         // Reload whenever the dietary profile is saved from Settings
         prefs.$dietaryProfile
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                Task { await self.loadTodayRecipe() }
-            }
+            .sink { [weak self] _ in self?.loadTodayRecipe() }
             .store(in: &cancellables)
 
         prefs.$defaultServings
@@ -34,7 +32,12 @@ final class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func loadTodayRecipe() async {
+    func loadTodayRecipe() {
+        loadTask?.cancel()
+        loadTask = Task { await performLoad() }
+    }
+
+    private func performLoad() async {
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
