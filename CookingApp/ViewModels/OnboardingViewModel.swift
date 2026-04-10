@@ -10,6 +10,8 @@ final class OnboardingViewModel: ObservableObject, PerDayPreferencesViewModel {
     @Published var perDayOverrides: [Int: DayOverride] = [:]
     @Published var notificationPreferences: NotificationPreferences = .default
     @Published var isCompleting = false
+    @Published var previewRecipe: Recipe? = nil
+    @Published var isLoadingPreview = false
 
     let totalPages = 7
 
@@ -73,6 +75,21 @@ final class OnboardingViewModel: ObservableObject, PerDayPreferencesViewModel {
 
     // MARK: - PerDayPreferencesViewModel
     var globalDifficulties: Set<Difficulty> { selectedDifficulties }
+
+    func fetchRecipePreview() async {
+        guard previewRecipe == nil, !isLoadingPreview else { return }
+        isLoadingPreview = true
+        defer { isLoadingPreview = false }
+        let profile = DietaryProfile(
+            selectedAllergies: selectedAllergies,
+            selectedDiets: selectedDiets,
+            preferredDifficulties: selectedDifficulties,
+            maxDuration: maxDuration,
+            perDayOverrides: perDayOverrides
+        )
+        let recipes = (try? await FirestoreService.shared.fetchFilteredRecipes(profile: profile)) ?? []
+        previewRecipe = recipes.first
+    }
 
     func completeOnboarding() async {
         isCompleting = true

@@ -160,10 +160,17 @@ struct SubscriptionView: View {
                     HapticManager.impact(.light)
                     Task {
                         isPurchasing = true
+                        errorMessage = nil
                         do {
                             try await service.restorePurchases()
-                            if service.isPremium { await viewModel.completeOnboarding() }
-                        } catch {}
+                            if service.isPremium {
+                                await viewModel.completeOnboarding()
+                            } else {
+                                errorMessage = "No active purchases found."
+                            }
+                        } catch {
+                            errorMessage = error.localizedDescription
+                        }
                         isPurchasing = false
                     }
                 }

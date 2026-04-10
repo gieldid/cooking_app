@@ -31,7 +31,7 @@ struct OnboardingContainerView: View {
                     .tag(3)
                 NotificationSetupView(viewModel: viewModel)
                     .tag(4)
-                TrialReminderView(viewModel: viewModel)
+                RecipeRevealView(viewModel: viewModel)
                     .tag(5)
                 SubscriptionView(viewModel: viewModel)
                     .tag(6)
@@ -41,6 +41,9 @@ struct OnboardingContainerView: View {
         }
         .task(id: viewModel.currentPage) {
             AnalyticsService.shared.trackOnboardingStepViewed(step: viewModel.currentPage)
+            if viewModel.currentPage == 4 {
+                await viewModel.fetchRecipePreview()
+            }
         }
         .task(id: scenePhase) {
             guard scenePhase == .background else { return }
