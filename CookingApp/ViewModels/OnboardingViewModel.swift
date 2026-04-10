@@ -88,7 +88,9 @@ final class OnboardingViewModel: ObservableObject, PerDayPreferencesViewModel {
             perDayOverrides: perDayOverrides
         )
         let recipes = (try? await FirestoreService.shared.fetchFilteredRecipes(profile: profile)) ?? []
-        previewRecipe = recipes.first
+        guard !recipes.isEmpty else { return }
+        let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
+        previewRecipe = recipes[dayIndex % recipes.count]
     }
 
     func completeOnboarding() async {
