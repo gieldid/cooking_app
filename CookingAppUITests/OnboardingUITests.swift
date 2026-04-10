@@ -29,8 +29,13 @@ final class OnboardingUITests: XCTestCase {
         app.launch()
 
         XCTAssert(app.buttons["Get Started"].waitForExistence(timeout: 5))
-        // Accessibility label set in OnboardingContainerView
-        XCTAssert(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Step'")).firstMatch.waitForExistence(timeout: 3))
+        // Progress bar is an HStack with accessibilityLabel "Step N of M" — not a staticText
+        XCTAssert(
+            app.descendants(matching: .any)
+                .matching(NSPredicate(format: "label BEGINSWITH 'Step'"))
+                .firstMatch
+                .waitForExistence(timeout: 3)
+        )
     }
 
     /// Tapping 'Get Started' advances to the Allergies step.
