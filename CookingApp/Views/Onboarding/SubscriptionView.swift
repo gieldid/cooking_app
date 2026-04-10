@@ -42,12 +42,14 @@ struct SubscriptionView: View {
 
                     // ── Hero ────────────────────────────────────────────────
                     VStack(spacing: 14) {
-                        Image("AppIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 80, height: 80)
-                            .clipShape(RoundedRectangle(cornerRadius: 18))
-                            .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
+                        ZStack {
+                            Circle()
+                                .fill(Color.accentColor.opacity(0.1))
+                                .frame(width: 110, height: 110)
+                            Text("🐙")
+                                .font(.system(size: 62))
+                                .rotationEffect(.degrees(-15))
+                        }
 
                         if let days = trialDays {
                             Text("\(days)-Day Free Trial")
