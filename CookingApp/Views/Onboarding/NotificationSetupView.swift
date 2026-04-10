@@ -110,11 +110,11 @@ struct NotificationTimeRow: View {
 
             if let enabledBinding = isEnabled {
                 Toggle("", isOn: enabledBinding).labelsHidden()
-                if enabledBinding.wrappedValue {
-                    DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                        .accessibilityLabel(title)
-                }
+                DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
+                    .labelsHidden()
+                    .accessibilityLabel(title)
+                    .opacity(enabledBinding.wrappedValue ? 1 : 0)
+                    .allowsHitTesting(enabledBinding.wrappedValue)
             } else {
                 DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                     .labelsHidden()
