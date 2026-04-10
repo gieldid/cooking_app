@@ -28,41 +28,7 @@ final class FirestoreService {
     }
 
     private func matchesProfile(recipe: Recipe, profile: DietaryProfile) -> Bool {
-        // Allergens: recipe must be free of all user allergies
-        for allergy in profile.selectedAllergies {
-            if !recipe.allergenFree.contains(allergy.rawValue) {
-                return false
-            }
-        }
-
-        // Dietary tags: recipe must satisfy ALL selected diets
-        if !profile.selectedDiets.isEmpty {
-            let recipeTags = Set(recipe.dietaryTags)
-            let userDiets = Set(profile.selectedDiets.map { $0.rawValue })
-            if !userDiets.isSubset(of: recipeTags) {
-                return false
-            }
-        }
-
-        // Apply per-day overrides for difficulty and duration if configured for today.
-        let todayWeekday = Calendar.current.component(.weekday, from: Date())
-        let effectiveDifficulties = profile.perDayOverrides[todayWeekday]?.difficulties ?? profile.preferredDifficulties
-        let effectiveDuration = profile.perDayOverrides[todayWeekday]?.maxDuration ?? profile.maxDuration
-
-        // Difficulty: recipe must match one of the preferred difficulties (if any selected).
-        // Recipes without a difficulty field (older documents) are always included.
-        if !effectiveDifficulties.isEmpty, let diff = recipe.difficulty {
-            if !effectiveDifficulties.map({ $0.rawValue }).contains(diff) {
-                return false
-            }
-        }
-
-        // Duration: recipe total time must be within the limit
-        if let maxMinutes = effectiveDuration.minutes, recipe.totalTime > maxMinutes {
-            return false
-        }
-
-        return true
+        RecipeFilter.matches(recipe: recipe, profile: profile)
     }
 
     func fetchRecipe(id: String) async throws -> Recipe? {
