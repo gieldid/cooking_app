@@ -63,8 +63,7 @@ struct HomeView: View {
         }
         .navigationTitle("Today's Recipe")
         .refreshable {
-            viewModel.loadTodayRecipe()
-            // Wait for load to complete so the pull-to-refresh spinner dismisses correctly
+            viewModel.loadTodayRecipe(forceRefresh: true)
             while viewModel.isLoading { try? await Task.sleep(nanoseconds: 50_000_000) }
         }
         .task {

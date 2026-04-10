@@ -19,7 +19,7 @@ final class HomeViewModel: ObservableObject {
         prefs.$dietaryProfile
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [weak self] _ in self?.loadTodayRecipe() }
+            .sink { [weak self] _ in self?.loadTodayRecipe(forceRefresh: true) }
             .store(in: &cancellables)
 
         prefs.$defaultServings
@@ -32,7 +32,8 @@ final class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func loadTodayRecipe() {
+    func loadTodayRecipe(forceRefresh: Bool = false) {
+        guard todayRecipe == nil || forceRefresh else { return }
         loadTask?.cancel()
         loadTask = Task { await performLoad() }
     }
