@@ -47,19 +47,19 @@ struct SubscriptionView: View {
                             .scaledToFit()
                             .frame(width: 110, height: 110)
 
-                        if let days = trialDays {
-                            Text("\(days)-Day Free Trial")
-                                .font(.system(size: 36, weight: .bold, design: .rounded))
-                                .foregroundStyle(Color.accentColor)
-                        } else {
-                            Text("Start cooking smarter")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                        }
+                        Text("Start cooking smarter")
+                            .font(.title2)
+                            .fontWeight(.bold)
 
                         Text("Full access, cancel anytime")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+
+                        if let days = trialDays {
+                            Text("Includes \(days)-day free trial")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .padding(.top, 24)
 
@@ -111,6 +111,24 @@ struct SubscriptionView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding()
+                } else if annualPackage == nil {
+                    VStack(spacing: 12) {
+                        Text("Could not load subscription options.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        Button {
+                            Task { await service.fetchOfferings() }
+                        } label: {
+                            Text("Try Again")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.accentColor)
+                                .foregroundStyle(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                        }
+                    }
                 } else {
                     Button {
                         guard let pkg = annualPackage else { return }
@@ -139,15 +157,20 @@ struct SubscriptionView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(annualPackage == nil ? Color.gray : Color.accentColor)
+                        .background(Color.accentColor)
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
-                    .disabled(annualPackage == nil || isPurchasing)
+                    .disabled(isPurchasing)
 
-                    // Monthly price breakdown
-                    if let monthly = monthlyPriceString, let yearly = yearlyPriceString {
-                        Text("\(monthly) / month · billed \(yearly) yearly")
+                    // Billed amount — must be most prominent per App Store guidelines
+                    if let yearly = yearlyPriceString {
+                        Text(yearly + " / year")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                    }
+                    if let monthly = monthlyPriceString {
+                        Text("\(monthly) / month · cancel anytime")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
