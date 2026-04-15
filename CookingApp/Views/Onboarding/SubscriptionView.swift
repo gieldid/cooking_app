@@ -34,6 +34,22 @@ struct SubscriptionView: View {
         annualPackage?.localizedPriceString
     }
 
+    private var subscriptionLengthString: String? {
+        guard let period = annualPackage?.storeProduct.subscriptionPeriod else { return nil }
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.maximumUnitCount = 1
+        var components = DateComponents()
+        switch period.unit {
+        case .year:  components.year = period.value
+        case .month: components.month = period.value
+        case .week:  components.weekOfMonth = period.value
+        case .day:   components.day = period.value
+        @unknown default: return nil
+        }
+        return formatter.string(from: components)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -88,32 +104,54 @@ struct SubscriptionView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     // ── Pricing box ─────────────────────────────────────────
-                    HStack(alignment: .center, spacing: 12) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.title2)
-                            .foregroundStyle(Color.accentColor)
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Try it for free")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            if let weekly = weeklyPriceString {
-                                Text("\(weekly) / week")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                    VStack(spacing: 12) {
+                        // Subscription title + length (required by App Store guidelines)
+                        if let title = annualPackage?.storeProduct.localizedTitle {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(title)
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                    if let length = subscriptionLengthString {
+                                        Text(length)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                Spacer()
                             }
+                            Divider()
                         }
 
-                        Spacer()
+                        HStack(alignment: .center, spacing: 12) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.title2)
+                                .foregroundStyle(Color.accentColor)
 
-                        if let yearly = yearlyPriceString {
-                            VStack(alignment: .trailing, spacing: 2) {
-                                Text(yearly)
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                Text("/ year")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Try it for free")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                if let weekly = weeklyPriceString {
+                                    Text("\(weekly) / week")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+
+                            Spacer()
+
+                            if let yearly = yearlyPriceString {
+                                VStack(alignment: .trailing, spacing: 2) {
+                                    Text(yearly)
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                    if let length = subscriptionLengthString {
+                                        Text(length)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
                             }
                         }
                     }
