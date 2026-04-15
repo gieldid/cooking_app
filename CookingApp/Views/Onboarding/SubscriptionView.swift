@@ -7,32 +7,13 @@ struct SubscriptionView: View {
     @State private var isPurchasing = false
     @State private var errorMessage: String?
 
-    // Yearly package only
-    private var annualPackage: Package? {
-        service.offerings?.current?.availablePackages
-            .first(where: { $0.packageType == .annual })
-            ?? service.offerings?.current?.availablePackages.first
-    }
-
     private var trialDays: Int? {
-        guard let intro = annualPackage?.storeProduct.introductoryDiscount,
+        guard let pkg = service.offerings?.current?.availablePackages
+                .first(where: { $0.packageType == .annual })
+                ?? service.offerings?.current?.availablePackages.first,
+              let intro = pkg.storeProduct.introductoryDiscount,
               intro.paymentMode == .freeTrial else { return nil }
         return Int(intro.subscriptionPeriod.value)
-    }
-
-    private var monthlyPriceString: String? {
-        guard let pkg = annualPackage else { return nil }
-        let monthly = pkg.storeProduct.price / Decimal(12)
-        let fmt = NumberFormatter()
-        fmt.numberStyle = .currency
-        fmt.currencyCode = pkg.storeProduct.currencyCode
-        fmt.minimumFractionDigits = 2
-        fmt.maximumFractionDigits = 2
-        return fmt.string(from: monthly as NSDecimalNumber)
-    }
-
-    private var yearlyPriceString: String? {
-        annualPackage?.localizedPriceString
     }
 
     var body: some View {
@@ -54,12 +35,6 @@ struct SubscriptionView: View {
                         Text("Full access, cancel anytime")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-
-                        if let days = trialDays {
-                            Text("Includes \(days)-day free trial")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
                     }
                     .padding(.top, 24)
 
@@ -107,74 +82,18 @@ struct SubscriptionView: View {
 
             // ── Fixed bottom CTA ────────────────────────────────────────────
             VStack(spacing: 10) {
-                if service.isLoading {
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                } else if annualPackage == nil {
-                    VStack(spacing: 12) {
-                        Text("Could not load subscription options.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        Button {
-                            Task { await service.fetchOfferings() }
-                        } label: {
-                            Text("Try Again")
-                                .font(.headline)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.accentColor)
-                                .foregroundStyle(.white)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                        }
-                    }
-                } else {
-                    Button {
-                        guard let pkg = annualPackage else { return }
-                        HapticManager.impact(.medium)
-                        Task {
-                            isPurchasing = true
-                            errorMessage = nil
-                            do {
-                                try await service.purchase(package: pkg)
-                                await viewModel.completeOnboarding()
-                            } catch {
-                                if (error as? ErrorCode) != .purchaseCancelledError {
-                                    errorMessage = error.localizedDescription
-                                }
-                            }
-                            isPurchasing = false
-                        }
-                    } label: {
-                        Group {
-                            if isPurchasing {
-                                ProgressView().tint(.white)
-                            } else {
-                                Text(trialDays != nil ? "Start Free Trial" : "Subscribe")
-                                    .font(.headline)
-                            }
-                        }
+                Button {
+                    HapticManager.impact(.medium)
+                    viewModel.nextPage()
+                } label: {
+                    let label = trialDays.map { "Start \($0)-Day Free Trial" } ?? "Start Free Trial"
+                    Text(label)
+                        .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.accentColor)
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                    }
-                    .disabled(isPurchasing)
-
-                    // Billed amount — must be most prominent per App Store guidelines
-                    if let yearly = yearlyPriceString {
-                        Text(yearly + " / year")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                    }
-                    if let monthly = monthlyPriceString {
-                        Text("\(monthly) / month · cancel anytime")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
                 }
 
                 Button("Restore Purchases") {
@@ -198,11 +117,6 @@ struct SubscriptionView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .disabled(isPurchasing)
-
-                Text("Cancel anytime before trial ends. No charge during trial.")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-                    .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 24)
             .padding(.top, 12)
