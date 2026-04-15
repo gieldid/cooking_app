@@ -35,8 +35,7 @@
 		A10025 /* RevenueCatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026 /* RevenueCatService.swift */; };
 		A10026 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* PaywallView.swift */; };
 		A10027 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028 /* SubscriptionView.swift */; };
-		A10042 /* SubscriptionPricingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10042 /* SubscriptionPricingView.swift */; };
-		A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* AnalyticsService.swift */; };
+A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* AnalyticsService.swift */; };
 		A10030 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D10001 /* FirebaseFirestore */; };
 		A10031 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D10002 /* RevenueCat */; };
 		A10032 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D10003 /* FirebaseAnalytics */; };
@@ -99,8 +98,7 @@
 		B10026 /* RevenueCatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatService.swift; sourceTree = "<group>"; };
 		B10027 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		B10028 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
-		B10042 /* SubscriptionPricingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionPricingView.swift; sourceTree = "<group>"; };
-		B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		B10030 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
 		B10031 /* SharedRecipeGuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRecipeGuestView.swift; sourceTree = "<group>"; };
 		B10032 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
@@ -206,7 +204,6 @@
 				B10036 /* TrialReminderView.swift */,
 				B10040 /* RecipeRevealView.swift */,
 				B10028 /* SubscriptionView.swift */,
-				B10042 /* SubscriptionPricingView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -464,7 +461,6 @@
 				A10025 /* RevenueCatService.swift in Sources */,
 				A10026 /* PaywallView.swift in Sources */,
 				A10027 /* SubscriptionView.swift in Sources */,
-				A10042 /* SubscriptionPricingView.swift in Sources */,
 				A10028 /* AnalyticsService.swift in Sources */,
 				A10033 /* FavouritesView.swift in Sources */,
 				A10034 /* SharedRecipeGuestView.swift in Sources */,

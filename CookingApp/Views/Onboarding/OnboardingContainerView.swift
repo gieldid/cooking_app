@@ -35,8 +35,10 @@ struct OnboardingContainerView: View {
                     .tag(5)
                 SubscriptionView(viewModel: viewModel)
                     .tag(6)
-                SubscriptionPricingView(viewModel: viewModel)
-                    .tag(7)
+                PaywallView(showDismissButton: false, onCompletion: {
+                    await viewModel.completeOnboarding()
+                })
+                .tag(7)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut, value: viewModel.currentPage)
