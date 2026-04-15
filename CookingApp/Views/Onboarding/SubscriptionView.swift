@@ -170,6 +170,9 @@ struct SubscriptionView: View {
                             errorMessage = nil
                             do {
                                 try await service.purchase(package: pkg)
+                                if trialDays != nil {
+                                    NotificationService.shared.scheduleTrialReminder()
+                                }
                                 await viewModel.completeOnboarding()
                             } catch {
                                 if (error as? ErrorCode) != .purchaseCancelledError {

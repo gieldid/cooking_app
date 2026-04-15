@@ -3356,6 +3356,76 @@
         }
       }
     },
+    "notification.trial_reminder.body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kündige vor Ablauf der Testphase, um Kosten zu vermeiden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel before your trial ends to avoid being charged."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulez avant la fin de votre essai pour éviter d'être facturé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla prima della fine del periodo di prova per evitare addebiti."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleer vóór het einde van je proefperiode om kosten te vermijden."
+          }
+        }
+      }
+    },
+    "notification.trial_reminder.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Testphase endet bald"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your free trial is ending soon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre essai gratuit se termine bientôt"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo periodo di prova sta per scadere"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je gratis proefperiode loopt bijna af"
+          }
+        }
+      }
+    },
     "Notifications" : {
       "extractionState" : "manual",
       "localizations" : {

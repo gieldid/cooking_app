@@ -10,6 +10,7 @@ final class NotificationService {
         case morningRecipe = "com.inkgredients.morning"
         case shoppingList = "com.inkgredients.shopping"
         case cookingReminder = "com.inkgredients.cooking"
+        case trialReminder = "com.inkgredients.trial_reminder"
     }
 
     private init() {}
@@ -70,6 +71,25 @@ final class NotificationService {
         let request = UNNotificationRequest(identifier: id.rawValue, content: content, trigger: trigger)
 
         center.removePendingNotificationRequests(withIdentifiers: [id.rawValue])
+        center.add(request)
+    }
+
+    func scheduleTrialReminder() {
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "notification.trial_reminder.title")
+        content.body = String(localized: "notification.trial_reminder.body")
+        content.sound = .default
+        content.userInfo = ["notificationType": NotificationId.trialReminder.rawValue]
+
+        // Fire 24 hours after trial starts (Day 2 of a 3-day trial)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 24 * 3600, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: NotificationId.trialReminder.rawValue,
+            content: content,
+            trigger: trigger
+        )
+
+        center.removePendingNotificationRequests(withIdentifiers: [NotificationId.trialReminder.rawValue])
         center.add(request)
     }
 
