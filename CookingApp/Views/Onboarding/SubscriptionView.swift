@@ -4,8 +4,13 @@ import RevenueCat
 struct SubscriptionView: View {
     @ObservedObject var viewModel: OnboardingViewModel
     @StateObject private var service = RevenueCatService.shared
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var isPurchasing = false
     @State private var errorMessage: String?
+
+    private var showMascot: Bool {
+        verticalSizeClass != .compact && UIScreen.main.bounds.height > 700
+    }
 
     private var annualPackage: Package? {
         service.offerings?.current?.availablePackages
@@ -57,10 +62,12 @@ struct SubscriptionView: View {
 
                     // ── Hero ────────────────────────────────────────────────
                     VStack(spacing: 14) {
-                        Image("ChefMascot")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 110, height: 110)
+                        if showMascot {
+                            Image("ChefMascot")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 110, height: 110)
+                        }
 
                         Text("Start cooking smarter")
                             .font(.title2)
