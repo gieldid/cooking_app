@@ -134,6 +134,11 @@ struct SubscriptionView: View {
 
             // ── Fixed bottom CTA ────────────────────────────────────────────
             VStack(spacing: 10) {
+                Text("Cancel anytime before trial ends. No charge during trial.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                    .multilineTextAlignment(.center)
+
                 if service.isLoading {
                     ProgressView()
                         .frame(maxWidth: .infinity)
@@ -191,32 +196,34 @@ struct SubscriptionView: View {
                     .disabled(isPurchasing)
                 }
 
-                Button("Restore Purchases") {
-                    HapticManager.impact(.light)
-                    Task {
-                        isPurchasing = true
-                        errorMessage = nil
-                        do {
-                            try await service.restorePurchases()
-                            if service.isPremium {
-                                await viewModel.completeOnboarding()
-                            } else {
-                                errorMessage = "No active purchases found."
+                HStack(spacing: 8) {
+                    Button("Restore Purchases") {
+                        HapticManager.impact(.light)
+                        Task {
+                            isPurchasing = true
+                            errorMessage = nil
+                            do {
+                                try await service.restorePurchases()
+                                if service.isPremium {
+                                    await viewModel.completeOnboarding()
+                                } else {
+                                    errorMessage = "No active purchases found."
+                                }
+                            } catch {
+                                errorMessage = error.localizedDescription
                             }
-                        } catch {
-                            errorMessage = error.localizedDescription
+                            isPurchasing = false
                         }
-                        isPurchasing = false
                     }
-                }
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .disabled(isPurchasing)
+                    .disabled(isPurchasing)
 
-                Text("Cancel anytime before trial ends. No charge during trial.")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-                    .multilineTextAlignment(.center)
+                    Text("·").foregroundStyle(.quaternary)
+                    Link("Privacy Policy", destination: URL(string: "https://gieljurriens.nl/inkgredients/#privacy")!)
+                    Text("·").foregroundStyle(.quaternary)
+                    Link("Terms of Service", destination: URL(string: "https://gieljurriens.nl/inkgredients/#terms")!)
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 24)
             .padding(.top, 12)
