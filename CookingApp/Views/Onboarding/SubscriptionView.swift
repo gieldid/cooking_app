@@ -7,13 +7,31 @@ struct SubscriptionView: View {
     @State private var isPurchasing = false
     @State private var errorMessage: String?
 
+    private var annualPackage: Package? {
+        service.offerings?.current?.availablePackages
+            .first(where: { $0.packageType == .annual })
+            ?? service.offerings?.current?.availablePackages.first
+    }
+
     private var trialDays: Int? {
-        guard let pkg = service.offerings?.current?.availablePackages
-                .first(where: { $0.packageType == .annual })
-                ?? service.offerings?.current?.availablePackages.first,
-              let intro = pkg.storeProduct.introductoryDiscount,
+        guard let intro = annualPackage?.storeProduct.introductoryDiscount,
               intro.paymentMode == .freeTrial else { return nil }
         return Int(intro.subscriptionPeriod.value)
+    }
+
+    private var weeklyPriceString: String? {
+        guard let pkg = annualPackage else { return nil }
+        let weekly = pkg.storeProduct.price / Decimal(52)
+        let fmt = NumberFormatter()
+        fmt.numberStyle = .currency
+        fmt.currencyCode = pkg.storeProduct.currencyCode
+        fmt.minimumFractionDigits = 2
+        fmt.maximumFractionDigits = 2
+        return fmt.string(from: weekly as NSDecimalNumber)
+    }
+
+    private var yearlyPriceString: String? {
+        annualPackage?.localizedPriceString
     }
 
     var body: some View {
@@ -69,6 +87,40 @@ struct SubscriptionView: View {
                     .background(Color(.systemGray6))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
+                    // ── Pricing box ─────────────────────────────────────────
+                    HStack(alignment: .center, spacing: 12) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(Color.accentColor)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Try it for free")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                            if let weekly = weeklyPriceString {
+                                Text("\(weekly) / week")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+
+                        Spacer()
+
+                        if let yearly = yearlyPriceString {
+                            VStack(alignment: .trailing, spacing: 2) {
+                                Text(yearly)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                Text("/ year")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .padding(16)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
                     if let errorMessage {
                         Text(errorMessage)
                             .font(.caption)
@@ -82,18 +134,61 @@ struct SubscriptionView: View {
 
             // ── Fixed bottom CTA ────────────────────────────────────────────
             VStack(spacing: 10) {
-                Button {
-                    HapticManager.impact(.medium)
-                    viewModel.nextPage()
-                } label: {
-                    let label = trialDays.map { "Start \($0)-Day Free Trial" } ?? "Start Free Trial"
-                    Text(label)
-                        .font(.headline)
+                if service.isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                } else if annualPackage == nil {
+                    VStack(spacing: 12) {
+                        Text("Could not load subscription options.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        Button {
+                            Task { await service.fetchOfferings() }
+                        } label: {
+                            Text("Try Again")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.accentColor)
+                                .foregroundStyle(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                        }
+                    }
+                } else {
+                    Button {
+                        guard let pkg = annualPackage else { return }
+                        HapticManager.impact(.medium)
+                        Task {
+                            isPurchasing = true
+                            errorMessage = nil
+                            do {
+                                try await service.purchase(package: pkg)
+                                await viewModel.completeOnboarding()
+                            } catch {
+                                if (error as? ErrorCode) != .purchaseCancelledError {
+                                    errorMessage = error.localizedDescription
+                                }
+                            }
+                            isPurchasing = false
+                        }
+                    } label: {
+                        Group {
+                            if isPurchasing {
+                                ProgressView().tint(.white)
+                            } else {
+                                Text("Try for free")
+                                    .font(.headline)
+                            }
+                        }
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.accentColor)
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
+                    }
+                    .disabled(isPurchasing)
                 }
 
                 Button("Restore Purchases") {
@@ -117,6 +212,11 @@ struct SubscriptionView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .disabled(isPurchasing)
+
+                Text("Cancel anytime before trial ends. No charge during trial.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                    .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 24)
             .padding(.top, 12)
@@ -139,7 +239,6 @@ private struct TrialDayRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            // Icon column with connecting line
             VStack(spacing: 0) {
                 ZStack {
                     Circle()
@@ -156,7 +255,6 @@ private struct TrialDayRow: View {
                 }
             }
 
-            // Text column
             VStack(alignment: .leading, spacing: 3) {
                 Text(day)
                     .font(.caption)

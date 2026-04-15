@@ -13,7 +13,7 @@ final class OnboardingViewModel: ObservableObject, PerDayPreferencesViewModel {
     @Published var previewRecipe: Recipe? = nil
     @Published var isLoadingPreview = false
 
-    let totalPages = 8
+    let totalPages = 7
 
     var canAdvance: Bool {
         currentPage < totalPages - 1
