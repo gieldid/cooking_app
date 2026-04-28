@@ -10,6 +10,14 @@ struct PaywallView: View {
     @State private var isRestoring = false
     @State private var errorMessage: String?
 
+    private static let lifetimeDeadline: Date = {
+        Calendar.current.date(from: DateComponents(year: 2026, month: 5, day: 15))!
+    }()
+
+    private var isLifetimeAvailable: Bool {
+        Date() < Self.lifetimeDeadline
+    }
+
     private let features = [
         ("fork.knife",          "A new personalised recipe every day"),
         ("slider.horizontal.3", "Advanced filters & preferences"),
@@ -23,10 +31,16 @@ struct PaywallView: View {
             ?? service.offerings?.current?.availablePackages.first
     }
 
-    private var trialDays: Int? {
-        guard let intro = annualPackage?.storeProduct.introductoryDiscount,
-              intro.paymentMode == .freeTrial else { return nil }
-        return Int(intro.subscriptionPeriod.value)
+    private var lifetimePackage: Package? {
+        service.offerings?.current?.availablePackages
+            .first(where: { $0.packageType == .lifetime })
+    }
+
+    private var activePackage: Package? {
+        if isLifetimeAvailable, let lifetime = lifetimePackage {
+            return lifetime
+        }
+        return annualPackage
     }
 
     private var monthlyPriceString: String? {
@@ -71,7 +85,7 @@ struct PaywallView: View {
                         .font(.title2)
                         .fontWeight(.bold)
 
-                    Text("Full access, cancel anytime")
+                    Text(isLifetimeAvailable ? "One-time purchase, yours forever" : "Full access, cancel anytime")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -111,7 +125,7 @@ struct PaywallView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding()
-                } else if annualPackage == nil {
+                } else if activePackage == nil {
                     VStack(spacing: 12) {
                         Text("Could not load subscription options.")
                             .font(.subheadline)
@@ -131,7 +145,7 @@ struct PaywallView: View {
                     }
                 } else {
                     Button {
-                        guard let pkg = annualPackage else { return }
+                        guard let pkg = activePackage else { return }
                         HapticManager.impact(.medium)
                         Task {
                             isPurchasing = true
@@ -155,7 +169,7 @@ struct PaywallView: View {
                             if isPurchasing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text("Subscribe")
+                                Text(isLifetimeAvailable ? "Get Lifetime Access" : "Subscribe")
                                     .fontWeight(.semibold)
                             }
                         }
@@ -167,17 +181,28 @@ struct PaywallView: View {
                     }
                     .disabled(isPurchasing)
 
-                    // Billed amount — must be most prominent per App Store guidelines
-                    if let yearly = yearlyPriceString {
-                        Text(yearly + " / year")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                    }
-                    if let monthly = monthlyPriceString {
-                        Text("\(monthly) / month · cancel anytime")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
+                    if isLifetimeAvailable {
+                        if let price = lifetimePackage?.localizedPriceString {
+                            Text(price)
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            Text("One-time purchase · no subscription")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                    } else {
+                        if let yearly = yearlyPriceString {
+                            Text(yearly + " / year")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                        }
+                        if let monthly = monthlyPriceString {
+                            Text("\(monthly) / month · cancel anytime")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
                     }
                 }
 
@@ -212,7 +237,9 @@ struct PaywallView: View {
                 }
                 .disabled(isRestoring)
 
-                Text("Cancel anytime before trial ends. Subscription auto-renews yearly unless cancelled.")
+                Text(isLifetimeAvailable
+                     ? "One-time purchase. No recurring charges."
+                     : "Cancel anytime before trial ends. Subscription auto-renews yearly unless cancelled.")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                     .multilineTextAlignment(.center)

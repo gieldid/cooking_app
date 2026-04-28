@@ -8,6 +8,14 @@ struct SubscriptionView: View {
     @State private var isPurchasing = false
     @State private var errorMessage: String?
 
+    private static let lifetimeDeadline: Date = {
+        Calendar.current.date(from: DateComponents(year: 2026, month: 5, day: 15))!
+    }()
+
+    private var isLifetimeAvailable: Bool {
+        Date() < Self.lifetimeDeadline
+    }
+
     private var showMascot: Bool {
         verticalSizeClass != .compact && UIScreen.main.bounds.height > 700
     }
@@ -16,6 +24,18 @@ struct SubscriptionView: View {
         service.offerings?.current?.availablePackages
             .first(where: { $0.packageType == .annual })
             ?? service.offerings?.current?.availablePackages.first
+    }
+
+    private var lifetimePackage: Package? {
+        service.offerings?.current?.availablePackages
+            .first(where: { $0.packageType == .lifetime })
+    }
+
+    private var activePackage: Package? {
+        if isLifetimeAvailable, let lifetime = lifetimePackage {
+            return lifetime
+        }
+        return annualPackage
     }
 
     private var trialDays: Int? {
@@ -73,98 +93,25 @@ struct SubscriptionView: View {
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        Text("Full access, cancel anytime")
+                        Text(isLifetimeAvailable ? "One-time purchase, yours forever" : "Full access, cancel anytime")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                     .padding(.top, 24)
 
-                    // ── Trial timeline ──────────────────────────────────────
-                    VStack(alignment: .leading, spacing: 0) {
-                        TrialDayRow(
-                            day: "Day 1",
-                            icon: "flame.fill",
-                            iconColor: .orange,
-                            title: "Fire up your kitchen",
-                            subtitle: "Get your first personalised recipe and dive straight in",
-                            isLast: false
-                        )
-                        TrialDayRow(
-                            day: "Day 2",
-                            icon: "bell.badge.fill",
-                            iconColor: .accentColor,
-                            title: "We've got your back",
-                            subtitle: "A friendly reminder lands before any charge",
-                            isLast: false
-                        )
-                        TrialDayRow(
-                            day: "Day 3",
-                            icon: "sparkles",
-                            iconColor: .purple,
-                            title: "Your kitchen, your rules",
-                            subtitle: "Cancel freely — or keep cooking and save all year",
-                            isLast: true
-                        )
+                    // ── Middle section ──────────────────────────────────────
+                    if isLifetimeAvailable {
+                        lifetimeOfferBox
+                    } else {
+                        trialTimeline
                     }
-                    .padding(16)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     // ── Pricing box ─────────────────────────────────────────
-                    VStack(spacing: 12) {
-                        // Subscription title + length (required by App Store guidelines)
-                        if let title = annualPackage?.storeProduct.localizedTitle {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(title)
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                    if let length = subscriptionLengthString {
-                                        Text(length)
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                                Spacer()
-                            }
-                            Divider()
-                        }
-
-                        HStack(alignment: .center, spacing: 12) {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.title2)
-                                .foregroundStyle(Color.accentColor)
-
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Try it for free")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                if let weekly = weeklyPriceString {
-                                    Text("\(weekly) / week")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-
-                            Spacer()
-
-                            if let yearly = yearlyPriceString {
-                                VStack(alignment: .trailing, spacing: 2) {
-                                    Text(yearly)
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                    if let length = subscriptionLengthString {
-                                        Text(length)
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                            }
-                        }
+                    if isLifetimeAvailable {
+                        lifetimePricingBox
+                    } else {
+                        annualPricingBox
                     }
-                    .padding(16)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     if let errorMessage {
                         Text(errorMessage)
@@ -179,7 +126,9 @@ struct SubscriptionView: View {
 
             // ── Fixed bottom CTA ────────────────────────────────────────────
             VStack(spacing: 10) {
-                Text("Cancel anytime before trial ends. No charge during trial.")
+                Text(isLifetimeAvailable
+                     ? "One-time purchase. No recurring charges."
+                     : "Cancel anytime before trial ends. No charge during trial.")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                     .multilineTextAlignment(.center)
@@ -188,7 +137,7 @@ struct SubscriptionView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding()
-                } else if annualPackage == nil {
+                } else if activePackage == nil {
                     VStack(spacing: 12) {
                         Text("Could not load subscription options.")
                             .font(.subheadline)
@@ -208,14 +157,14 @@ struct SubscriptionView: View {
                     }
                 } else {
                     Button {
-                        guard let pkg = annualPackage else { return }
+                        guard let pkg = activePackage else { return }
                         HapticManager.impact(.medium)
                         Task {
                             isPurchasing = true
                             errorMessage = nil
                             do {
                                 try await service.purchase(package: pkg)
-                                if trialDays != nil {
+                                if !isLifetimeAvailable && trialDays != nil {
                                     NotificationService.shared.scheduleTrialReminder()
                                 }
                                 await viewModel.completeOnboarding()
@@ -231,7 +180,7 @@ struct SubscriptionView: View {
                             if isPurchasing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text("Try for free")
+                                Text(isLifetimeAvailable ? "Get Lifetime Access" : "Try for free")
                                     .font(.headline)
                             }
                         }
@@ -281,6 +230,178 @@ struct SubscriptionView: View {
         .task {
             await service.fetchOfferings()
         }
+    }
+
+    // ── Lifetime offer callout ──────────────────────────────────────────────
+    private var lifetimeOfferBox: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(Color.orange.opacity(0.15))
+                        .frame(width: 42, height: 42)
+                    Image(systemName: "crown.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(.orange)
+                }
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Limited time offer")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.orange)
+                        .textCase(.uppercase)
+                        .kerning(0.5)
+                    Text("Lifetime access")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                    Text("Pay once, cook forever — no subscription ever")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer()
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach([
+                    "All personalised daily recipes",
+                    "Advanced filters & preferences",
+                    "Smart cooking reminders",
+                    "All future features included",
+                ], id: \.self) { text in
+                    HStack(spacing: 10) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.accentColor)
+                        Text(text)
+                            .font(.subheadline)
+                    }
+                }
+            }
+        }
+        .padding(16)
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    // ── Trial timeline ──────────────────────────────────────────────────────
+    private var trialTimeline: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            TrialDayRow(
+                day: "Day 1",
+                icon: "flame.fill",
+                iconColor: .orange,
+                title: "Fire up your kitchen",
+                subtitle: "Get your first personalised recipe and dive straight in",
+                isLast: false
+            )
+            TrialDayRow(
+                day: "Day 2",
+                icon: "bell.badge.fill",
+                iconColor: .accentColor,
+                title: "We've got your back",
+                subtitle: "A friendly reminder lands before any charge",
+                isLast: false
+            )
+            TrialDayRow(
+                day: "Day 3",
+                icon: "sparkles",
+                iconColor: .purple,
+                title: "Your kitchen, your rules",
+                subtitle: "Cancel freely — or keep cooking and save all year",
+                isLast: true
+            )
+        }
+        .padding(16)
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    // ── Annual pricing box ──────────────────────────────────────────────────
+    private var annualPricingBox: some View {
+        VStack(spacing: 12) {
+            if let title = annualPackage?.storeProduct.localizedTitle {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                        if let length = subscriptionLengthString {
+                            Text(length)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer()
+                }
+                Divider()
+            }
+
+            HStack(alignment: .center, spacing: 12) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(Color.accentColor)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Try it for free")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                    if let weekly = weeklyPriceString {
+                        Text("\(weekly) / week")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Spacer()
+
+                if let yearly = yearlyPriceString {
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(yearly)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        if let length = subscriptionLengthString {
+                            Text(length)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(16)
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    // ── Lifetime pricing box ────────────────────────────────────────────────
+    private var lifetimePricingBox: some View {
+        HStack(alignment: .center, spacing: 12) {
+            Image(systemName: "infinity.circle.fill")
+                .font(.title2)
+                .foregroundStyle(Color.accentColor)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Lifetime access")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                Text("One-time purchase")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            if let price = lifetimePackage?.localizedPriceString {
+                Text(price)
+                    .font(.title2)
+                    .fontWeight(.bold)
+            }
+        }
+        .padding(16)
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
