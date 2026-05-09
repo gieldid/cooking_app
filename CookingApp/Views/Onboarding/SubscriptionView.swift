@@ -172,7 +172,7 @@ struct SubscriptionView: View {
                             if isPurchasing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text(appConfig.isLifetimeAvailable ? "Get Lifetime Access" : "Try for free")
+                                Text(appConfig.isLifetimeAvailable ? "Get Free Access" : "Try for free")
                                     .font(.headline)
                             }
                         }
