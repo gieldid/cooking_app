@@ -244,7 +244,7 @@ struct SubscriptionView: View {
                         .foregroundStyle(.orange)
                         .textCase(.uppercase)
                         .kerning(0.5)
-                    Text("Lifetime access")
+                    Text("Free access")
                         .font(.subheadline)
                         .fontWeight(.bold)
                     Text("Pay once, cook forever — no subscription ever")
