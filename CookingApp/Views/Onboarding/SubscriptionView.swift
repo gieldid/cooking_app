@@ -376,7 +376,7 @@ struct SubscriptionView: View {
                 .foregroundStyle(Color.accentColor)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("Lifetime access")
+                Text("Free access")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 Text("One-time purchase")
