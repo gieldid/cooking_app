@@ -38,6 +38,13 @@ final class FirestoreService {
 
     // MARK: - Dietary Profiles (anonymous)
 
+    // MARK: - App Config
+
+    func fetchLifetimeAvailable() async throws -> Bool {
+        let doc = try await db.collection("config").document("app").getDocument()
+        return doc.data()?["lifetimeAvailable"] as? Bool ?? false
+    }
+
     // MARK: - Analytics events
 
     /// Fire-and-forget write to the analytics_events collection.

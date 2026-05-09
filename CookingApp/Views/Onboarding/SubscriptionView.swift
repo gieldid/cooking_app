@@ -4,17 +4,10 @@ import RevenueCat
 struct SubscriptionView: View {
     @ObservedObject var viewModel: OnboardingViewModel
     @StateObject private var service = RevenueCatService.shared
+    @StateObject private var appConfig = AppConfigService.shared
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var isPurchasing = false
     @State private var errorMessage: String?
-
-    private static let lifetimeDeadline: Date = {
-        Calendar.current.date(from: DateComponents(year: 2026, month: 5, day: 15))!
-    }()
-
-    private var isLifetimeAvailable: Bool {
-        Date() < Self.lifetimeDeadline
-    }
 
     private var showMascot: Bool {
         verticalSizeClass != .compact && UIScreen.main.bounds.height > 700
@@ -23,7 +16,6 @@ struct SubscriptionView: View {
     private var annualPackage: Package? {
         service.offerings?.current?.availablePackages
             .first(where: { $0.packageType == .annual })
-            ?? service.offerings?.current?.availablePackages.first
     }
 
     private var lifetimePackage: Package? {
@@ -32,7 +24,7 @@ struct SubscriptionView: View {
     }
 
     private var activePackage: Package? {
-        if isLifetimeAvailable, let lifetime = lifetimePackage {
+        if appConfig.appConfig.isLifetimeAvailable, let lifetime = lifetimePackage {
             return lifetime
         }
         return annualPackage
@@ -93,21 +85,21 @@ struct SubscriptionView: View {
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        Text(isLifetimeAvailable ? "One-time purchase, yours forever" : "Full access, cancel anytime")
+                        Text(appConfig.isLifetimeAvailable ? "One-time purchase, yours forever" : "Full access, cancel anytime")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                     .padding(.top, 24)
 
                     // ── Middle section ──────────────────────────────────────
-                    if isLifetimeAvailable {
+                    if appConfig.isLifetimeAvailable {
                         lifetimeOfferBox
                     } else {
                         trialTimeline
                     }
 
                     // ── Pricing box ─────────────────────────────────────────
-                    if isLifetimeAvailable {
+                    if appConfig.isLifetimeAvailable {
                         lifetimePricingBox
                     } else {
                         annualPricingBox
@@ -126,7 +118,7 @@ struct SubscriptionView: View {
 
             // ── Fixed bottom CTA ────────────────────────────────────────────
             VStack(spacing: 10) {
-                Text(isLifetimeAvailable
+                Text(appConfig.isLifetimeAvailable
                      ? "One-time purchase. No recurring charges."
                      : "Cancel anytime before trial ends. No charge during trial.")
                     .font(.caption2)
@@ -164,7 +156,7 @@ struct SubscriptionView: View {
                             errorMessage = nil
                             do {
                                 try await service.purchase(package: pkg)
-                                if !isLifetimeAvailable && trialDays != nil {
+                                if !appConfig.isLifetimeAvailable && trialDays != nil {
                                     NotificationService.shared.scheduleTrialReminder()
                                 }
                                 await viewModel.completeOnboarding()
@@ -180,7 +172,7 @@ struct SubscriptionView: View {
                             if isPurchasing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text(isLifetimeAvailable ? "Get Lifetime Access" : "Try for free")
+                                Text(appConfig.isLifetimeAvailable ? "Get Lifetime Access" : "Try for free")
                                     .font(.headline)
                             }
                         }
@@ -228,6 +220,7 @@ struct SubscriptionView: View {
             .background(.regularMaterial)
         }
         .task {
+            await appConfig.fetch()
             await service.fetchOfferings()
         }
     }

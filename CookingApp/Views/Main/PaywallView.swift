@@ -5,18 +5,11 @@ struct PaywallView: View {
     var showDismissButton: Bool = true
     var onCompletion: (() async -> Void)? = nil
     @StateObject private var service = RevenueCatService.shared
+    @StateObject private var appConfig = AppConfigService.shared
     @Environment(\.dismiss) private var dismiss
     @State private var isPurchasing = false
     @State private var isRestoring = false
     @State private var errorMessage: String?
-
-    private static let lifetimeDeadline: Date = {
-        Calendar.current.date(from: DateComponents(year: 2026, month: 5, day: 15))!
-    }()
-
-    private var isLifetimeAvailable: Bool {
-        Date() < Self.lifetimeDeadline
-    }
 
     private let features = [
         ("fork.knife",          "A new personalised recipe every day"),
@@ -28,7 +21,6 @@ struct PaywallView: View {
     private var annualPackage: Package? {
         service.offerings?.current?.availablePackages
             .first(where: { $0.packageType == .annual })
-            ?? service.offerings?.current?.availablePackages.first
     }
 
     private var lifetimePackage: Package? {
@@ -37,7 +29,7 @@ struct PaywallView: View {
     }
 
     private var activePackage: Package? {
-        if isLifetimeAvailable, let lifetime = lifetimePackage {
+        if appConfig.appConfig.isLifetimeAvailable, let lifetime = lifetimePackage {
             return lifetime
         }
         return annualPackage
@@ -85,7 +77,7 @@ struct PaywallView: View {
                         .font(.title2)
                         .fontWeight(.bold)
 
-                    Text(isLifetimeAvailable ? "One-time purchase, yours forever" : "Full access, cancel anytime")
+                    Text(appConfig.isLifetimeAvailable ? "One-time purchase, yours forever" : "Full access, cancel anytime")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -169,7 +161,7 @@ struct PaywallView: View {
                             if isPurchasing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text(isLifetimeAvailable ? "Get Lifetime Access" : "Subscribe")
+                                Text(appConfig.isLifetimeAvailable ? "Get Lifetime Access" : "Subscribe")
                                     .fontWeight(.semibold)
                             }
                         }
@@ -181,7 +173,7 @@ struct PaywallView: View {
                     }
                     .disabled(isPurchasing)
 
-                    if isLifetimeAvailable {
+                    if appConfig.isLifetimeAvailable {
                         if let price = lifetimePackage?.localizedPriceString {
                             Text(price)
                                 .font(.headline)
@@ -237,7 +229,7 @@ struct PaywallView: View {
                 }
                 .disabled(isRestoring)
 
-                Text(isLifetimeAvailable
+                Text(appConfig.isLifetimeAvailable
                      ? "One-time purchase. No recurring charges."
                      : "Cancel anytime before trial ends. Subscription auto-renews yearly unless cancelled.")
                     .font(.caption2)
@@ -274,6 +266,7 @@ struct PaywallView: View {
             }
         }
         .task {
+            await appConfig.fetch()
             await service.fetchOfferings()
         }
     }
