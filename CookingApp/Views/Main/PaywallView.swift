@@ -161,7 +161,7 @@ struct PaywallView: View {
                             if isPurchasing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text(appConfig.isLifetimeAvailable ? "Get Lifetime Access" : "Subscribe")
+                                Text(appConfig.isLifetimeAvailable ? "Get Free Access" : "Subscribe")
                                     .fontWeight(.semibold)
                             }
                         }
