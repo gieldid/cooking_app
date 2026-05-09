@@ -24,7 +24,7 @@ struct SubscriptionView: View {
     }
 
     private var activePackage: Package? {
-        if appConfig.appConfig.isLifetimeAvailable, let lifetime = lifetimePackage {
+        if appConfig.isLifetimeAvailable, let lifetime = lifetimePackage {
             return lifetime
         }
         return annualPackage
