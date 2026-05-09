@@ -25,7 +25,7 @@ struct PaywallView: View {
 
     private var lifetimePackage: Package? {
         service.offerings?.current?.availablePackages
-            .first(where: { $0.identifier == "free" })
+            .first(where: { $0.packageType == .lifetime })
     }
 
     private var activePackage: Package? {
