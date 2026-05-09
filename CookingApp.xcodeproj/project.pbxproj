@@ -48,6 +48,7 @@ A10028 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 
 		A10039 /* ScreenshotMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10039 /* ScreenshotMockData.swift */; };
 		A10040 /* RecipeRevealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10040 /* RecipeRevealView.swift */; };
 		A10041 /* RecipeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10041 /* RecipeFilter.swift */; };
+		A10042 /* AppConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10042 /* AppConfigService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +109,7 @@ B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType
 		B10039 /* ScreenshotMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotMockData.swift; sourceTree = "<group>"; };
 		B10040 /* RecipeRevealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRevealView.swift; sourceTree = "<group>"; };
 		B10041 /* RecipeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeFilter.swift; sourceTree = "<group>"; };
+		B10042 /* AppConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigService.swift; sourceTree = "<group>"; };
 		U10002 /* CookingAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CookingAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C10001 /* CookingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -241,6 +243,7 @@ B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType
 				B10026 /* RevenueCatService.swift */,
 				B10029 /* AnalyticsService.swift */,
 				B10038 /* WatchSessionManager.swift */,
+				B10042 /* AppConfigService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@ B10029 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType
 				A10039 /* ScreenshotMockData.swift in Sources */,
 				A10040 /* RecipeRevealView.swift in Sources */,
 				A10041 /* RecipeFilter.swift in Sources */,
+				A10042 /* AppConfigService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
