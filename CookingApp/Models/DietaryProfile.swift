@@ -33,7 +33,7 @@ enum Allergy: String, Codable, CaseIterable, Identifiable {
 }
 
 enum Diet: String, Codable, CaseIterable, Identifiable {
-    case vegetarian, vegan, pescatarian, keto, glutenFree, halal, kosher, dairyFree, lowCarb, highProtein
+    case vegetarian, vegan, pescatarian, keto, halal, kosher, lowCarb, highProtein
 
     var id: String { rawValue }
 
