@@ -139,7 +139,7 @@ extension Recipe {
             "Mescolare olio d'oliva e succo di limone, aggiustare di sale.",
             "Condire l'insalata e servire subito.",
         ],
-        dietaryTags: ["vegetarian", "glutenFree"],
+        dietaryTags: ["vegetarian"],
         allergenFree: ["nuts", "shellfish", "fish", "soy", "sesame", "gluten"],
         prepTime: 15,
         cookTime: 0,
