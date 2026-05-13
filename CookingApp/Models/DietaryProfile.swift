@@ -43,10 +43,8 @@ enum Diet: String, Codable, CaseIterable, Identifiable {
         case .vegan: return String(localized: "diet.vegan")
         case .pescatarian: return String(localized: "diet.pescatarian")
         case .keto: return String(localized: "diet.keto")
-        case .glutenFree: return String(localized: "diet.glutenFree")
         case .halal: return String(localized: "diet.halal")
         case .kosher: return String(localized: "diet.kosher")
-        case .dairyFree: return String(localized: "diet.dairyFree")
         case .lowCarb: return String(localized: "diet.lowCarb")
         case .highProtein: return String(localized: "diet.highProtein")
         }
