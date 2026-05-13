@@ -56,10 +56,8 @@ enum Diet: String, Codable, CaseIterable, Identifiable {
         case .vegan: return "🌿"
         case .pescatarian: return "🐟"
         case .keto: return "🥑"
-        case .glutenFree: return "🚫"
         case .halal: return "☪️"
         case .kosher: return "✡️"
-        case .dairyFree: return "🥛"
         case .lowCarb: return "📉"
         case .highProtein: return "💪"
         }
