@@ -71,6 +71,8 @@ struct ContentView: View {
 
 struct MainTabView: View {
     @StateObject private var homeViewModel = HomeViewModel()
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var showNotificationAlert = false
 
     var body: some View {
         TabView {
@@ -93,6 +95,23 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }
+        }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            let status = await NotificationService.shared.authorizationStatus()
+            if status == .denied {
+                showNotificationAlert = true
+            }
+        }
+        .alert("Notifications Disabled", isPresented: $showNotificationAlert) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Later", role: .cancel) {}
+        } message: {
+            Text("Daily recipe reminders are disabled. Without notifications the app won't remind you to cook. Enable them in Settings to get the most out of the app.")
         }
     }
 }
