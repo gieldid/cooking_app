@@ -204,7 +204,7 @@ extension Recipe {
             "Cuocere 5–6 minuti per lato fino a doratura.",
             "Riposare 5 minuti prima di tagliare. Servire con spicchi di limone.",
         ],
-        dietaryTags: ["glutenFree", "dairyFree", "lowCarb"],
+        dietaryTags: ["lowCarb"],
         allergenFree: ["nuts", "dairy", "gluten", "shellfish", "eggs", "soy", "fish", "sesame"],
         prepTime: 25,
         cookTime: 15,
