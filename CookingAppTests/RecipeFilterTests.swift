@@ -86,8 +86,8 @@ final class RecipeFilterTests: XCTestCase {
     }
 
     func testRecipeIncludedWhenAllDietTagsPresent() throws {
-        let recipe = try makeRecipe(dietaryTags: ["vegan", "glutenFree", "dairyFree"])
-        let p = profile(diets: [.vegan, .glutenFree])
+        let recipe = try makeRecipe(dietaryTags: ["vegan", "lowCarb"])
+        let p = profile(diets: [.vegan, .lowCarb])
         XCTAssertTrue(RecipeFilter.matches(recipe: recipe, profile: p))
     }
 
