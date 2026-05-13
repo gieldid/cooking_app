@@ -97,4 +97,8 @@ final class NotificationService {
         let ids = NotificationId.allCases.map { $0.rawValue }
         center.removePendingNotificationRequests(withIdentifiers: ids)
     }
+
+    func authorizationStatus() async -> UNAuthorizationStatus {
+        await center.notificationSettings().authorizationStatus
+    }
 }
