@@ -10,11 +10,6 @@ enum MeasurementConverter {
         "fl oz": 29.57, "fluid ounce": 29.57, "fluid ounces": 29.57,
     ]
 
-    private static let imperialSpoonVolumeToML: [String: Double] = [
-        "tablespoon": 15, "tablespoons": 15, "tbsp": 15,
-        "teaspoon": 5, "teaspoons": 5, "tsp": 5,
-    ]
-
     private static let imperialWeightToG: [String: Double] = [
         "oz": 28.35, "ounce": 28.35, "ounces": 28.35,
         "lb": 453.59, "lbs": 453.59, "pound": 453.59, "pounds": 453.59,
