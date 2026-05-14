@@ -17,10 +17,16 @@ final class MeasurementConverterTests: XCTestCase {
         XCTAssertEqual(r.unit, "L")
     }
 
-    func testTablespoonToMl() {
+    func testTablespoonPassesThroughInMetric() {
         let r = MeasurementConverter.display(amount: "3", unit: "tbsp", scaleFactor: 1, preference: .metric)
-        XCTAssertEqual(r.amount, "45")
-        XCTAssertEqual(r.unit, "ml")
+        XCTAssertEqual(r.amount, "3")
+        XCTAssertEqual(r.unit, "tbsp")
+    }
+
+    func testTeaspoonPassesThroughInMetric() {
+        let r = MeasurementConverter.display(amount: "1", unit: "tsp", scaleFactor: 1, preference: .metric)
+        XCTAssertEqual(r.amount, "1")
+        XCTAssertEqual(r.unit, "tsp")
     }
 
     func testOuncesToGrams() {
