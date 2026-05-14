@@ -4,11 +4,15 @@ enum MeasurementConverter {
 
     // MARK: - Lookup tables
 
+    // tsp/tbsp intentionally excluded — kept as-is in metric mode since they're practical for small quantities
     private static let imperialVolumeToML: [String: Double] = [
         "cup": 240, "cups": 240,
+        "fl oz": 29.57, "fluid ounce": 29.57, "fluid ounces": 29.57,
+    ]
+
+    private static let imperialSpoonVolumeToML: [String: Double] = [
         "tablespoon": 15, "tablespoons": 15, "tbsp": 15,
         "teaspoon": 5, "teaspoons": 5, "tsp": 5,
-        "fl oz": 29.57, "fluid ounce": 29.57, "fluid ounces": 29.57,
     ]
 
     private static let imperialWeightToG: [String: Double] = [
