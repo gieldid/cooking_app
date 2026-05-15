@@ -101,6 +101,28 @@ enum MaxDuration: String, Codable, CaseIterable {
     }
 }
 
+enum MaxCalories: String, Codable, CaseIterable {
+    case any, light, moderate, hearty
+
+    var displayName: String {
+        switch self {
+        case .any:      return "Any"
+        case .light:    return "Under 300 kcal"
+        case .moderate: return "Under 500 kcal"
+        case .hearty:   return "Under 700 kcal"
+        }
+    }
+
+    var limit: Int? {
+        switch self {
+        case .any:      return nil
+        case .light:    return 300
+        case .moderate: return 500
+        case .hearty:   return 700
+        }
+    }
+}
+
 // Per-weekday overrides for difficulty and duration.
 // weekday key matches Calendar.current.component(.weekday, from:): 1=Sunday, 2=Monday … 7=Saturday.
 struct DayOverride: Codable, Equatable {
