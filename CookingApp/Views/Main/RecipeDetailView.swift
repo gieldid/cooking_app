@@ -209,6 +209,57 @@ private final class RecipeLinkItemSource: NSObject, UIActivityItemSource {
     }
 }
 
+private struct NutritionCard: View {
+    let nutrition: Nutrition
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Nutrition per serving")
+                    .font(.headline)
+                Spacer()
+                Text("Estimated values")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack(spacing: 0) {
+                MacroCell(label: "Calories", value: "\(nutrition.calories)", unit: "kcal")
+                Divider().frame(height: 40)
+                MacroCell(label: "Protein", value: "\(nutrition.protein)", unit: "g")
+                Divider().frame(height: 40)
+                MacroCell(label: "Carbs", value: "\(nutrition.carbs)", unit: "g")
+                Divider().frame(height: 40)
+                MacroCell(label: "Fat", value: "\(nutrition.fat)", unit: "g")
+            }
+            .padding(.vertical, 8)
+            .background(Color(.systemGray6))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+    }
+}
+
+private struct MacroCell: View {
+    let label: String
+    let value: String
+    let unit: String
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Text(value)
+                .font(.title3)
+                .fontWeight(.semibold)
+            Text(unit)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
 private struct InfoBadge: View {
     let icon: String
     let text: String
