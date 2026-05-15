@@ -26,7 +26,7 @@ final class SettingsViewModel: ObservableObject, PerDayPreferencesViewModel {
         Publishers.CombineLatest(
             Publishers.CombineLatest(
                 Publishers.CombineLatest3($selectedAllergies, $selectedDiets, $notificationPreferences),
-                Publishers.CombineLatest($preferredDifficulties, $maxDuration)
+                Publishers.CombineLatest3($preferredDifficulties, $maxDuration, $maxCalories)
             ),
             $perDayOverrides
         )
