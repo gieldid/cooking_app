@@ -80,6 +80,12 @@ struct SettingsView: View {
                     }
                 }
 
+                Picker("Max Calories", selection: $viewModel.maxCalories) {
+                    ForEach(MaxCalories.allCases, id: \.self) { c in
+                        Text(c.displayName).tag(c)
+                    }
+                }
+
                 let stepperLabel = prefs.defaultServings == 0
                     ? "Default Servings: Recipe Default"
                     : "Default Servings: \(prefs.defaultServings)"
