@@ -92,6 +92,7 @@ final class SettingsViewModel: ObservableObject, PerDayPreferencesViewModel {
             selectedDiets: selectedDiets,
             preferredDifficulties: preferredDifficulties,
             maxDuration: maxDuration,
+            maxCalories: maxCalories,
             perDayOverrides: perDayOverrides
         )
 
