@@ -135,13 +135,15 @@ struct DietaryProfile: Codable, Equatable {
     var selectedDiets: Set<Diet>
     var preferredDifficulties: Set<Difficulty>
     var maxDuration: MaxDuration
+    var maxCalories: MaxCalories
     var perDayOverrides: [Int: DayOverride]
 
     static let empty = DietaryProfile(
         selectedAllergies: [],
         selectedDiets: [],
         preferredDifficulties: [],
-        maxDuration: .any
+        maxDuration: .any,
+        maxCalories: .any
     )
 
     init(
@@ -149,12 +151,14 @@ struct DietaryProfile: Codable, Equatable {
         selectedDiets: Set<Diet>,
         preferredDifficulties: Set<Difficulty> = [],
         maxDuration: MaxDuration = .any,
+        maxCalories: MaxCalories = .any,
         perDayOverrides: [Int: DayOverride] = [:]
     ) {
         self.selectedAllergies = selectedAllergies
         self.selectedDiets = selectedDiets
         self.preferredDifficulties = preferredDifficulties
         self.maxDuration = maxDuration
+        self.maxCalories = maxCalories
         self.perDayOverrides = perDayOverrides
     }
 
@@ -168,6 +172,7 @@ struct DietaryProfile: Codable, Equatable {
         let rawDifficulties = try container.decodeIfPresent([String].self, forKey: .preferredDifficulties) ?? []
         preferredDifficulties = Set(rawDifficulties.compactMap { Difficulty(rawValue: $0) })
         maxDuration = try container.decodeIfPresent(MaxDuration.self, forKey: .maxDuration) ?? .any
+        maxCalories = try container.decodeIfPresent(MaxCalories.self, forKey: .maxCalories) ?? .any
         perDayOverrides = try container.decodeIfPresent([Int: DayOverride].self, forKey: .perDayOverrides) ?? [:]
     }
 }
