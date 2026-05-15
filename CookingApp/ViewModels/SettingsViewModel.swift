@@ -19,6 +19,7 @@ final class SettingsViewModel: ObservableObject, PerDayPreferencesViewModel {
         self.selectedDiets = prefs.dietaryProfile.selectedDiets
         self.preferredDifficulties = prefs.dietaryProfile.preferredDifficulties
         self.maxDuration = prefs.dietaryProfile.maxDuration
+        self.maxCalories = prefs.dietaryProfile.maxCalories
         self.notificationPreferences = prefs.notificationPreferences
         self.perDayOverrides = prefs.dietaryProfile.perDayOverrides
 
