@@ -1,6 +1,13 @@
 import Foundation
 import FirebaseFirestore
 
+struct Nutrition: Codable {
+    let calories: Int
+    let protein: Int
+    let carbs: Int
+    let fat: Int
+}
+
 struct Ingredient: Codable, Identifiable, Hashable {
     var id: String { name + amount + unit }
     let name: String
