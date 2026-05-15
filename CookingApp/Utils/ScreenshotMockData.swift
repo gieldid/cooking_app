@@ -74,7 +74,8 @@ extension Recipe {
         cookTime: 20,
         imageURL: nil,
         servings: 4,
-        difficulty: "easy"
+        difficulty: "easy",
+        nutrition: nil
     )
 
     // MARK: Salad (shown in Favourites list)
@@ -145,7 +146,8 @@ extension Recipe {
         cookTime: 0,
         imageURL: nil,
         servings: 2,
-        difficulty: "easy"
+        difficulty: "easy",
+        nutrition: nil
     )
 
     // MARK: Chicken (shown in Favourites list)
