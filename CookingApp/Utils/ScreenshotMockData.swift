@@ -212,7 +212,8 @@ extension Recipe {
         cookTime: 15,
         imageURL: nil,
         servings: 2,
-        difficulty: "medium"
+        difficulty: "medium",
+        nutrition: nil
     )
 }
 #endif
