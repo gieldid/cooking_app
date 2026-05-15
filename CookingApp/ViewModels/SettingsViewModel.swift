@@ -7,6 +7,7 @@ final class SettingsViewModel: ObservableObject, PerDayPreferencesViewModel {
     @Published var selectedDiets: Set<Diet>
     @Published var preferredDifficulties: Set<Difficulty>
     @Published var maxDuration: MaxDuration
+    @Published var maxCalories: MaxCalories
     @Published var notificationPreferences: NotificationPreferences
     @Published var perDayOverrides: [Int: DayOverride]
 
