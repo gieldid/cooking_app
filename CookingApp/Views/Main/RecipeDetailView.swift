@@ -74,16 +74,13 @@ struct RecipeDetailView: View {
 
                         ForEach(recipe.localizedIngredients) { ingredient in
                             let disp = displayIngredient(ingredient)
-                            HStack(spacing: 12) {
+                            HStack(alignment: .center, spacing: 12) {
                                 Circle()
                                     .fill(Color.accentColor)
                                     .frame(width: 6, height: 6)
 
-                                Text(disp.amount)
-                                    .fontWeight(.semibold)
-                                    .frame(width: 60, alignment: .leading)
-
-                                Text(verbatim: "\(disp.unit) \(ingredient.name)")
+                                Text(verbatim: "\(disp.amount) \(disp.unit) \(ingredient.name)")
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                             .font(.body)
                         }
