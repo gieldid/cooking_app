@@ -38,6 +38,11 @@ enum RecipeFilter {
             return false
         }
 
+        // Calories: skip recipes that exceed the limit; pass through recipes without nutrition data
+        if let limit = profile.maxCalories.limit, let calories = recipe.nutrition?.calories, calories > limit {
+            return false
+        }
+
         return true
     }
 }
