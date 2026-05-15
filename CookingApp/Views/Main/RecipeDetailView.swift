@@ -51,6 +51,10 @@ struct RecipeDetailView: View {
                         .padding(.top, 4)
                     }
 
+                    if let nutrition = recipe.nutrition {
+                        NutritionCard(nutrition: nutrition)
+                    }
+
                     Divider()
 
                     // Servings adjuster
