@@ -185,7 +185,7 @@ private final class RecipeLinkItemSource: NSObject, UIActivityItemSource {
     init(recipe: Recipe) {
         self.recipe = recipe
         if let id = recipe.id {
-            self.url = URL(string: "inkgredients://recipe/\(id)")
+            self.url = URL(string: "https://gieljurriens.nl/inkgredients/recipe/\(id)")
         } else {
             self.url = nil
         }
