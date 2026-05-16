@@ -78,7 +78,29 @@ final class UserPreferencesManager: ObservableObject {
         self.notificationPreferences = Self.loadCodable(forKey: Keys.notificationPreferences) ?? .default
         self.measurementPreference = Self.loadCodable(forKey: Keys.measurementPreference) ?? .system
         self.defaultServings = defaults.integer(forKey: Keys.defaultServings) // 0 if never set
-        self.favouriteRecipes = Self.loadCodable(forKey: Keys.favouriteRecipes) ?? []
+        // Load from file first; fall back to UserDefaults for migration from older installs
+        if let fromFile = Self.loadFavouritesFromFile(), !fromFile.isEmpty {
+            self.favouriteRecipes = fromFile
+        } else if let fromDefaults: [Recipe] = Self.loadCodable(forKey: Keys.favouriteRecipes) {
+            self.favouriteRecipes = fromDefaults
+        } else {
+            self.favouriteRecipes = []
+        }
+    }
+
+    private static var favouritesFileURL: URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("favouriteRecipes.json")
+    }
+
+    private func saveFavouritesToFile(_ recipes: [Recipe]) {
+        guard let data = try? Self.encoder.encode(recipes) else { return }
+        try? data.write(to: Self.favouritesFileURL, options: .atomic)
+    }
+
+    private static func loadFavouritesFromFile() -> [Recipe]? {
+        guard let data = try? Data(contentsOf: favouritesFileURL) else { return nil }
+        return try? decoder.decode([Recipe].self, from: data)
     }
 
     private static let encoder = JSONEncoder()
