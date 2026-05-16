@@ -60,7 +60,7 @@ final class UserPreferencesManager: ObservableObject {
     }
 
     @Published var favouriteRecipes: [Recipe] {
-        didSet { saveCodable(favouriteRecipes, forKey: Keys.favouriteRecipes) }
+        didSet { saveFavouritesToFile(favouriteRecipes) }
     }
 
     var deviceId: String {
