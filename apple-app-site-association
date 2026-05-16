@@ -1,0 +1,15 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": ["YGUS8DP8YV.nl.gieljurriens.inkgredients"],
+                "components": [
+                    {
+                        "/": "/inkgredients/recipe/*",
+                        "comment": "Match recipe deep links"
+                    }
+                ]
+            }
+        ]
+    }
+}
