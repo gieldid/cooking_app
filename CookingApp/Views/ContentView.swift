@@ -63,6 +63,28 @@ struct ContentView: View {
     }
 }
 
+extension ContentView {
+    static func recipeId(from url: URL) -> String? {
+        let id: String?
+        if url.scheme == "inkgredients", url.host == "recipe" {
+            // Custom scheme: inkgredients://recipe/<id>
+            id = url.pathComponents.dropFirst().first
+        } else if url.scheme == "https",
+                  url.host == "gieljurriens.nl",
+                  url.pathComponents.dropFirst().first == "inkgredients",
+                  url.pathComponents.dropFirst(2).first == "recipe" {
+            // Universal link: https://gieljurriens.nl/inkgredients/recipe/<id>
+            id = url.pathComponents.dropFirst(3).first
+        } else {
+            return nil
+        }
+        guard let id, !id.isEmpty, id.count <= 128,
+              id.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" })
+        else { return nil }
+        return id
+    }
+}
+
 struct MainTabView: View {
     @StateObject private var homeViewModel = HomeViewModel()
     @Environment(\.scenePhase) private var scenePhase
