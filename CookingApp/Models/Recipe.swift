@@ -15,7 +15,7 @@ struct Ingredient: Codable, Identifiable, Hashable {
 }
 
 struct Recipe: Codable, Identifiable {
-    @DocumentID var id: String?
+    var id: String?
     let title: String
     let description: String
     let descriptionNl: String?
