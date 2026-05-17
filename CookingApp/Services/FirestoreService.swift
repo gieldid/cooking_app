@@ -16,7 +16,9 @@ final class FirestoreService {
     func fetchRecipes() async throws -> [Recipe] {
         let snapshot = try await db.collection(recipesCollection).getDocuments()
         return snapshot.documents.compactMap { doc in
-            try? doc.data(as: Recipe.self)
+            guard var recipe = try? doc.data(as: Recipe.self) else { return nil }
+            recipe.id = doc.documentID
+            return recipe
         }
     }
 
