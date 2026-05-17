@@ -1,5 +1,4 @@
 import Foundation
-import FirebaseFirestore
 
 struct Nutrition: Codable {
     let calories: Int
