@@ -99,10 +99,7 @@ final class SettingsViewModel: ObservableObject, PerDayPreferencesViewModel {
         prefs.dietaryProfile = profile
         prefs.notificationPreferences = notificationPreferences
 
-        NotificationService.shared.scheduleAllNotifications(
-            preferences: notificationPreferences,
-            recipeName: nil
-        )
+        NotificationService.shared.scheduleAllNotifications(preferences: notificationPreferences)
 
         try? await FirestoreService.shared.pushDietaryProfile(profile, deviceId: prefs.deviceId)
     }
