@@ -112,10 +112,7 @@ final class OnboardingViewModel: ObservableObject, PerDayPreferencesViewModel {
         // Request notification permission and schedule
         let granted = await NotificationService.shared.requestPermission()
         if granted {
-            NotificationService.shared.scheduleAllNotifications(
-                preferences: notificationPreferences,
-                recipeName: nil
-            )
+            NotificationService.shared.scheduleAllNotifications(preferences: notificationPreferences)
         } else {
             prefs.notificationPreferences.isEnabled = false
         }
