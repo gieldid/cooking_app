@@ -13,20 +13,35 @@ final class FirestoreService {
 
     // MARK: - Recipes
 
-    func fetchRecipes() async throws -> [Recipe] {
-        let snapshot = try await db.collection(recipesCollection).getDocuments()
-        return snapshot.documents.compactMap { doc in
+    func fetchFilteredRecipes(profile: DietaryProfile) async throws -> [Recipe] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
+
+        var recipes = try await fetchRecipes(from: today, to: tomorrow, profile: profile)
+
+        // Backend hasn't run yet today — fall back to yesterday's batch
+        if recipes.isEmpty {
+            let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+            recipes = try await fetchRecipes(from: yesterday, to: today, profile: profile)
+        }
+
+        return recipes
+    }
+
+    private func fetchRecipes(from start: Date, to end: Date, profile: DietaryProfile) async throws -> [Recipe] {
+        let snapshot = try await db.collection(recipesCollection)
+            .whereField("createdAt", isGreaterThanOrEqualTo: start)
+            .whereField("createdAt", isLessThan: end)
+            .getDocuments()
+
+        let recipes = snapshot.documents.compactMap { doc -> Recipe? in
             guard var recipe = try? doc.data(as: Recipe.self) else { return nil }
             recipe.id = doc.documentID
             return recipe
         }
-    }
 
-    func fetchFilteredRecipes(profile: DietaryProfile) async throws -> [Recipe] {
-        let allRecipes = try await fetchRecipes()
-        return allRecipes.filter { recipe in
-            matchesProfile(recipe: recipe, profile: profile)
-        }
+        return recipes.filter { matchesProfile(recipe: $0, profile: profile) }
     }
 
     private func matchesProfile(recipe: Recipe, profile: DietaryProfile) -> Bool {
