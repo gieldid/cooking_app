@@ -9,6 +9,7 @@ struct RecipeDetailView: View {
     @State private var completedSteps: Set<Int> = []
     @State private var showShareSheet = false
     @ObservedObject private var prefs = UserPreferencesManager.shared
+    @Environment(\.requestReview) private var requestReview
 
     var body: some View {
         ScrollView {
