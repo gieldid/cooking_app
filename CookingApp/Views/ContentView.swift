@@ -89,28 +89,39 @@ struct MainTabView: View {
     @StateObject private var homeViewModel = HomeViewModel()
     @Environment(\.scenePhase) private var scenePhase
     @State private var showNotificationAlert = false
+    @State private var selectedTab = 0
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             NavigationStack { HomeView(viewModel: homeViewModel) }
                 .tabItem {
                     Label("Today", systemImage: "fork.knife")
                 }
+                .tag(0)
 
             NavigationStack { ShoppingListView(homeViewModel: homeViewModel) }
                 .tabItem {
                     Label("Shopping", systemImage: "cart")
                 }
+                .tag(1)
 
             NavigationStack { FavouritesView() }
                 .tabItem {
                     Label(String(localized: "Favourites"), systemImage: "heart")
                 }
+                .tag(2)
 
             NavigationStack { SettingsView() }
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }
+                .tag(3)
+        }
+        .onChange(of: selectedTab) { _, newTab in
+            if newTab == 0, homeViewModel.needsRefetch {
+                homeViewModel.needsRefetch = false
+                homeViewModel.loadTodayRecipe(forceRefresh: true)
+            }
         }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
