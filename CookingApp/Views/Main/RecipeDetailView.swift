@@ -333,20 +333,26 @@ private struct StepRow: View {
                         .strikethrough(isCompleted)
                         .foregroundStyle(isCompleted ? .secondary : .primary)
 
-                    if detectedSeconds != nil {
+                    if let total = detectedSeconds {
                         StepTimerButton(
                             timeRemaining: timeRemaining,
+                            totalSeconds: total,
                             isRunning: isRunning,
                             isFinished: isFinished
                         ) {
                             if isFinished {
-                                timeRemaining = detectedSeconds ?? 0
+                                timeRemaining = total
                                 isFinished = false
                                 isRunning = false
                             } else {
                                 HapticManager.impact(.medium)
                                 isRunning.toggle()
                             }
+                        } onReset: {
+                            HapticManager.impact(.light)
+                            timeRemaining = total
+                            isRunning = false
+                            isFinished = false
                         }
                     }
                 }
