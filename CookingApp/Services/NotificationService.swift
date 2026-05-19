@@ -5,9 +5,11 @@ final class NotificationService {
     static let shared = NotificationService()
 
     private let center = UNUserNotificationCenter.current()
+    private var cachedRecipes: [Recipe] = []
+
+    private let morningPrefix = "com.inkgredients.morning_"
 
     enum NotificationId: String, CaseIterable {
-        case morningRecipe = "com.inkgredients.morning"
         case shoppingList = "com.inkgredients.shopping"
         case cookingReminder = "com.inkgredients.cooking"
         case trialReminder = "com.inkgredients.trial_reminder"
@@ -23,54 +25,89 @@ final class NotificationService {
         }
     }
 
-    func scheduleAllNotifications(preferences: NotificationPreferences, recipeName: String?) {
+    /// Schedule all notifications. Pass the current filtered recipe list so morning
+    /// notifications are pre-computed per day. Callers without recipes pass [] and
+    /// the service reuses its cached list from the last full call.
+    func scheduleAllNotifications(preferences: NotificationPreferences, recipes: [Recipe] = []) {
+        if !recipes.isEmpty { cachedRecipes = recipes }
+        let effective = cachedRecipes
+
         guard preferences.isEnabled else {
             cancelAllNotifications()
             return
         }
 
-        let name = recipeName ?? String(localized: "notification.default_meal")
+        scheduleMorningNotifications(preferences: preferences, recipes: effective)
 
-        scheduleNotification(
-            id: .morningRecipe,
-            title: String(localized: "notification.morning.title"),
-            body: String(format: String(localized: "notification.morning.body"), name),
-            time: preferences.morningRecipeTime
-        )
+        let fallback = String(localized: "notification.default_meal")
+        let todayName = recipeName(for: Date(), from: effective) ?? fallback
 
         if preferences.shoppingListEnabled {
-            scheduleNotification(
-                id: .shoppingList,
+            scheduleRepeatingNotification(
+                identifier: NotificationId.shoppingList.rawValue,
                 title: String(localized: "notification.shopping.title"),
-                body: String(format: String(localized: "notification.shopping.body"), name),
+                body: String(format: String(localized: "notification.shopping.body"), todayName),
                 time: preferences.shoppingListTime
             )
         } else {
             center.removePendingNotificationRequests(withIdentifiers: [NotificationId.shoppingList.rawValue])
         }
 
-        scheduleNotification(
-            id: .cookingReminder,
+        scheduleRepeatingNotification(
+            identifier: NotificationId.cookingReminder.rawValue,
             title: String(localized: "notification.cooking.title"),
-            body: String(format: String(localized: "notification.cooking.body"), name),
+            body: String(format: String(localized: "notification.cooking.body"), todayName),
             time: preferences.cookingReminderTime
         )
     }
 
-    private func scheduleNotification(id: NotificationId, title: String, body: String, time: Date) {
+    private func scheduleMorningNotifications(preferences: NotificationPreferences, recipes: [Recipe]) {
+        // Remove the old fixed-id repeating morning notification if it exists
+        center.removePendingNotificationRequests(withIdentifiers: ["com.inkgredients.morning"])
+
+        let calendar = Calendar.current
+        let timeComps = calendar.dateComponents([.hour, .minute], from: preferences.morningRecipeTime)
+        let today = calendar.startOfDay(for: Date())
+        let fallback = String(localized: "notification.default_meal")
+
+        for dayOffset in 0..<30 {
+            guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
+            let name = recipeName(for: targetDate, from: recipes) ?? fallback
+
+            var comps = calendar.dateComponents([.year, .month, .day], from: targetDate)
+            comps.hour = timeComps.hour
+            comps.minute = timeComps.minute
+
+            let content = UNMutableNotificationContent()
+            content.title = String(localized: "notification.morning.title")
+            content.body = String(format: String(localized: "notification.morning.body"), name)
+            content.sound = .default
+            content.userInfo = ["notificationType": "com.inkgredients.morning"]
+
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+            let id = "\(morningPrefix)\(comps.year ?? 0)\(String(format: "%02d", comps.month ?? 0))\(String(format: "%02d", comps.day ?? 0))"
+            center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+        }
+    }
+
+    private func recipeName(for date: Date, from recipes: [Recipe]) -> String? {
+        guard !recipes.isEmpty else { return nil }
+        let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: date) ?? 0
+        return recipes[dayIndex % recipes.count].title
+    }
+
+    private func scheduleRepeatingNotification(identifier: String, title: String, body: String, time: Date) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
-        content.userInfo = ["notificationType": id.rawValue]
+        content.userInfo = ["notificationType": identifier]
 
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .minute], from: time)
+        let components = Calendar.current.dateComponents([.hour, .minute], from: time)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
-        let request = UNNotificationRequest(identifier: id.rawValue, content: content, trigger: trigger)
-
-        center.removePendingNotificationRequests(withIdentifiers: [id.rawValue])
+        center.removePendingNotificationRequests(withIdentifiers: [identifier])
         center.add(request)
     }
 
@@ -94,8 +131,7 @@ final class NotificationService {
     }
 
     func cancelAllNotifications() {
-        let ids = NotificationId.allCases.map { $0.rawValue }
-        center.removePendingNotificationRequests(withIdentifiers: ids)
+        center.removeAllPendingNotificationRequests()
     }
 
     func authorizationStatus() async -> UNAuthorizationStatus {
