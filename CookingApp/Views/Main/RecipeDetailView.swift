@@ -379,26 +379,46 @@ private struct StepRow: View {
 
 private struct StepTimerButton: View {
     let timeRemaining: Int
+    let totalSeconds: Int
     let isRunning: Bool
     let isFinished: Bool
     let onTap: () -> Void
+    let onReset: () -> Void
+
+    private var isPaused: Bool { !isRunning && !isFinished && timeRemaining < totalSeconds }
 
     var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 5) {
-                Image(systemName: isFinished ? "checkmark.circle.fill" : (isRunning ? "pause.fill" : "play.fill"))
-                    .font(.caption)
-                Text(isFinished ? "Done!" : formatTime(timeRemaining))
-                    .font(.caption.monospacedDigit())
-                    .fontWeight(.medium)
+        HStack(spacing: 6) {
+            Button(action: onTap) {
+                HStack(spacing: 5) {
+                    Image(systemName: isFinished ? "checkmark.circle.fill" : (isRunning ? "pause.fill" : "play.fill"))
+                        .font(.caption)
+                    Text(isFinished ? "Done!" : formatTime(timeRemaining))
+                        .font(.caption.monospacedDigit())
+                        .fontWeight(.medium)
+                }
+                .foregroundStyle(isFinished ? Color.green : Color.accentColor)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background((isFinished ? Color.green : Color.accentColor).opacity(0.12))
+                .clipShape(Capsule())
             }
-            .foregroundStyle(isFinished ? Color.green : Color.accentColor)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background((isFinished ? Color.green : Color.accentColor).opacity(0.12))
-            .clipShape(Capsule())
+            .buttonStyle(.plain)
+
+            if isPaused {
+                Button(action: onReset) {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.caption)
+                        .foregroundStyle(Color.secondary)
+                        .padding(6)
+                        .background(Color(.systemGray5))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .transition(.scale.combined(with: .opacity))
+            }
         }
-        .buttonStyle(.plain)
+        .animation(.easeInOut(duration: 0.15), value: isPaused)
     }
 
     private func formatTime(_ seconds: Int) -> String {
