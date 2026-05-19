@@ -71,7 +71,7 @@ struct HomeView: View {
         }
         .navigationTitle("Today's Recipe")
         .refreshable {
-            viewModel.loadTodayRecipe(forceRefresh: true)
+            viewModel.loadTodayRecipe(forceRefresh: true, bypassCache: true)
             while viewModel.isLoading { try? await Task.sleep(nanoseconds: 50_000_000) }
         }
         .task {
