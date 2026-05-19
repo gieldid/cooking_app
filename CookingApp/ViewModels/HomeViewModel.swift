@@ -37,13 +37,13 @@ final class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func loadTodayRecipe(forceRefresh: Bool = false) {
+    func loadTodayRecipe(forceRefresh: Bool = false, bypassCache: Bool = false) {
         guard todayRecipe == nil || forceRefresh else { return }
         loadTask?.cancel()
-        loadTask = Task { await performLoad() }
+        loadTask = Task { await performLoad(bypassCache: bypassCache) }
     }
 
-    private func performLoad() async {
+    private func performLoad(bypassCache: Bool = false) async {
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
@@ -51,7 +51,8 @@ final class HomeViewModel: ObservableObject {
 
         do {
             let recipes = try await firestoreService.fetchFilteredRecipes(
-                profile: prefs.dietaryProfile
+                profile: prefs.dietaryProfile,
+                bypassCache: bypassCache
             )
             let skipped = prefs.skippedRecipeIds
             allFilteredRecipes = recipes.filter { !skipped.contains($0.id ?? "") }
