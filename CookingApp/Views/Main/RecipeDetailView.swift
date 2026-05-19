@@ -149,7 +149,7 @@ struct RecipeDetailView: View {
             }
         }
         .trackScreenTime("recipe_detail")
-        .onChange(of: completedSteps) { _, completed in
+        .onChange(of: completedSteps) { completed in
             let steps = recipe.localizedSteps
             guard !steps.isEmpty, completed.count == steps.count else { return }
             let key = "recipesCompleted"
