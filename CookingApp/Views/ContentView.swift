@@ -117,7 +117,7 @@ struct MainTabView: View {
                 }
                 .tag(3)
         }
-        .onChange(of: selectedTab) { _, newTab in
+        .onChange(of: selectedTab) { newTab in
             if newTab == 0, homeViewModel.needsRefetch {
                 homeViewModel.needsRefetch = false
                 homeViewModel.loadTodayRecipe(forceRefresh: true)
