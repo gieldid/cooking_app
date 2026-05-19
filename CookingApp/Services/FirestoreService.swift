@@ -13,10 +13,10 @@ final class FirestoreService {
 
     // MARK: - Recipes
 
-    func fetchFilteredRecipes(profile: DietaryProfile) async throws -> [Recipe] {
+    func fetchFilteredRecipes(profile: DietaryProfile, bypassCache: Bool = false) async throws -> [Recipe] {
         let profileHash = profile.paginationHash
 
-        if let cached = loadRecipeCache(), cached.date == todayString, cached.profileHash == profileHash {
+        if !bypassCache, let cached = loadRecipeCache(), cached.date == todayString, cached.profileHash == profileHash {
             return cached.recipes
         }
 
