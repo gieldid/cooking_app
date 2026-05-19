@@ -149,6 +149,14 @@ struct RecipeDetailView: View {
             }
         }
         .trackScreenTime("recipe_detail")
+        .onChange(of: completedSteps) { _, completed in
+            let steps = recipe.localizedSteps
+            guard !steps.isEmpty, completed.count == steps.count else { return }
+            let key = "recipesCompleted"
+            let count = UserDefaults.standard.integer(forKey: key) + 1
+            UserDefaults.standard.set(count, forKey: key)
+            if count >= 2 { requestReview() }
+        }
     }
 
     private func displayIngredient(_ ingredient: Ingredient) -> (amount: String, unit: String) {
