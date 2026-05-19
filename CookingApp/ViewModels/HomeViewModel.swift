@@ -18,12 +18,13 @@ final class HomeViewModel: ObservableObject {
     /// Tracks every recipe shown this session; when all of allFilteredRecipes are seen
     /// the next skip fetches a fresh page.
     private var sessionSeenIds: Set<String> = []
+    var needsRefetch = false
 
     init() {
         prefs.$dietaryProfile
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [weak self] _ in self?.loadTodayRecipe(forceRefresh: true) }
+            .sink { [weak self] _ in self?.needsRefetch = true }
             .store(in: &cancellables)
 
         prefs.$defaultServings
