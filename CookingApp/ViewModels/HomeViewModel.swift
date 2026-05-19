@@ -5,6 +5,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
     @Published var todayRecipe: Recipe?
     @Published var isLoading = false
+    @Published var isSkipping = false
     @Published var errorMessage: String?
     @Published var allFilteredRecipes: [Recipe] = []
     @Published var servingsMultiplier: Int = 1
@@ -14,8 +15,11 @@ final class HomeViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var loadTask: Task<Void, Never>?
 
+    /// Tracks every recipe shown this session; when all of allFilteredRecipes are seen
+    /// the next skip fetches a fresh page.
+    private var sessionSeenIds: Set<String> = []
+
     init() {
-        // Reload whenever the dietary profile is saved from Settings
         prefs.$dietaryProfile
             .dropFirst()
             .receive(on: RunLoop.main)
@@ -48,13 +52,14 @@ final class HomeViewModel: ObservableObject {
             let recipes = try await firestoreService.fetchFilteredRecipes(
                 profile: prefs.dietaryProfile
             )
-            allFilteredRecipes = recipes
+            let skipped = prefs.skippedRecipeIds
+            allFilteredRecipes = recipes.filter { !skipped.contains($0.id ?? "") }
+            sessionSeenIds = []
 
             if recipes.isEmpty {
                 todayRecipe = nil
                 errorMessage = String(localized: "error.no_recipes")
             } else {
-                // Use today's persisted pick if available (survives screen switches & app restarts)
                 if let savedId = prefs.pickedRecipeIdForToday(),
                    let saved = recipes.first(where: { $0.id == savedId }) {
                     if saved.id != todayRecipe?.id {
@@ -62,63 +67,99 @@ final class HomeViewModel: ObservableObject {
                         servingsMultiplier = initialServings(for: saved)
                     }
                 } else {
-                    // New day or first launch — pick deterministically and persist
                     let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
                     let picked = recipes[dayIndex % recipes.count]
-                    todayRecipe = picked
-                    servingsMultiplier = initialServings(for: picked)
-                    if let id = picked.id { prefs.savePickedRecipe(id: id) }
+                    applyRecipe(picked)
                 }
 
-                // Sync current recipe to paired Apple Watch
                 if let recipe = todayRecipe {
+                    sessionSeenIds.insert(recipe.id ?? "")
                     WatchSessionManager.shared.sendRecipe(recipe)
                 }
 
-                // Update notifications with today's recipe name
                 NotificationService.shared.scheduleAllNotifications(
                     preferences: prefs.notificationPreferences,
-                    recipes: todayRecipe.map { [$0] } ?? []
+                    recipes: allFilteredRecipes
                 )
             }
         } catch is CancellationError {
-            // Task was cancelled (view disappeared) — don't show an error
         } catch {
             errorMessage = String(localized: "error.load_failed")
         }
     }
 
-    private func initialServings(for recipe: Recipe) -> Int {
-        let def = prefs.defaultServings
-        return def > 0 ? def : recipe.servings
-    }
-
     func skipRecipe() {
-        guard allFilteredRecipes.count > 1, let current = todayRecipe else { return }
+        guard let current = todayRecipe else { return }
 
         AnalyticsService.shared.trackRecipeSkipped(
             recipeId: current.id ?? "unknown",
             recipeTitle: current.title
         )
 
-        // Prefer recipes not seen recently; fall back to just excluding the current one
-        let recentIds = Set(prefs.recentRecipeIds)
-        var candidates = allFilteredRecipes.filter {
-            $0.id != current.id && !recentIds.contains($0.id ?? "")
+        // Persist the skip and remove from the in-memory list so it never comes back
+        if let id = current.id {
+            prefs.addSkippedRecipe(id: id)
+            allFilteredRecipes.removeAll { $0.id == id }
+            sessionSeenIds.remove(id)
         }
+
+        // Candidates: not current and not yet shown this session
+        let candidates = allFilteredRecipes.filter {
+            $0.id != current.id && !sessionSeenIds.contains($0.id ?? "")
+        }
+
         if candidates.isEmpty {
-            candidates = allFilteredRecipes.filter { $0.id != current.id }
+            // Every recipe in the current batch has been seen — fetch the next page
+            Task { await loadNextPageAndSkip() }
+            return
         }
 
-        guard let newRecipe = candidates.randomElement() else { return }
-        todayRecipe = newRecipe
-        servingsMultiplier = initialServings(for: newRecipe)
-        if let id = newRecipe.id { prefs.savePickedRecipe(id: id) }
-        WatchSessionManager.shared.sendRecipe(newRecipe)
+        let recentIds = Set(prefs.recentRecipeIds)
+        let preferred = candidates.filter { !recentIds.contains($0.id ?? "") }
+        applyRecipe((preferred.isEmpty ? candidates : preferred).randomElement()!)
+    }
 
+    private func loadNextPageAndSkip() async {
+        guard !isSkipping else { return }
+        isSkipping = true
+        defer { isSkipping = false }
+
+        do {
+            let nextRecipes = try await firestoreService.fetchNextPage(profile: prefs.dietaryProfile)
+            let skipped = prefs.skippedRecipeIds
+            let newRecipes = nextRecipes.filter { r in
+                !allFilteredRecipes.contains(where: { $0.id == r.id }) &&
+                !skipped.contains(r.id ?? "")
+            }
+            allFilteredRecipes.append(contentsOf: newRecipes)
+
+            let recentIds = Set(prefs.recentRecipeIds)
+            let preferred = newRecipes.filter { !recentIds.contains($0.id ?? "") }
+            let pool = preferred.isEmpty ? newRecipes : preferred
+            guard let picked = pool.randomElement() ?? allFilteredRecipes.first(where: { $0.id != todayRecipe?.id }) else { return }
+            applyRecipe(picked)
+        } catch {
+            // Silently fail — user stays on current recipe
+        }
+    }
+
+    /// Sets the given recipe as today's pick, persists it, and syncs downstream state.
+    private func applyRecipe(_ recipe: Recipe) {
+        todayRecipe = recipe
+        servingsMultiplier = initialServings(for: recipe)
+        if let id = recipe.id {
+            prefs.savePickedRecipe(id: id)
+            sessionSeenIds.insert(id)
+        }
+        WatchSessionManager.shared.sendRecipe(recipe)
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,
-            recipes: [newRecipe]
+            recipes: allFilteredRecipes
         )
+    }
+
+    private func initialServings(for recipe: Recipe) -> Int {
+        let def = prefs.defaultServings
+        return def > 0 ? def : recipe.servings
     }
 }

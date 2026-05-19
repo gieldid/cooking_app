@@ -36,6 +36,7 @@ final class UserPreferencesManager: ObservableObject {
         static let todayRecipeId = "todayRecipeId"
         static let todayDateString = "todayDateString"
         static let recentRecipeIds = "recentRecipeIds"
+        static let skippedRecipeIds = "skippedRecipeIds"
     }
 
     @Published var hasCompletedOnboarding: Bool {
@@ -170,5 +171,17 @@ final class UserPreferencesManager: ObservableObject {
 
     var recentRecipeIds: [String] {
         defaults.stringArray(forKey: Keys.recentRecipeIds) ?? []
+    }
+
+    // MARK: - Skipped recipes
+
+    var skippedRecipeIds: Set<String> {
+        Set(defaults.stringArray(forKey: Keys.skippedRecipeIds) ?? [])
+    }
+
+    func addSkippedRecipe(id: String) {
+        var skipped = skippedRecipeIds
+        skipped.insert(id)
+        defaults.set(Array(skipped), forKey: Keys.skippedRecipeIds)
     }
 }

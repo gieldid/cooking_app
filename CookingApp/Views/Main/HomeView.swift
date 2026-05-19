@@ -18,14 +18,22 @@ struct HomeView: View {
                                 viewModel.skipRecipe()
                             }
                         } label: {
-                            Label("Skip", systemImage: "forward.fill")
-                                .font(.headline)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(.systemGray6))
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                            Group {
+                                if viewModel.isSkipping {
+                                    ProgressView()
+                                        .frame(maxWidth: .infinity)
+                                } else {
+                                    Label("Skip", systemImage: "forward.fill")
+                                        .frame(maxWidth: .infinity)
+                                }
+                            }
+                            .font(.headline)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .tint(.primary)
+                        .disabled(viewModel.isSkipping)
 
                         NavigationLink(destination: RecipeDetailView(recipe: recipe, servingsMultiplier: $viewModel.servingsMultiplier)) {
                             Label("Let's Cook!", systemImage: "flame.fill")

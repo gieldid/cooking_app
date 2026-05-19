@@ -138,6 +138,15 @@ struct DietaryProfile: Codable, Equatable {
     var maxCalories: MaxCalories
     var perDayOverrides: [Int: DayOverride]
 
+    /// Stable string used to detect when the server-side filter has changed,
+    /// which resets pagination back to page 1.
+    var paginationHash: String {
+        let diets       = selectedDiets.map(\.rawValue).sorted().joined(separator: ",")
+        let allergens   = selectedAllergies.map(\.rawValue).sorted().joined(separator: ",")
+        let difficulties = preferredDifficulties.map(\.rawValue).sorted().joined(separator: ",")
+        return "\(diets)|\(allergens)|\(difficulties)|\(maxDuration.rawValue)|\(maxCalories.rawValue)"
+    }
+
     static let empty = DietaryProfile(
         selectedAllergies: [],
         selectedDiets: [],
