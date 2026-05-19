@@ -284,6 +284,14 @@ private struct StepRow: View {
     let isCompleted: Bool
     let onToggle: () -> Void
 
+    @State private var timeRemaining: Int = 0
+    @State private var isRunning = false
+    @State private var isFinished = false
+
+    private static let tick = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
+    private var detectedSeconds: Int? { parseStepSeconds(text) }
+
     var body: some View {
         Button {
             HapticManager.impact(.light)
@@ -308,16 +316,100 @@ private struct StepRow: View {
                 }
                 .accessibilityHidden(true)
 
-                Text(text)
-                    .font(.body)
-                    .multilineTextAlignment(.leading)
-                    .strikethrough(isCompleted)
-                    .foregroundStyle(isCompleted ? .secondary : .primary)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(text)
+                        .font(.body)
+                        .multilineTextAlignment(.leading)
+                        .strikethrough(isCompleted)
+                        .foregroundStyle(isCompleted ? .secondary : .primary)
+
+                    if detectedSeconds != nil {
+                        StepTimerButton(
+                            timeRemaining: timeRemaining,
+                            isRunning: isRunning,
+                            isFinished: isFinished
+                        ) {
+                            if isFinished {
+                                timeRemaining = detectedSeconds ?? 0
+                                isFinished = false
+                                isRunning = false
+                            } else {
+                                HapticManager.impact(.medium)
+                                isRunning.toggle()
+                            }
+                        }
+                    }
+                }
             }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Step \(stepNumber): \(text)")
         .accessibilityValue(isCompleted ? "Completed" : "Not completed")
         .accessibilityHint(isCompleted ? "Double tap to mark as incomplete" : "Double tap to mark as complete")
+        .onAppear {
+            if let seconds = detectedSeconds { timeRemaining = seconds }
+        }
+        .onReceive(Self.tick) { _ in
+            guard isRunning, timeRemaining > 0 else { return }
+            timeRemaining -= 1
+            if timeRemaining == 0 {
+                isRunning = false
+                isFinished = true
+                HapticManager.impact(.heavy)
+            }
+        }
     }
+}
+
+private struct StepTimerButton: View {
+    let timeRemaining: Int
+    let isRunning: Bool
+    let isFinished: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 5) {
+                Image(systemName: isFinished ? "checkmark.circle.fill" : (isRunning ? "pause.fill" : "play.fill"))
+                    .font(.caption)
+                Text(isFinished ? "Done!" : formatTime(timeRemaining))
+                    .font(.caption.monospacedDigit())
+                    .fontWeight(.medium)
+            }
+            .foregroundStyle(isFinished ? Color.green : Color.accentColor)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background((isFinished ? Color.green : Color.accentColor).opacity(0.12))
+            .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func formatTime(_ seconds: Int) -> String {
+        if seconds >= 3600 {
+            return String(format: "%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60)
+        }
+        return String(format: "%d:%02d", seconds / 60, seconds % 60)
+    }
+}
+
+private func parseStepSeconds(_ text: String) -> Int? {
+    let pattern = #"(\d+)\s*(seconds?|minutes?|hours?|seconden?|secondes?|secondi|secondo|minuten|minuut|minuto|minuti|uren|uur|heures?|stunden?|ore|ora)"#
+    guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else { return nil }
+    let nsText = text as NSString
+    let matches = regex.matches(in: text, range: NSRange(location: 0, length: nsText.length))
+    var maxSeconds = 0
+    for match in matches {
+        guard match.numberOfRanges >= 3,
+              let numRange = Range(match.range(at: 1), in: text),
+              let unitRange = Range(match.range(at: 2), in: text),
+              let number = Int(text[numRange]) else { continue }
+        let unit = text[unitRange].lowercased()
+        let multiplier: Int
+        if unit.hasPrefix("sec") { multiplier = 1 }
+        else if unit.hasPrefix("min") { multiplier = 60 }
+        else { multiplier = 3600 }
+        maxSeconds = max(maxSeconds, number * multiplier)
+    }
+    return maxSeconds > 0 ? maxSeconds : nil
 }
