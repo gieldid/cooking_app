@@ -118,7 +118,7 @@ final class HomeViewModel: ObservableObject {
 
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,
-            recipes: allFilteredRecipes
+            recipes: [newRecipe]
         )
     }
 }
