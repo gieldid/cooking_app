@@ -430,7 +430,7 @@ private struct StepTimerButton: View {
 }
 
 private func parseStepSeconds(_ text: String) -> Int? {
-    let pattern = #"(\d+)\s*(seconds?|minutes?|hours?|seconden?|secondes?|secondi|secondo|minuten|minuut|minuto|minuti|uren|uur|heures?|stunden?|ore|ora)"#
+    let pattern = #"(\d+(?:\.\d+)?)\s*(seconds?|minutes?|hours?|seconden?|secondes?|secondi|secondo|minuten|minuut|minuto|minuti|uren|uur|heures?|stunden?|ore|ora)"#
     guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else { return nil }
     let nsText = text as NSString
     let matches = regex.matches(in: text, range: NSRange(location: 0, length: nsText.length))
@@ -439,13 +439,13 @@ private func parseStepSeconds(_ text: String) -> Int? {
         guard match.numberOfRanges >= 3,
               let numRange = Range(match.range(at: 1), in: text),
               let unitRange = Range(match.range(at: 2), in: text),
-              let number = Int(text[numRange]) else { continue }
+              let number = Double(text[numRange]) else { continue }
         let unit = text[unitRange].lowercased()
-        let multiplier: Int
+        let multiplier: Double
         if unit.hasPrefix("sec") { multiplier = 1 }
         else if unit.hasPrefix("min") { multiplier = 60 }
         else { multiplier = 3600 }
-        maxSeconds = max(maxSeconds, number * multiplier)
+        maxSeconds = max(maxSeconds, Int((number * multiplier).rounded()))
     }
     return maxSeconds > 0 ? maxSeconds : nil
 }
