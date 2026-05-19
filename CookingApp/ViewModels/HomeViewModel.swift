@@ -75,10 +75,10 @@ final class HomeViewModel: ObservableObject {
                     WatchSessionManager.shared.sendRecipe(recipe)
                 }
 
-                // Update notifications with recipe name
+                // Update notifications with the full recipe list so each day gets the right name
                 NotificationService.shared.scheduleAllNotifications(
                     preferences: prefs.notificationPreferences,
-                    recipeName: todayRecipe?.title
+                    recipes: recipes
                 )
             }
         } catch is CancellationError {
