@@ -131,6 +131,10 @@ struct MainTabView: View {
             if status == .denied {
                 showNotificationAlert = true
             }
+            let key = "appSessions"
+            let count = UserDefaults.standard.integer(forKey: key) + 1
+            UserDefaults.standard.set(count, forKey: key)
+            if count == 3 { requestReview() }
         }
         .alert("Notifications Disabled", isPresented: $showNotificationAlert) {
             Button("Open Settings") {
