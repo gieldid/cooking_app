@@ -130,7 +130,7 @@ final class NotificationService {
             content.attachments = [attachment]
 
             center.removePendingNotificationRequests(withIdentifiers: [id])
-            center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+            try await center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
         } catch {
             // Image download or attachment creation failed; the text-only notification remains
         }
