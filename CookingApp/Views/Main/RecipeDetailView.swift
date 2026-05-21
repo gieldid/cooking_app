@@ -144,7 +144,7 @@ struct RecipeDetailView: View {
                             let key = "favouritesAdded"
                             let count = UserDefaults.standard.integer(forKey: key) + 1
                             UserDefaults.standard.set(count, forKey: key)
-                            if count == 1 { requestReview() }
+                            if count == 1 { prefs.requestReviewIfEligible { requestReview() } }
                         }
                     } label: {
                         Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
