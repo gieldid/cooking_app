@@ -138,7 +138,14 @@ struct RecipeDetailView: View {
 
                     Button {
                         HapticManager.impact(.medium)
+                        let adding = !prefs.isFavourite(recipe)
                         prefs.toggleFavourite(recipe)
+                        if adding {
+                            let key = "favouritesAdded"
+                            let count = UserDefaults.standard.integer(forKey: key) + 1
+                            UserDefaults.standard.set(count, forKey: key)
+                            if count >= 1 { requestReview() }
+                        }
                     } label: {
                         Image(systemName: prefs.isFavourite(recipe) ? "heart.fill" : "heart")
                             .foregroundStyle(prefs.isFavourite(recipe) ? .red : .primary)
