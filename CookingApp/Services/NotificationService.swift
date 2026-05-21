@@ -62,7 +62,7 @@ final class NotificationService {
         )
     }
 
-    private func scheduleMorningNotifications(preferences: NotificationPreferences, recipes: [Recipe]) {
+    private func scheduleMorningNotifications(preferences: NotificationPreferences, todayRecipeName: String?) {
         // Remove the old fixed-id repeating morning notification if it exists
         center.removePendingNotificationRequests(withIdentifiers: ["com.inkgredients.morning"])
 
@@ -73,7 +73,10 @@ final class NotificationService {
 
         for dayOffset in 0..<30 {
             guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
-            let name = recipeName(for: targetDate, from: recipes) ?? fallback
+
+            // For today use the actual loaded recipe; for future days the pagination cursor
+            // will advance so the recipe set is unknown — fall back to a generic name.
+            let name = dayOffset == 0 ? (todayRecipeName ?? fallback) : fallback
 
             var comps = calendar.dateComponents([.year, .month, .day], from: targetDate)
             comps.hour = timeComps.hour
