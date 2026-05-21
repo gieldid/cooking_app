@@ -109,6 +109,7 @@ private struct RecipeCard: View {
     let recipe: Recipe
     let servings: Int
     @ObservedObject private var prefs = UserPreferencesManager.shared
+    @Environment(\.requestReview) private var requestReview
 
     var body: some View {
         let isFav = prefs.isFavourite(recipe)
