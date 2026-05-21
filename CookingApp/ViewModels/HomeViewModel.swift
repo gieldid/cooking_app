@@ -157,7 +157,8 @@ final class HomeViewModel: ObservableObject {
         WatchSessionManager.shared.sendRecipe(recipe)
         NotificationService.shared.scheduleAllNotifications(
             preferences: prefs.notificationPreferences,
-            recipes: allFilteredRecipes
+            recipes: allFilteredRecipes,
+            todayRecipeName: recipe.title
         )
     }
 
