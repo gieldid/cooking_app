@@ -185,4 +185,14 @@ final class UserPreferencesManager: ObservableObject {
         skipped.insert(id)
         defaults.set(Array(skipped), forKey: Keys.skippedRecipeIds)
     }
+
+    // MARK: - Review prompt
+
+    /// Calls `requestReview` and marks the flag so no trigger ever fires again.
+    /// Pass the SwiftUI @Environment(\.requestReview) action as the closure.
+    func requestReviewIfEligible(_ requestReview: () -> Void) {
+        guard !defaults.bool(forKey: Keys.hasRequestedReview) else { return }
+        defaults.set(true, forKey: Keys.hasRequestedReview)
+        requestReview()
+    }
 }
