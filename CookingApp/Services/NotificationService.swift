@@ -25,10 +25,11 @@ final class NotificationService {
         }
     }
 
-    /// Schedule all notifications. Pass the current filtered recipe list so morning
-    /// notifications are pre-computed per day. Callers without recipes pass [] and
-    /// the service reuses its cached list from the last full call.
-    func scheduleAllNotifications(preferences: NotificationPreferences, recipes: [Recipe] = []) {
+    /// Schedule all notifications. Pass `todayRecipeName` (the actual loaded recipe title)
+    /// so the morning notification for today is correct. Future-day notifications use a
+    /// generic fallback because the daily pagination cursor advances each day and the
+    /// recipe set for any future day cannot be known at scheduling time.
+    func scheduleAllNotifications(preferences: NotificationPreferences, recipes: [Recipe] = [], todayRecipeName: String? = nil) {
         if !recipes.isEmpty { cachedRecipes = recipes }
         let effective = cachedRecipes
 
@@ -37,10 +38,10 @@ final class NotificationService {
             return
         }
 
-        scheduleMorningNotifications(preferences: preferences, recipes: effective)
+        scheduleMorningNotifications(preferences: preferences, todayRecipeName: todayRecipeName)
 
         let fallback = String(localized: "notification.default_meal")
-        let todayName = recipeName(for: Date(), from: effective) ?? fallback
+        let todayName = todayRecipeName ?? recipeName(for: Date(), from: effective) ?? fallback
 
         if preferences.shoppingListEnabled {
             scheduleRepeatingNotification(
