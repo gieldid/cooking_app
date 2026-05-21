@@ -162,7 +162,7 @@ struct RecipeDetailView: View {
             let key = "recipesCompleted"
             let count = UserDefaults.standard.integer(forKey: key) + 1
             UserDefaults.standard.set(count, forKey: key)
-            if count >= 2 { requestReview() }
+            if count == 2 { requestReview() }
         }
     }
 
