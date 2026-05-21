@@ -89,6 +89,7 @@ extension ContentView {
 struct MainTabView: View {
     @StateObject private var homeViewModel = HomeViewModel()
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.requestReview) private var requestReview
     @State private var showNotificationAlert = false
     @State private var selectedTab = 0
 
