@@ -130,7 +130,14 @@ private struct RecipeCard: View {
 
                 Button {
                     HapticManager.impact(.medium)
+                    let adding = !prefs.isFavourite(recipe)
                     prefs.toggleFavourite(recipe)
+                    if adding {
+                        let key = "favouritesAdded"
+                        let count = UserDefaults.standard.integer(forKey: key) + 1
+                        UserDefaults.standard.set(count, forKey: key)
+                        if count >= 1 { requestReview() }
+                    }
                 } label: {
                     Image(systemName: isFav ? "heart.fill" : "heart")
                         .font(.title3)
