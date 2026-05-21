@@ -6,6 +6,7 @@ final class NotificationService {
 
     private let center = UNUserNotificationCenter.current()
     private var cachedRecipes: [Recipe] = []
+    private var imageAttachmentTask: Task<Void, Never>?
 
     private let morningPrefix = "com.inkgredients.morning_"
 
@@ -29,7 +30,8 @@ final class NotificationService {
     /// so the morning notification for today is correct. Future-day notifications use a
     /// generic fallback because the daily pagination cursor advances each day and the
     /// recipe set for any future day cannot be known at scheduling time.
-    func scheduleAllNotifications(preferences: NotificationPreferences, recipes: [Recipe] = [], todayRecipeName: String? = nil) {
+    /// Pass `todayImageURL` to attach the recipe image to today's morning notification banner.
+    func scheduleAllNotifications(preferences: NotificationPreferences, recipes: [Recipe] = [], todayRecipeName: String? = nil, todayImageURL: String? = nil) {
         if !recipes.isEmpty { cachedRecipes = recipes }
         let effective = cachedRecipes
 
@@ -38,7 +40,7 @@ final class NotificationService {
             return
         }
 
-        scheduleMorningNotifications(preferences: preferences, todayRecipeName: todayRecipeName)
+        scheduleMorningNotifications(preferences: preferences, todayRecipeName: todayRecipeName, todayImageURL: todayImageURL)
 
         let fallback = String(localized: "notification.default_meal")
         let todayName = todayRecipeName ?? recipeName(for: Date(), from: effective) ?? fallback
@@ -62,7 +64,7 @@ final class NotificationService {
         )
     }
 
-    private func scheduleMorningNotifications(preferences: NotificationPreferences, todayRecipeName: String?) {
+    private func scheduleMorningNotifications(preferences: NotificationPreferences, todayRecipeName: String?, todayImageURL: String?) {
         // Remove the old fixed-id repeating morning notification if it exists
         center.removePendingNotificationRequests(withIdentifiers: ["com.inkgredients.morning"])
 
@@ -91,6 +93,46 @@ final class NotificationService {
             let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
             let id = "\(morningPrefix)\(comps.year ?? 0)\(String(format: "%02d", comps.month ?? 0))\(String(format: "%02d", comps.day ?? 0))"
             center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+
+            // Attach the recipe image to today's notification asynchronously.
+            // The notification fires immediately with text only; the rescheduled version
+            // with the image replaces it once the download completes.
+            if dayOffset == 0, let urlString = todayImageURL {
+                imageAttachmentTask?.cancel()
+                imageAttachmentTask = Task {
+                    await self.attachImage(urlString: urlString, toNotificationId: id, name: name, trigger: trigger)
+                }
+            }
+        }
+    }
+
+    private func attachImage(urlString: String, toNotificationId id: String, name: String, trigger: UNCalendarNotificationTrigger) async {
+        guard !Task.isCancelled, let url = URL(string: urlString) else { return }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            guard !Task.isCancelled else { return }
+
+            let ext = url.pathExtension.isEmpty ? "jpg" : url.pathExtension
+            let tempURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(UUID().uuidString)
+                .appendingPathExtension(ext)
+            try data.write(to: tempURL)
+
+            let attachment = try UNNotificationAttachment(identifier: "recipe-image", url: tempURL, options: nil)
+            guard !Task.isCancelled else { return }
+
+            let content = UNMutableNotificationContent()
+            content.title = String(localized: "notification.morning.title")
+            content.body = String(format: String(localized: "notification.morning.body"), name)
+            content.sound = .default
+            content.userInfo = ["notificationType": "com.inkgredients.morning"]
+            content.attachments = [attachment]
+
+            center.removePendingNotificationRequests(withIdentifiers: [id])
+            center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+        } catch {
+            // Image download or attachment creation failed; the text-only notification remains
         }
     }
 
