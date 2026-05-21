@@ -37,6 +37,7 @@ final class UserPreferencesManager: ObservableObject {
         static let todayDateString = "todayDateString"
         static let recentRecipeIds = "recentRecipeIds"
         static let skippedRecipeIds = "skippedRecipeIds"
+        static let hasRequestedReview = "hasRequestedReview"
     }
 
     @Published var hasCompletedOnboarding: Bool {
