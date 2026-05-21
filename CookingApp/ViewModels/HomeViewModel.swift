@@ -82,7 +82,8 @@ final class HomeViewModel: ObservableObject {
                 NotificationService.shared.scheduleAllNotifications(
                     preferences: prefs.notificationPreferences,
                     recipes: allFilteredRecipes,
-                    todayRecipeName: todayRecipe?.title
+                    todayRecipeName: todayRecipe?.title,
+                    todayImageURL: todayRecipe?.imageURL
                 )
             }
         } catch is CancellationError {
