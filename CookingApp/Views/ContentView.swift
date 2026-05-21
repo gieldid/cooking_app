@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 
 /// Wraps a recipe ID so it can be used as an Identifiable sheet item.
 private struct RecipeDeepLink: Identifiable {
