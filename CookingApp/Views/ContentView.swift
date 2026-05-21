@@ -134,7 +134,7 @@ struct MainTabView: View {
             let key = "appSessions"
             let count = UserDefaults.standard.integer(forKey: key) + 1
             UserDefaults.standard.set(count, forKey: key)
-            if count == 3 { requestReview() }
+            if count == 3 { UserPreferencesManager.shared.requestReviewIfEligible { requestReview() } }
         }
         .alert("Notifications Disabled", isPresented: $showNotificationAlert) {
             Button("Open Settings") {
